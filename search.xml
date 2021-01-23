@@ -1,111 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Typora使用笔记-CSS篇</title>
-    <url>/2021/01/21/Typora-CSS/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p><strong>Typora</strong> 中有各种各样的主题样式，可以满足各式需求。但同时也可以通过修改<strong>CSS</strong> 文件进行个性化微调。熟悉前端的同学可能如鱼得水，但是对此一窍不通的我只能慢慢对比不同主题的 <strong>CSS</strong> 文件，上网搜索，提取想要的特性，自定义主题文件。难免错漏，但起码能用。做个记录。</p>
-<p>主题修改基于<strong>Newsprint</strong>。<strong>CSS</strong> 文件通过 <kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>外观</kbd>&gt;<kbd>打开主题文件</kbd> 找到。</p>
-<h2 id="1-表格抬头大小写"><a href="#1-表格抬头大小写" class="headerlink" title="1. 表格抬头大小写"></a>1. 表格抬头大小写</h2><p><strong>Newsprint</strong> 主题的表格抬头默认全大写，看起来有些不友好。</p>
-<p><strong>newsprint.css</strong> 中第222行：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tfoot</span> <span class="selector-tag">th</span> &#123;</span><br><span class="line">	<span class="attribute">padding</span>: .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">4em</span>;</span><br><span class="line">	<span class="attribute">text-transform</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>text-transform:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>none</td>
-<td>默认。定义带有小写字母和大写字母的标准的文本。</td>
-</tr>
-<tr>
-<td>capitalize</td>
-<td>文本中的每个单词以大写字母开头。</td>
-</tr>
-<tr>
-<td>uppercase</td>
-<td>定义仅有大写字母。</td>
-</tr>
-<tr>
-<td>lowercase</td>
-<td>定义无大写字母，仅有小写字母。</td>
-</tr>
-<tr>
-<td>inherit</td>
-<td>规定应该从父元素继承 text-transform 属性的值。</td>
-</tr>
-</tbody>
-</table>
-</div>
-</blockquote>
-<h2 id="2-导出PDF时-按标题等级分页"><a href="#2-导出PDF时-按标题等级分页" class="headerlink" title="2. 导出PDF时, 按标题等级分页"></a>2. 导出PDF时, 按标题等级分页</h2><h3 id="2-1-自动分页"><a href="#2-1-自动分页" class="headerlink" title="2.1 自动分页"></a>2.1 自动分页</h3><p>在导出时，将在每个<code>h1</code>元素（第一个元素除外）之前创建一个新页面。<strong>newsprint.css</strong>  中加入:</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*以下内容可以保持第一个h1标题前不创建新页面*/</span></span><br><span class="line">  <span class="selector-tag">h1</span><span class="selector-pseudo">:first-of-type</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: avoid;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以<code>h2</code>元素为分页标准</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-强制分页"><a href="#2-2-强制分页" class="headerlink" title="2.2 强制分页"></a>2.2 强制分页</h3><p>在正文中插入要分页的位置</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;page-break-after: always;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-列表符号"><a href="#3-列表符号" class="headerlink" title="3. 列表符号"></a>3. 列表符号</h2><p>在 <strong>Newsprint</strong> 主题中，列表抬头样式皆为圆点</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png" alt="image-20210120115421997"  /></p>
-<p>在 <strong>newsprint.css</strong>  中找到以下内容（93行），用 <code>/* */</code> 注释掉，</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">ol</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: decimal;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: disc;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span>,</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">	<span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加以下内容（取自 <strong>Github</strong> 主题）</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.task-list</span>&#123;</span><br><span class="line">	<span class="attribute">padding-left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &#123;</span><br><span class="line">	<span class="attribute">padding-left</span>:<span class="number">34px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: initial;</span><br><span class="line">	<span class="attribute">top</span>: -<span class="number">0.2rem</span>;</span><br><span class="line">	<span class="attribute">margin-left</span>: -<span class="number">1.6em</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="built_in">calc</span>(<span class="number">1rem</span> - <span class="number">7px</span>);</span><br><span class="line">	<span class="attribute">border</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">	<span class="attribute">outline</span>: none;</span><br><span class="line">	<span class="attribute">box-shadow</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#555</span>;</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#333</span>;</span><br><span class="line">	<span class="attribute">border-width</span>: <span class="number">2px</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline-block;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">-webkit-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-moz-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">-moz-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0.4375rem</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0.28125rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">0.9375rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0.5rem</span>;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">border-top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">border-right</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>之后列表样式如下所示</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png" alt="image-20210122001140344"  /></p>
-<h2 id="4-两端对齐"><a href="#4-两端对齐" class="headerlink" title="4. 两端对齐"></a>4. 两端对齐</h2><p>在 <strong>newsprint.css</strong>  中找到以下内容（62行）：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加 <code>text-align: justify;</code>：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">	<span class="attribute">text-align</span>: justify;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>text-align:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>left</td>
-<td>把文本排列到左边。默认值：由浏览器决定。</td>
-</tr>
-<tr>
-<td>right</td>
-<td>把文本排列到右边。</td>
-</tr>
-<tr>
-<td>center</td>
-<td>把文本排列到中间。</td>
-</tr>
-<tr>
-<td>justify</td>
-<td>实现两端对齐文本效果。</td>
-</tr>
-<tr>
-<td>inherit</td>
-<td>规定应该从父元素继承 text-align 属性的值。</td>
-</tr>
-</tbody>
-</table>
-</div>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-LaTex篇</title>
     <url>/2021/01/21/Typora-LaTeX/</url>
     <content><![CDATA[<h2 id="1-数学符号"><a href="#1-数学符号" class="headerlink" title="1. 数学符号"></a>1. 数学符号</h2><blockquote>
@@ -242,6 +137,188 @@ c
       </tags>
   </entry>
   <entry>
+    <title>Typora使用笔记-CSS篇</title>
+    <url>/2021/01/21/Typora-CSS/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p><strong>Typora</strong> 中有各种各样的主题样式，可以满足各式需求。但同时也可以通过修改<strong>CSS</strong> 文件进行个性化微调。熟悉前端的同学可能如鱼得水，但是对此一窍不通的我只能慢慢对比不同主题的 <strong>CSS</strong> 文件，上网搜索，提取想要的特性，自定义主题文件。难免错漏，但起码能用。做个记录。</p>
+<p>主题修改基于<strong>Newsprint</strong>。<strong>CSS</strong> 文件通过 <kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>外观</kbd>&gt;<kbd>打开主题文件</kbd> 找到。</p>
+<h2 id="1-表格抬头大小写"><a href="#1-表格抬头大小写" class="headerlink" title="1. 表格抬头大小写"></a>1. 表格抬头大小写</h2><p><strong>Newsprint</strong> 主题的表格抬头默认全大写，看起来有些不友好。</p>
+<p><strong>newsprint.css</strong> 中第222行：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tfoot</span> <span class="selector-tag">th</span> &#123;</span><br><span class="line">	<span class="attribute">padding</span>: .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">4em</span>;</span><br><span class="line">	<span class="attribute">text-transform</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>text-transform:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>默认。定义带有小写字母和大写字母的标准的文本。</td>
+</tr>
+<tr>
+<td>capitalize</td>
+<td>文本中的每个单词以大写字母开头。</td>
+</tr>
+<tr>
+<td>uppercase</td>
+<td>定义仅有大写字母。</td>
+</tr>
+<tr>
+<td>lowercase</td>
+<td>定义无大写字母，仅有小写字母。</td>
+</tr>
+<tr>
+<td>inherit</td>
+<td>规定应该从父元素继承 text-transform 属性的值。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<h2 id="2-导出PDF时-按标题等级分页"><a href="#2-导出PDF时-按标题等级分页" class="headerlink" title="2. 导出PDF时, 按标题等级分页"></a>2. 导出PDF时, 按标题等级分页</h2><h3 id="2-1-自动分页"><a href="#2-1-自动分页" class="headerlink" title="2.1 自动分页"></a>2.1 自动分页</h3><p>在导出时，将在每个<code>h1</code>元素（第一个元素除外）之前创建一个新页面。<strong>newsprint.css</strong>  中加入:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*以下内容可以保持第一个h1标题前不创建新页面*/</span></span><br><span class="line">  <span class="selector-tag">h1</span><span class="selector-pseudo">:first-of-type</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: avoid;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以<code>h2</code>元素为分页标准</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-强制分页"><a href="#2-2-强制分页" class="headerlink" title="2.2 强制分页"></a>2.2 强制分页</h3><p>在正文中插入要分页的位置</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;page-break-after: always;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-列表符号"><a href="#3-列表符号" class="headerlink" title="3. 列表符号"></a>3. 列表符号</h2><p>在 <strong>Newsprint</strong> 主题中，列表抬头样式皆为圆点</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png" alt="image-20210120115421997"  /></p>
+<p>在 <strong>newsprint.css</strong>  中找到以下内容（93行），用 <code>/* */</code> 注释掉，</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">ol</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: decimal;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: disc;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span>,</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">	<span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加以下内容（取自 <strong>Github</strong> 主题）</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.task-list</span>&#123;</span><br><span class="line">	<span class="attribute">padding-left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &#123;</span><br><span class="line">	<span class="attribute">padding-left</span>:<span class="number">34px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: initial;</span><br><span class="line">	<span class="attribute">top</span>: -<span class="number">0.2rem</span>;</span><br><span class="line">	<span class="attribute">margin-left</span>: -<span class="number">1.6em</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="built_in">calc</span>(<span class="number">1rem</span> - <span class="number">7px</span>);</span><br><span class="line">	<span class="attribute">border</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">	<span class="attribute">outline</span>: none;</span><br><span class="line">	<span class="attribute">box-shadow</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#555</span>;</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#333</span>;</span><br><span class="line">	<span class="attribute">border-width</span>: <span class="number">2px</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline-block;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">-webkit-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-moz-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">-moz-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0.4375rem</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0.28125rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">0.9375rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0.5rem</span>;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">border-top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">border-right</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后列表样式如下所示</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png" alt="image-20210122001140344"  /></p>
+<h2 id="4-两端对齐"><a href="#4-两端对齐" class="headerlink" title="4. 两端对齐"></a>4. 两端对齐</h2><p>在 <strong>newsprint.css</strong>  中找到以下内容（62行）：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加 <code>text-align: justify;</code>：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">	<span class="attribute">text-align</span>: justify;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>text-align:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>left</td>
+<td>把文本排列到左边。默认值：由浏览器决定。</td>
+</tr>
+<tr>
+<td>right</td>
+<td>把文本排列到右边。</td>
+</tr>
+<tr>
+<td>center</td>
+<td>把文本排列到中间。</td>
+</tr>
+<tr>
+<td>justify</td>
+<td>实现两端对齐文本效果。</td>
+</tr>
+<tr>
+<td>inherit</td>
+<td>规定应该从父元素继承 text-align 属性的值。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-记笔记篇</title>
+    <url>/2021/01/22/Typora-Note/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
+<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
+<h2 id="1-截图软件-Snipaste"><a href="#1-截图软件-Snipaste" class="headerlink" title="1. 截图软件 - Snipaste"></a>1. 截图软件 - Snipaste</h2><p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" alt="N3QEb3VA" style="zoom: 67%;" title="Snipaste"/></p>
+<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
+<blockquote>
+<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
+</blockquote>
+<h2 id="2-图片自动上传-PicGo"><a href="#2-图片自动上传-PicGo" class="headerlink" title="2. 图片自动上传 - PicGo"></a>2. 图片自动上传 - PicGo</h2><p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png" alt="image-20210123001230690" style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
+<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
+<blockquote>
+<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
+<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
+<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
+<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
+</blockquote>
+<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
+<h2 id="3-公式识别-Mathpix-Snip"><a href="#3-公式识别-Mathpix-Snip" class="headerlink" title="3. 公式识别 - Mathpix Snip"></a>3. 公式识别 - Mathpix Snip</h2><p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 $\LaTeX$ 打出的生僻符号。</p>
+<script type="math/tex; mode=display">
+\underbrace{
+\begin{bmatrix}
+\ddot\psi\\
+\dot\beta
+\end{bmatrix}
+}_{\dot{x}}=
+\underbrace{
+\begin{bmatrix}
+-\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} & -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
+-1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} & -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
+\end{bmatrix}
+}_{A}
+\underbrace{
+\begin{bmatrix}
+\dot\psi\\
+\beta
+\end{bmatrix}
+}_{x}+
+\underbrace{
+\begin{bmatrix}
+\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
+\frac{c_{\alpha,V}}{mv}
+\end{bmatrix}
+}_{B}\cdot
+\underbrace{\delta}_{u}</script><figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
+<p>这公式，用 $LaTeX$ 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 $\LaTeX$ 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
+<blockquote>
+<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
+</blockquote>
+<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong>  提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
+<blockquote>
+<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
+</blockquote>
+<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
+<blockquote>
+<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
+</blockquote>
+<p>实际操作流程如下所示。</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" alt="Mathpix-Snip+Quicker" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
+<h2 id="4-相关网站"><a href="#4-相关网站" class="headerlink" title="4. 相关网站"></a>4. 相关网站</h2><blockquote>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
+<p><a href="[HTML 常用颜色](https://htmlcolorcodes.com/zh/yanse-ming/">Unicode 大全</a>)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>LaTeX</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora使用笔记-HTML篇</title>
     <url>/2021/01/21/Typora-HTML/</url>
     <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>刚开始使用<strong>Typora</strong>的时候只会用 $ \LaTeX $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
@@ -364,83 +441,6 @@ c
       <tags>
         <tag>Typora</tag>
         <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Typora使用笔记-记笔记篇</title>
-    <url>/2021/01/22/Typora-Note/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
-<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
-<h2 id="1-截图软件-Snipaste"><a href="#1-截图软件-Snipaste" class="headerlink" title="1. 截图软件 - Snipaste"></a>1. 截图软件 - Snipaste</h2><p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" alt="N3QEb3VA" style="zoom: 67%;" title="Snipaste"/></p>
-<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
-<blockquote>
-<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
-</blockquote>
-<h2 id="2-图片自动上传-PicGo"><a href="#2-图片自动上传-PicGo" class="headerlink" title="2. 图片自动上传 - PicGo"></a>2. 图片自动上传 - PicGo</h2><p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png" alt="image-20210123001230690" style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
-<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
-<blockquote>
-<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
-<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
-<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
-<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
-</blockquote>
-<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
-<h2 id="3-公式识别-Mathpix-Snip"><a href="#3-公式识别-Mathpix-Snip" class="headerlink" title="3. 公式识别 - Mathpix Snip"></a>3. 公式识别 - Mathpix Snip</h2><p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 $\LaTeX$ 打出的生僻符号。</p>
-<script type="math/tex; mode=display">
-\underbrace{
-\begin{bmatrix}
-\ddot\psi\\
-\dot\beta
-\end{bmatrix}
-}_{\dot{x}}=
-\underbrace{
-\begin{bmatrix}
--\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} & -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
--1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} & -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
-\end{bmatrix}
-}_{A}
-\underbrace{
-\begin{bmatrix}
-\dot\psi\\
-\beta
-\end{bmatrix}
-}_{x}+
-\underbrace{
-\begin{bmatrix}
-\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
-\frac{c_{\alpha,V}}{mv}
-\end{bmatrix}
-}_{B}\cdot
-\underbrace{\delta}_{u}</script><figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
-<p>这公式，用 $LaTeX$ 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 $\LaTeX$ 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
-<blockquote>
-<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
-</blockquote>
-<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong>  提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
-<blockquote>
-<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
-</blockquote>
-<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
-<blockquote>
-<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
-</blockquote>
-<p>实际操作流程如下所示。</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" alt="Mathpix-Snip+Quicker" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
-<h2 id="4-相关网站"><a href="#4-相关网站" class="headerlink" title="4. 相关网站"></a>4. 相关网站</h2><blockquote>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
-<p><a href="[HTML 常用颜色](https://htmlcolorcodes.com/zh/yanse-ming/">Unicode 大全</a>)</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>LaTeX</tag>
       </tags>
   </entry>
 </search>

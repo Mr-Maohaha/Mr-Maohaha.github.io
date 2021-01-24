@@ -1,6 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Typora使用笔记-CSS篇</title>
+    <url>/2021/01/21/Typora-CSS/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p><strong>Typora</strong> 中有各种各样的主题样式，可以满足各式需求。但同时也可以通过修改<strong>CSS</strong> 文件进行个性化微调。熟悉前端的同学可能如鱼得水，但是对此一窍不通的我只能慢慢对比不同主题的 <strong>CSS</strong> 文件，上网搜索，提取想要的特性，自定义主题文件。难免错漏，但起码能用。做个记录。</p>
+<p>主题修改基于<strong>Newsprint</strong>。<strong>CSS</strong> 文件通过 <kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>外观</kbd>&gt;<kbd>打开主题文件</kbd> 找到。</p>
+<h2 id="1-表格抬头大小写"><a href="#1-表格抬头大小写" class="headerlink" title="1. 表格抬头大小写"></a>1. 表格抬头大小写</h2><p><strong>Newsprint</strong> 主题的表格抬头默认全大写，看起来有些不友好。</p>
+<p><strong>newsprint.css</strong> 中第222行：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tfoot</span> <span class="selector-tag">th</span> &#123;</span><br><span class="line">	<span class="attribute">padding</span>: .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">4em</span>;</span><br><span class="line">	<span class="attribute">text-transform</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>text-transform:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>默认。定义带有小写字母和大写字母的标准的文本。</td>
+</tr>
+<tr>
+<td>capitalize</td>
+<td>文本中的每个单词以大写字母开头。</td>
+</tr>
+<tr>
+<td>uppercase</td>
+<td>定义仅有大写字母。</td>
+</tr>
+<tr>
+<td>lowercase</td>
+<td>定义无大写字母，仅有小写字母。</td>
+</tr>
+<tr>
+<td>inherit</td>
+<td>规定应该从父元素继承 text-transform 属性的值。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<h2 id="2-导出PDF时-按标题等级分页"><a href="#2-导出PDF时-按标题等级分页" class="headerlink" title="2. 导出PDF时, 按标题等级分页"></a>2. 导出PDF时, 按标题等级分页</h2><h3 id="2-1-自动分页"><a href="#2-1-自动分页" class="headerlink" title="2.1 自动分页"></a>2.1 自动分页</h3><p>在导出时，将在每个<code>h1</code>元素（第一个元素除外）之前创建一个新页面。<strong>newsprint.css</strong>  中加入:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*以下内容可以保持第一个h1标题前不创建新页面*/</span></span><br><span class="line">  <span class="selector-tag">h1</span><span class="selector-pseudo">:first-of-type</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: avoid;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以<code>h2</code>元素为分页标准</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-强制分页"><a href="#2-2-强制分页" class="headerlink" title="2.2 强制分页"></a>2.2 强制分页</h3><p>在正文中插入要分页的位置</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;page-break-after: always;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-列表符号"><a href="#3-列表符号" class="headerlink" title="3. 列表符号"></a>3. 列表符号</h2><p>在 <strong>Newsprint</strong> 主题中，列表抬头样式皆为圆点</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png" alt="image-20210120115421997"  /></p>
+<p>在 <strong>newsprint.css</strong>  中找到以下内容（93行），用 <code>/* */</code> 注释掉，</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">ol</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: decimal;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: disc;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span>,</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">	<span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加以下内容（取自 <strong>Github</strong> 主题）</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.task-list</span>&#123;</span><br><span class="line">	<span class="attribute">padding-left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &#123;</span><br><span class="line">	<span class="attribute">padding-left</span>:<span class="number">34px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: initial;</span><br><span class="line">	<span class="attribute">top</span>: -<span class="number">0.2rem</span>;</span><br><span class="line">	<span class="attribute">margin-left</span>: -<span class="number">1.6em</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="built_in">calc</span>(<span class="number">1rem</span> - <span class="number">7px</span>);</span><br><span class="line">	<span class="attribute">border</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">	<span class="attribute">outline</span>: none;</span><br><span class="line">	<span class="attribute">box-shadow</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#555</span>;</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#333</span>;</span><br><span class="line">	<span class="attribute">border-width</span>: <span class="number">2px</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline-block;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">-webkit-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-moz-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">-moz-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0.4375rem</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0.28125rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">0.9375rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0.5rem</span>;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">border-top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">border-right</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后列表样式如下所示</p>
+<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png" alt="image-20210122001140344"  /></p>
+<h2 id="4-两端对齐"><a href="#4-两端对齐" class="headerlink" title="4. 两端对齐"></a>4. 两端对齐</h2><p>在 <strong>newsprint.css</strong>  中找到以下内容（62行）：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加 <code>text-align: justify;</code>：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">	<span class="attribute">text-align</span>: justify;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>text-align:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>left</td>
+<td>把文本排列到左边。默认值：由浏览器决定。</td>
+</tr>
+<tr>
+<td>right</td>
+<td>把文本排列到右边。</td>
+</tr>
+<tr>
+<td>center</td>
+<td>把文本排列到中间。</td>
+</tr>
+<tr>
+<td>justify</td>
+<td>实现两端对齐文本效果。</td>
+</tr>
+<tr>
+<td>inherit</td>
+<td>规定应该从父元素继承 text-align 属性的值。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-HTML篇</title>
+    <url>/2021/01/21/Typora-HTML/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>刚开始使用<strong>Typora</strong>的时候只会用 $ \LaTeX $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
+<h2 id="1-文字-段落格式"><a href="#1-文字-段落格式" class="headerlink" title="1. 文字 + 段落格式"></a>1. 文字 + 段落格式</h2><h3 id="1-1-字体大小"><a href="#1-1-字体大小" class="headerlink" title="1.1 字体大小"></a>1.1 字体大小</h3><font size="1">我字体大小为1</font>
+
+<font size="2">我字体大小为2</font>
+
+<font size="3">我字体大小为3</font>
+
+<font size="4">我字体大小为4</font>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-文字颜色"><a href="#1-2-文字颜色" class="headerlink" title="1.2 文字颜色"></a>1.2 文字颜色</h3><p>​    <span style="color:red">文字</span></p>
+<p>​    <font color="red">文字</font></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
+</blockquote>
+<h3 id="1-3-背景颜色"><a href="#1-3-背景颜色" class="headerlink" title="1.3 背景颜色"></a>1.3 背景颜色</h3><table><tr><td bgcolor=HotPink>占满整行的段落背景颜色</td></tr></table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-排版"><a href="#2-排版" class="headerlink" title="2. 排版"></a>2. 排版</h2><h3 id="2-1-空格"><a href="#2-1-空格" class="headerlink" title="2.1 空格"></a>2.1 空格</h3><p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
+<p>&thinsp;1个&amp;thinsp</p>
+<p>&nbsp;1个&amp;nbsp</p>
+<p>&ensp;1个&amp;ensp</p>
+<p>&emsp;1个&amp;emsp</p>
+<p>&emsp;&emsp;2个&amp;emsp</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-文本两端对齐"><a href="#2-2-文本两端对齐" class="headerlink" title="2.2 文本两端对齐"></a>2.2 文本两端对齐</h3><p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
+<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在”Typora使用笔记-CSS篇”中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-3-整段缩进"><a href="#2-3-整段缩进" class="headerlink" title="2.3 整段缩进"></a>2.3 整段缩进</h3><p>有时候想要体现层次感，需要将整段文字缩进。</p>
+<p style="padding-left: 2em;">这是整段缩进2em</p>
+
+<p style="padding-left: 4em;">这是整段缩进4em</p>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-4-图片居中-缩放-注释"><a href="#2-4-图片居中-缩放-注释" class="headerlink" title="2.4 图片居中+缩放+注释"></a>2.4 图片居中+缩放+注释</h3><p><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-5-图片横向并排"><a href="#2-5-图片横向并排" class="headerlink" title="2.5 图片横向并排"></a>2.5 图片横向并排</h3><p>使用表格方法实现图片并排。</p>
+<table>   
+    <tr>       
+        <td><a data-fancybox data-caption="Caption"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
+        <td><a data-fancybox data-caption="Caption"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
+    </tr>
+</table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-6-图片文字"><a href="#2-6-图片文字" class="headerlink" title="2.6 图片文字"></a>2.6 图片文字</h3><p>表格 + HTML 列表</p>
+<table>   
+    <tr>
+          <td>
+        <ul>
+          <li><b>TASK 1:</b></li>
+          <ul>
+            <li>≡ω≡</li>
+            <li>≡ω≡</li>
+          </ul>
+          <li><b>TASK 2:</b></li>
+          <ul>
+            <li>≡ω≡</li>
+            <li>≡ω≡</li>
+          </ul>
+      </td>   
+        <td>
+            <div align="center"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></td>   
+    </tr>
+</table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-HTML符号"><a href="#3-HTML符号" class="headerlink" title="3. HTML符号"></a>3. HTML符号</h2><p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 &#8721; , 有些则是一些奇奇怪怪的符号 &#127922;。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
+<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
+<p>如欧元符号: &euro;</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>€</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unicode</strong></td>
+<td>U+020AC</td>
+</tr>
+<tr>
+<td><strong>Hex Code</strong></td>
+<td>20AC</td>
+</tr>
+<tr>
+<td><strong>HTML Code</strong></td>
+<td>8364</td>
+</tr>
+<tr>
+<td><strong>HTML Entity</strong></td>
+<td>euro</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
+<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
+</blockquote>
+<h2 id="4-杂项"><a href="#4-杂项" class="headerlink" title="4. 杂项"></a>4. 杂项</h2><h3 id="4-1-折叠标签"><a href="#4-1-折叠标签" class="headerlink" title="4.1 折叠标签"></a>4.1 折叠标签</h3><p><details>
+    <summary>折叠标签</summary>
+    这是个折叠标题
+</details><br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="4-2-跳转"><a href="#4-2-跳转" class="headerlink" title="4.2 跳转"></a>4.2 跳转</h3><blockquote>
+<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora使用笔记-LaTex篇</title>
     <url>/2021/01/21/Typora-LaTeX/</url>
     <content><![CDATA[<h2 id="1-数学符号"><a href="#1-数学符号" class="headerlink" title="1. 数学符号"></a>1. 数学符号</h2><blockquote>
@@ -137,111 +367,6 @@ c
       </tags>
   </entry>
   <entry>
-    <title>Typora使用笔记-CSS篇</title>
-    <url>/2021/01/21/Typora-CSS/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p><strong>Typora</strong> 中有各种各样的主题样式，可以满足各式需求。但同时也可以通过修改<strong>CSS</strong> 文件进行个性化微调。熟悉前端的同学可能如鱼得水，但是对此一窍不通的我只能慢慢对比不同主题的 <strong>CSS</strong> 文件，上网搜索，提取想要的特性，自定义主题文件。难免错漏，但起码能用。做个记录。</p>
-<p>主题修改基于<strong>Newsprint</strong>。<strong>CSS</strong> 文件通过 <kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>外观</kbd>&gt;<kbd>打开主题文件</kbd> 找到。</p>
-<h2 id="1-表格抬头大小写"><a href="#1-表格抬头大小写" class="headerlink" title="1. 表格抬头大小写"></a>1. 表格抬头大小写</h2><p><strong>Newsprint</strong> 主题的表格抬头默认全大写，看起来有些不友好。</p>
-<p><strong>newsprint.css</strong> 中第222行：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">tfoot</span> <span class="selector-tag">th</span> &#123;</span><br><span class="line">	<span class="attribute">padding</span>: .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">25em</span> .<span class="number">4em</span>;</span><br><span class="line">	<span class="attribute">text-transform</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>text-transform:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>none</td>
-<td>默认。定义带有小写字母和大写字母的标准的文本。</td>
-</tr>
-<tr>
-<td>capitalize</td>
-<td>文本中的每个单词以大写字母开头。</td>
-</tr>
-<tr>
-<td>uppercase</td>
-<td>定义仅有大写字母。</td>
-</tr>
-<tr>
-<td>lowercase</td>
-<td>定义无大写字母，仅有小写字母。</td>
-</tr>
-<tr>
-<td>inherit</td>
-<td>规定应该从父元素继承 text-transform 属性的值。</td>
-</tr>
-</tbody>
-</table>
-</div>
-</blockquote>
-<h2 id="2-导出PDF时-按标题等级分页"><a href="#2-导出PDF时-按标题等级分页" class="headerlink" title="2. 导出PDF时, 按标题等级分页"></a>2. 导出PDF时, 按标题等级分页</h2><h3 id="2-1-自动分页"><a href="#2-1-自动分页" class="headerlink" title="2.1 自动分页"></a>2.1 自动分页</h3><p>在导出时，将在每个<code>h1</code>元素（第一个元素除外）之前创建一个新页面。<strong>newsprint.css</strong>  中加入:</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*以下内容可以保持第一个h1标题前不创建新页面*/</span></span><br><span class="line">  <span class="selector-tag">h1</span><span class="selector-pseudo">:first-of-type</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: avoid;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以<code>h2</code>元素为分页标准</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@media</span> print &#123;</span><br><span class="line">  <span class="selector-tag">h2</span> &#123;</span><br><span class="line">    <span class="attribute">page-break-before</span>: always;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-强制分页"><a href="#2-2-强制分页" class="headerlink" title="2.2 强制分页"></a>2.2 强制分页</h3><p>在正文中插入要分页的位置</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;page-break-after: always;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-列表符号"><a href="#3-列表符号" class="headerlink" title="3. 列表符号"></a>3. 列表符号</h2><p>在 <strong>Newsprint</strong> 主题中，列表抬头样式皆为圆点</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png" alt="image-20210120115421997"  /></p>
-<p>在 <strong>newsprint.css</strong>  中找到以下内容（93行），用 <code>/* */</code> 注释掉，</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">ol</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: decimal;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: disc;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span>,</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">	<span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加以下内容（取自 <strong>Github</strong> 主题）</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.task-list</span>&#123;</span><br><span class="line">	<span class="attribute">padding-left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &#123;</span><br><span class="line">	<span class="attribute">padding-left</span>:<span class="number">34px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: initial;</span><br><span class="line">	<span class="attribute">top</span>: -<span class="number">0.2rem</span>;</span><br><span class="line">	<span class="attribute">margin-left</span>: -<span class="number">1.6em</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="built_in">calc</span>(<span class="number">1rem</span> - <span class="number">7px</span>);</span><br><span class="line">	<span class="attribute">border</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">	<span class="attribute">outline</span>: none;</span><br><span class="line">	<span class="attribute">box-shadow</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#555</span>;</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#333</span>;</span><br><span class="line">	<span class="attribute">border-width</span>: <span class="number">2px</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline-block;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">-webkit-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-moz-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">-moz-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0.4375rem</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0.28125rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">0.9375rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0.5rem</span>;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">border-top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">border-right</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>之后列表样式如下所示</p>
-<p><img src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png" alt="image-20210122001140344"  /></p>
-<h2 id="4-两端对齐"><a href="#4-两端对齐" class="headerlink" title="4. 两端对齐"></a>4. 两端对齐</h2><p>在 <strong>newsprint.css</strong>  中找到以下内容（62行）：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加 <code>text-align: justify;</code>：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">	<span class="attribute">text-align</span>: justify;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>text-align:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>left</td>
-<td>把文本排列到左边。默认值：由浏览器决定。</td>
-</tr>
-<tr>
-<td>right</td>
-<td>把文本排列到右边。</td>
-</tr>
-<tr>
-<td>center</td>
-<td>把文本排列到中间。</td>
-</tr>
-<tr>
-<td>justify</td>
-<td>实现两端对齐文本效果。</td>
-</tr>
-<tr>
-<td>inherit</td>
-<td>规定应该从父元素继承 text-align 属性的值。</td>
-</tr>
-</tbody>
-</table>
-</div>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-记笔记篇</title>
     <url>/2021/01/22/Typora-Note/</url>
     <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
@@ -316,131 +441,6 @@ c
       <tags>
         <tag>Typora</tag>
         <tag>LaTeX</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Typora使用笔记-HTML篇</title>
-    <url>/2021/01/21/Typora-HTML/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>刚开始使用<strong>Typora</strong>的时候只会用 $ \LaTeX $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
-<h2 id="1-文字-段落格式"><a href="#1-文字-段落格式" class="headerlink" title="1. 文字 + 段落格式"></a>1. 文字 + 段落格式</h2><h3 id="1-1-字体大小"><a href="#1-1-字体大小" class="headerlink" title="1.1 字体大小"></a>1.1 字体大小</h3><font size="1">我字体大小为1</font>
-
-<font size="2">我字体大小为2</font>
-
-<font size="3">我字体大小为3</font>
-
-<font size="4">我字体大小为4</font>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-文字颜色"><a href="#1-2-文字颜色" class="headerlink" title="1.2 文字颜色"></a>1.2 文字颜色</h3><p>​    <span style="color:red">文字</span></p>
-<p>​    <font color="red">文字</font></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
-</blockquote>
-<h3 id="1-3-背景颜色"><a href="#1-3-背景颜色" class="headerlink" title="1.3 背景颜色"></a>1.3 背景颜色</h3><table><tr><td bgcolor=HotPink>占满整行的段落背景颜色</td></tr></table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="2-排版"><a href="#2-排版" class="headerlink" title="2. 排版"></a>2. 排版</h2><h3 id="2-1-空格"><a href="#2-1-空格" class="headerlink" title="2.1 空格"></a>2.1 空格</h3><p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
-<p>&thinsp;1个&amp;thinsp</p>
-<p>&nbsp;1个&amp;nbsp</p>
-<p>&ensp;1个&amp;ensp</p>
-<p>&emsp;1个&amp;emsp</p>
-<p>&emsp;&emsp;2个&amp;emsp</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-文本两端对齐"><a href="#2-2-文本两端对齐" class="headerlink" title="2.2 文本两端对齐"></a>2.2 文本两端对齐</h3><p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
-<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在”Typora使用笔记-CSS篇”中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-3-整段缩进"><a href="#2-3-整段缩进" class="headerlink" title="2.3 整段缩进"></a>2.3 整段缩进</h3><p>有时候想要体现层次感，需要将整段文字缩进。</p>
-<p style="padding-left: 2em;">这是整段缩进2em</p>
-
-<p style="padding-left: 4em;">这是整段缩进4em</p>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-4-图片居中-缩放-注释"><a href="#2-4-图片居中-缩放-注释" class="headerlink" title="2.4 图片居中+缩放+注释"></a>2.4 图片居中+缩放+注释</h3><p><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-5-图片横向并排"><a href="#2-5-图片横向并排" class="headerlink" title="2.5 图片横向并排"></a>2.5 图片横向并排</h3><p>使用表格方法实现图片并排。</p>
-<table>   
-    <tr>       
-        <td><a data-fancybox data-caption="Caption"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
-        <td><a data-fancybox data-caption="Caption"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
-    </tr>
-</table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-6-图片文字"><a href="#2-6-图片文字" class="headerlink" title="2.6 图片文字"></a>2.6 图片文字</h3><p>表格 + HTML 列表</p>
-<table>   
-    <tr>
-          <td>
-        <ul>
-          <li><b>TASK 1:</b></li>
-          <ul>
-            <li>≡ω≡</li>
-            <li>≡ω≡</li>
-          </ul>
-          <li><b>TASK 2:</b></li>
-          <ul>
-            <li>≡ω≡</li>
-            <li>≡ω≡</li>
-          </ul>
-      </td>   
-        <td>
-            <div align="center"><img src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></td>   
-    </tr>
-</table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-HTML符号"><a href="#3-HTML符号" class="headerlink" title="3. HTML符号"></a>3. HTML符号</h2><p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 &#8721; , 有些则是一些奇奇怪怪的符号 &#127922;。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
-<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
-<p>如欧元符号: &euro;</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>€</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Unicode</strong></td>
-<td>U+020AC</td>
-</tr>
-<tr>
-<td><strong>Hex Code</strong></td>
-<td>20AC</td>
-</tr>
-<tr>
-<td><strong>HTML Code</strong></td>
-<td>8364</td>
-</tr>
-<tr>
-<td><strong>HTML Entity</strong></td>
-<td>euro</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
-<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
-</blockquote>
-<h2 id="4-杂项"><a href="#4-杂项" class="headerlink" title="4. 杂项"></a>4. 杂项</h2><h3 id="4-1-折叠标签"><a href="#4-1-折叠标签" class="headerlink" title="4.1 折叠标签"></a>4.1 折叠标签</h3><p><details>
-    <summary>折叠标签</summary>
-    这是个折叠标题
-</details><br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="4-2-跳转"><a href="#4-2-跳转" class="headerlink" title="4.2 跳转"></a>4.2 跳转</h3><blockquote>
-<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>HTML</tag>
       </tags>
   </entry>
 </search>

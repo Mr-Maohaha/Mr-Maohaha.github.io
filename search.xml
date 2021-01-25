@@ -1,133 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Typora使用笔记-HTML篇</title>
-    <url>/Typora-HTML/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>刚开始使用<strong>Typora</strong>的时候只会用 $ \LaTeX $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
-<h2 id="1-文字-段落格式"><a href="#1-文字-段落格式" class="headerlink" title="1. 文字 + 段落格式"></a>1. 文字 + 段落格式</h2><h3 id="1-1-字体大小"><a href="#1-1-字体大小" class="headerlink" title="1.1 字体大小"></a>1.1 字体大小</h3><font size="1">我字体大小为1</font>
-
-<font size="2">我字体大小为2</font>
-
-<font size="3">我字体大小为3</font>
-
-<font size="4">我字体大小为4</font>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-文字颜色"><a href="#1-2-文字颜色" class="headerlink" title="1.2 文字颜色"></a>1.2 文字颜色</h3><p>​    <span style="color:red">文字</span></p>
-<p>​    <font color="red">文字</font></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
-</blockquote>
-<h3 id="1-3-背景颜色"><a href="#1-3-背景颜色" class="headerlink" title="1.3 背景颜色"></a>1.3 背景颜色</h3><table><tr><td bgcolor=HotPink>占满整行的段落背景颜色</td></tr></table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="2-排版"><a href="#2-排版" class="headerlink" title="2. 排版"></a>2. 排版</h2><h3 id="2-1-空格"><a href="#2-1-空格" class="headerlink" title="2.1 空格"></a>2.1 空格</h3><p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
-<p>&thinsp;1个&amp;thinsp</p>
-<p>&nbsp;1个&amp;nbsp</p>
-<p>&ensp;1个&amp;ensp</p>
-<p>&emsp;1个&amp;emsp</p>
-<p>&emsp;&emsp;2个&amp;emsp</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-文本两端对齐"><a href="#2-2-文本两端对齐" class="headerlink" title="2.2 文本两端对齐"></a>2.2 文本两端对齐</h3><p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
-<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在”Typora使用笔记-CSS篇”中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-3-整段缩进"><a href="#2-3-整段缩进" class="headerlink" title="2.3 整段缩进"></a>2.3 整段缩进</h3><p>有时候想要体现层次感，需要将整段文字缩进。</p>
-<p style="padding-left: 2em;">这是整段缩进2em</p>
-
-<p style="padding-left: 4em;">这是整段缩进4em</p>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-4-图片居中-缩放-注释"><a href="#2-4-图片居中-缩放-注释" class="headerlink" title="2.4 图片居中+缩放+注释"></a>2.4 图片居中+缩放+注释</h3><p><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-5-图片横向并排"><a href="#2-5-图片横向并排" class="headerlink" title="2.5 图片横向并排"></a>2.5 图片横向并排</h3><table>   
-    <tr>       
-        <td><a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
-        <td><a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
-    </tr>
-</table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<div align="center"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></div>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align&#x3D;&quot;center&quot;&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="2-6-图片文字"><a href="#2-6-图片文字" class="headerlink" title="2.6 图片文字"></a>2.6 图片文字</h3><p>表格 + HTML 列表</p>
-<table>   
-    <tr>
-          <td>
-        <ul>
-          <li><b>TASK 1:</b></li>
-          <ul>
-            <li>≡ω≡</li>
-            <li>≡ω≡</li>
-          </ul>
-          <li><b>TASK 2:</b></li>
-          <ul>
-            <li>≡ω≡</li>
-            <li>≡ω≡</li>
-          </ul>
-      </td>   
-        <td>
-            <div align="center"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></td>   
-    </tr>
-</table>
-
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-HTML符号"><a href="#3-HTML符号" class="headerlink" title="3. HTML符号"></a>3. HTML符号</h2><p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 &#8721; , 有些则是一些奇奇怪怪的符号 &#127922;。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
-<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
-<p>如欧元符号: &euro;</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>€</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Unicode</strong></td>
-<td>U+020AC</td>
-</tr>
-<tr>
-<td><strong>Hex Code</strong></td>
-<td>20AC</td>
-</tr>
-<tr>
-<td><strong>HTML Code</strong></td>
-<td>8364</td>
-</tr>
-<tr>
-<td><strong>HTML Entity</strong></td>
-<td>euro</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
-<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
-</blockquote>
-<h2 id="4-杂项"><a href="#4-杂项" class="headerlink" title="4. 杂项"></a>4. 杂项</h2><h3 id="4-1-折叠标签"><a href="#4-1-折叠标签" class="headerlink" title="4.1 折叠标签"></a>4.1 折叠标签</h3><p><details>
-    <summary>折叠标签</summary>
-    这是个折叠标题
-</details><br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="4-2-跳转"><a href="#4-2-跳转" class="headerlink" title="4.2 跳转"></a>4.2 跳转</h3><blockquote>
-<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-LaTex篇</title>
     <url>/Typora-LaTeX/</url>
     <content><![CDATA[<h2 id="1-数学符号"><a href="#1-数学符号" class="headerlink" title="1. 数学符号"></a>1. 数学符号</h2><blockquote>
@@ -264,6 +137,210 @@ c
       </tags>
   </entry>
   <entry>
+    <title>Typora使用笔记-HTML篇</title>
+    <url>/Typora-HTML/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>刚开始使用<strong>Typora</strong>的时候只会用 $ \LaTeX $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
+<h2 id="1-文字-段落格式"><a href="#1-文字-段落格式" class="headerlink" title="1. 文字 + 段落格式"></a>1. 文字 + 段落格式</h2><h3 id="1-1-字体大小"><a href="#1-1-字体大小" class="headerlink" title="1.1 字体大小"></a>1.1 字体大小</h3><font size="1">我字体大小为1</font>
+
+<font size="2">我字体大小为2</font>
+
+<font size="3">我字体大小为3</font>
+
+<font size="4">我字体大小为4</font>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-文字颜色"><a href="#1-2-文字颜色" class="headerlink" title="1.2 文字颜色"></a>1.2 文字颜色</h3><p>​    <span style="color:red">文字</span></p>
+<p>​    <font color="red">文字</font></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
+</blockquote>
+<h3 id="1-3-背景颜色"><a href="#1-3-背景颜色" class="headerlink" title="1.3 背景颜色"></a>1.3 背景颜色</h3><table><tr><td bgcolor=HotPink>占满整行的段落背景颜色</td></tr></table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-排版"><a href="#2-排版" class="headerlink" title="2. 排版"></a>2. 排版</h2><h3 id="2-1-空格"><a href="#2-1-空格" class="headerlink" title="2.1 空格"></a>2.1 空格</h3><p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
+<p>&thinsp;1个&amp;thinsp</p>
+<p>&nbsp;1个&amp;nbsp</p>
+<p>&ensp;1个&amp;ensp</p>
+<p>&emsp;1个&amp;emsp</p>
+<p>&emsp;&emsp;2个&amp;emsp</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-文本两端对齐"><a href="#2-2-文本两端对齐" class="headerlink" title="2.2 文本两端对齐"></a>2.2 文本两端对齐</h3><p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
+<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在”Typora使用笔记-CSS篇”中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-3-整段缩进"><a href="#2-3-整段缩进" class="headerlink" title="2.3 整段缩进"></a>2.3 整段缩进</h3><p>有时候想要体现层次感，需要将整段文字缩进。</p>
+<p style="padding-left: 2em;">这是整段缩进2em</p>
+
+<p style="padding-left: 4em;">这是整段缩进4em</p>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-4-图片居中-缩放-注释"><a href="#2-4-图片居中-缩放-注释" class="headerlink" title="2.4 图片居中+缩放+注释"></a>2.4 图片居中+缩放+注释</h3><p><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-5-图片横向并排"><a href="#2-5-图片横向并排" class="headerlink" title="2.5 图片横向并排"></a>2.5 图片横向并排</h3><table>   
+    <tr>       
+        <td><a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
+        <td><a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a></td> 
+    </tr>
+</table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div align="center"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></div>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align&#x3D;&quot;center&quot;&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-图片文字"><a href="#2-6-图片文字" class="headerlink" title="2.6 图片文字"></a>2.6 图片文字</h3><p>表格 + HTML 列表</p>
+<table>   
+    <tr>
+          <td>
+        <ul>
+          <li><b>TASK 1:</b></li>
+          <ul>
+            <li>≡ω≡</li>
+            <li>≡ω≡</li>
+          </ul>
+          <li><b>TASK 2:</b></li>
+          <ul>
+            <li>≡ω≡</li>
+            <li>≡ω≡</li>
+          </ul>
+      </td>   
+        <td>
+            <div align="center"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%></td>   
+    </tr>
+</table>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-HTML符号"><a href="#3-HTML符号" class="headerlink" title="3. HTML符号"></a>3. HTML符号</h2><p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 &#8721; , 有些则是一些奇奇怪怪的符号 &#127922;。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
+<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
+<p>如欧元符号: &euro;</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>€</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unicode</strong></td>
+<td>U+020AC</td>
+</tr>
+<tr>
+<td><strong>Hex Code</strong></td>
+<td>20AC</td>
+</tr>
+<tr>
+<td><strong>HTML Code</strong></td>
+<td>8364</td>
+</tr>
+<tr>
+<td><strong>HTML Entity</strong></td>
+<td>euro</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
+<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
+</blockquote>
+<h2 id="4-杂项"><a href="#4-杂项" class="headerlink" title="4. 杂项"></a>4. 杂项</h2><h3 id="4-1-折叠标签"><a href="#4-1-折叠标签" class="headerlink" title="4.1 折叠标签"></a>4.1 折叠标签</h3><p><details>
+    <summary>折叠标签</summary>
+    这是个折叠标题
+</details><br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="4-2-跳转"><a href="#4-2-跳转" class="headerlink" title="4.2 跳转"></a>4.2 跳转</h3><blockquote>
+<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-记笔记篇</title>
+    <url>/Typora-Note/</url>
+    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
+<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
+<h2 id="1-截图软件-Snipaste"><a href="#1-截图软件-Snipaste" class="headerlink" title="1. 截图软件 - Snipaste"></a>1. 截图软件 - Snipaste</h2><p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" alt="N3QEb3VA" style="zoom: 67%;" title="Snipaste"/></p>
+<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
+<blockquote>
+<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
+</blockquote>
+<h2 id="2-图片自动上传-PicGo"><a href="#2-图片自动上传-PicGo" class="headerlink" title="2. 图片自动上传 - PicGo"></a>2. 图片自动上传 - PicGo</h2><p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png" alt="image-20210123001230690" style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
+<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
+<blockquote>
+<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
+<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
+<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
+<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
+</blockquote>
+<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
+<h2 id="3-公式识别-Mathpix-Snip"><a href="#3-公式识别-Mathpix-Snip" class="headerlink" title="3. 公式识别 - Mathpix Snip"></a>3. 公式识别 - Mathpix Snip</h2><p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 $\LaTeX$ 打出的生僻符号。</p>
+<script type="math/tex; mode=display">
+\underbrace{
+\begin{bmatrix}
+\ddot\psi\\
+\dot\beta
+\end{bmatrix}
+}_{\dot{x}}=
+\underbrace{
+\begin{bmatrix}
+-\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} & -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
+-1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} & -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
+\end{bmatrix}
+}_{A}
+\underbrace{
+\begin{bmatrix}
+\dot\psi\\
+\beta
+\end{bmatrix}
+}_{x}+
+\underbrace{
+\begin{bmatrix}
+\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
+\frac{c_{\alpha,V}}{mv}
+\end{bmatrix}
+}_{B}\cdot
+\underbrace{\delta}_{u}</script><figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
+<p>这公式，用 $LaTeX$ 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 $\LaTeX$ 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
+<blockquote>
+<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
+</blockquote>
+<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong>  提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
+<blockquote>
+<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
+</blockquote>
+<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
+<blockquote>
+<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
+</blockquote>
+<p>实际操作流程如下所示。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" alt="Mathpix-Snip+Quicker" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
+<h2 id="4-相关网站"><a href="#4-相关网站" class="headerlink" title="4. 相关网站"></a>4. 相关网站</h2><blockquote>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
+<p><a href="[HTML 常用颜色](https://htmlcolorcodes.com/zh/yanse-ming/">Unicode 大全</a>)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>LaTeX</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora使用笔记-主题篇</title>
     <url>/Typora-Theme/</url>
     <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p><strong>Typora</strong> 中有各种各样的主题样式，可以满足各式需求。但同时也可以通过修改<strong>CSS</strong> 文件进行个性化微调。熟悉前端的同学可能如鱼得水，但是对此一窍不通的我只能慢慢对比不同主题的 <strong>CSS</strong> 文件，上网搜索，提取想要的特性，自定义主题文件。难免错漏，但起码能用。做个记录。</p>
@@ -366,83 +443,6 @@ c
       <tags>
         <tag>Typora</tag>
         <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Typora使用笔记-记笔记篇</title>
-    <url>/Typora-Note/</url>
-    <content><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
-<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
-<h2 id="1-截图软件-Snipaste"><a href="#1-截图软件-Snipaste" class="headerlink" title="1. 截图软件 - Snipaste"></a>1. 截图软件 - Snipaste</h2><p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" alt="N3QEb3VA" style="zoom: 67%;" title="Snipaste"/></p>
-<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
-<blockquote>
-<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
-</blockquote>
-<h2 id="2-图片自动上传-PicGo"><a href="#2-图片自动上传-PicGo" class="headerlink" title="2. 图片自动上传 - PicGo"></a>2. 图片自动上传 - PicGo</h2><p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png" alt="image-20210123001230690" style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
-<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
-<blockquote>
-<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
-<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
-<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
-<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
-</blockquote>
-<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
-<h2 id="3-公式识别-Mathpix-Snip"><a href="#3-公式识别-Mathpix-Snip" class="headerlink" title="3. 公式识别 - Mathpix Snip"></a>3. 公式识别 - Mathpix Snip</h2><p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 $\LaTeX$ 打出的生僻符号。</p>
-<script type="math/tex; mode=display">
-\underbrace{
-\begin{bmatrix}
-\ddot\psi\\
-\dot\beta
-\end{bmatrix}
-}_{\dot{x}}=
-\underbrace{
-\begin{bmatrix}
--\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} & -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
--1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} & -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
-\end{bmatrix}
-}_{A}
-\underbrace{
-\begin{bmatrix}
-\dot\psi\\
-\beta
-\end{bmatrix}
-}_{x}+
-\underbrace{
-\begin{bmatrix}
-\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
-\frac{c_{\alpha,V}}{mv}
-\end{bmatrix}
-}_{B}\cdot
-\underbrace{\delta}_{u}</script><figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
-<p>这公式，用 $LaTeX$ 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 $\LaTeX$ 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
-<blockquote>
-<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
-</blockquote>
-<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong>  提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
-<blockquote>
-<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
-</blockquote>
-<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
-<blockquote>
-<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
-</blockquote>
-<p>实际操作流程如下所示。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" alt="Mathpix-Snip+Quicker" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
-<h2 id="4-相关网站"><a href="#4-相关网站" class="headerlink" title="4. 相关网站"></a>4. 相关网站</h2><blockquote>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
-<p><a href="[HTML 常用颜色](https://htmlcolorcodes.com/zh/yanse-ming/">Unicode 大全</a>)</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>LaTeX</tag>
       </tags>
   </entry>
 </search>

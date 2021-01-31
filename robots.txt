@@ -13,4 +13,3 @@ Disallow: /vendors/
 Disallow: /fancybox/
 
 Sitemap: http://www.mr-maohaha.com/sitemap.xml
-Sitemap: http://www.mr-maohaha.com/baidusitemap.xml

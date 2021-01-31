@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mr-maohaha.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="车辆技术中的建模与仿真(3)-信号分析.md">
+<meta property="og:url" content="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-3-md/index.html">
+<meta property="og:site_name" content="猫哈哈的笔记本">
+<meta property="og:description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128160721.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128163019.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128222223.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128215510.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131124553.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128224123.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128224651.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128235252.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210130163900.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131135001.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131135834.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131140324.png">
+<meta property="article:published_time" content="2021-01-31T15:25:34.000Z">
+<meta property="article:modified_time" content="2021-01-31T15:38:20.154Z">
+<meta property="article:author" content="Kuihong CHEN">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="车辆技术">
+<meta property="article:tag" content="信号分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128160721.png">
+
+<link rel="canonical" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-3-md/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>车辆技术中的建模与仿真(3)-信号分析.md | 猫哈哈的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">猫哈哈的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Maohaha's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-3-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="Kuihong CHEN">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猫哈哈的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          车辆技术中的建模与仿真(3)-信号分析.md
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-31 16:25:34 / 修改时间：16:38:20" itemprop="dateCreated datePublished" datetime="2021-01-31T16:25:34+01:00">2021-01-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TU-Branschweig/" itemprop="url" rel="index"><span itemprop="name">TU-Branschweig</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Modeling-and-simulation-in-vehicle-technology-3-md/" class="post-meta-item leancloud_visitors" data-flag-title="车辆技术中的建模与仿真(3)-信号分析.md" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Modeling-and-simulation-in-vehicle-technology-3-md/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Modeling-and-simulation-in-vehicle-technology-3-md/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+            <div class="post-description">不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="0-信号导入"><a href="#0-信号导入" class="headerlink" title="0. 信号导入"></a>0. 信号导入</h2><p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128160721.png" alt="image-20210128160721717"></p>
+<h2 id="1-力信号的处理"><a href="#1-力信号的处理" class="headerlink" title="1. 力信号的处理"></a>1. 力信号的处理</h2><p>文件 <a target="_blank" rel="noopener" href="https://github.com/Mr-Maohaha/Matlab/raw/main/Modellierung%20und%20Simulation%20in%20der%20Fahrzeugtechnik/Signalanalyse/data_UE10.txt">data_UE.txt</a> 记录了力信号与时间的关系。</p>
+<p style="background-color:Wheat"><font size=4><b>任务1</b></font>: 将文件导入MATLAB 工作区</p>
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RAWDATA = importdata(<span class="string">&#x27;data_UE10.txt&#x27;</span>);</span><br><span class="line"><span class="comment">% 时间向量 (数据第一列)</span></span><br><span class="line">t = RAWDATA.data(:,<span class="number">1</span>); <span class="comment">% in s</span></span><br><span class="line"><span class="comment">% 力向量 (数据第二列)</span></span><br><span class="line">F = RAWDATA.data(:,<span class="number">2</span>); <span class="comment">% in N</span></span><br><span class="line"><span class="comment">% 采样速率 (从头文件阅读得知)</span></span><br><span class="line">Fs = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128163019.png" alt="image-20210128163019657"></p>
+<p style="background-color:Wheat"><font size=4><b>任务2</b></font>: 用滤波器阶数为 5 (<i>n</i>=5) 且截止频率为 7 <i>Hz</i> (<i>f<sub>g</sub> = 7 Hz</i>) 的巴特沃斯低通滤波器对数据进行单向和双向滤波。创建并比较各自过滤后的时间信号和输出信号。</p>
+
+<hr>
+<font size=4><b>低通滤波器</b></font>（英语：Low-pass filter）容许低频信号通过，但减弱（或减少）频率高于截止频率的信号的通过。对于不同滤波器而言，每个频率的信号的减弱程度不同。当使用在音频应用时，它有时被称为**高频剪切滤波器**，或**高音消除滤波器**。[^1]
+
+*n* 阶**巴特沃斯低通滤波器**的增益<i>G</i>(&omega;)为[^1]:
+$$
+G^{2}(\omega)=|H(j \omega)|^{2}=\frac{G_{0}^{2}}{1+\left(\frac{\omega}{\omega_{c}}\right)^{2 n}}\tag{1}
+$$
+
+| 参数                 |      | 含义                               |
+| -------------------- | ---- | ---------------------------------- |
+| <i>n</i>             |      | 滤波器的阶数                       |
+| &omega;<sub>c</sub>  |      | 截止频率=功率下降为 -3分贝时的频率 |
+| <i>G</i><sub>0</sub> |      | 直流增益（零频率增益）             |
+
+**<u>0. 计算滤波器阶数</u>** (Butterworth-Filter)
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128222223.png" alt="image-20210128222223170" style="zoom:55%;" />
+
+![image-20210128211537407](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128222841.png)
+
+**<u>1. 计算滤波器系数</u>** (Butterworth-Filter)
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128215510.png" alt="image-20210128215510372" style="zoom: 55%;" />
+
+* 归一化截止频率 (Normierte Grenzfrequenz) &omega;<sub>n</sub>:
+  $$
+  \omega_{n}=\frac{f_{g}}{f_{b}}=\frac{f_{g}}{0,5 \cdot F_{s}}\tag{2}
+  $$
+
+  | 参数                 | 含义                        |
+  | -------------------- | --------------------------- |
+  | <i>f</i><sub>g</sub> | 截止频率 (Grenzfrequenz)    |
+  | <i>f</i><sub>b</sub> | 信号带宽 (Signalbandbreite) |
+  | <i>F</i><sub>s</sub> | 采样频率 (Abtastfrequenz)   |
+
+* 滤波器类型 (Filtertypen) ftype:
+
+  | 参数   | 含义              | 条件                          |
+  | ------ | ----------------- | ----------------------------- |
+  | 'high' | 高通 (Hochpass)   | Wp < Ws                       |
+  | 'low'  | 低通 (Tiefpass)   | Wp > Ws                       |
+  | 'stop' | 带阻 (Bandsperre) | Ws(1) < Wp(1) < Wp(2) < Ws(2) |
+  | '-'    | 带通 (Bandpass)   | Wp(1) < Ws(1) < Ws(2) < Wp(2) |
+
+  * W<sub>p</sub>: 归一化通带拐角频率 Normierte Durchlassfrequenz
+  * W<sub>s</sub>: 归一化阻带起始频率 Normierte Sperrfrequenz
+
+**<u>2. 展示滤波器</u>**
+
+* 生成幅度和相位响应的曲线图输出：
+
+  <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131124553.png" alt="image-20210131124553213" style="zoom: 67%;" />
+
+* 生成振幅和相位的复矢量 "h" 与频率 "tf" 对应曲线:
+
+  <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128224123.png" alt="image-20210128224122980" style="zoom: 50%;" />
+
+<font size=4><b>滤波</b></font>: 将数字滤波器应用于信号
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128224651.png" alt="image-20210128224651864" style="zoom: 55%;" />
+
+<b>双向滤波</b>先将输入序列按顺序滤波(forward filter)，然后将所得结果逆转后反向通过滤波器(reverse filter)，再将所得结果逆转后输出(reverse output)，即得精确零相位失真的输出序列。[^2]
+
+---
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 创建滤波器</span></span><br><span class="line">ord =<span class="number">5</span>; <span class="comment">% 滤波器阶数 5</span></span><br><span class="line">Wn = <span class="number">7</span>/Fs;</span><br><span class="line">[b,a] = butter(ord, Wn,<span class="string">&#x27;low&#x27;</span>);</span><br><span class="line"><span class="comment">% 使用滤波器</span></span><br><span class="line"><span class="comment">% 单向滤波</span></span><br><span class="line">Fu = filter(b,a,F);</span><br><span class="line"><span class="comment">% 双向滤波</span></span><br><span class="line">Fb = filtfilt(b,a,F);</span><br></pre></td></tr></table></figure>
+![image-20210128202532217](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128202532.png)
+
+<p style="background-color:Wheat"><font size=4><b>任务3</b></font>: 对已滤波和未滤波的信号执行频率分析，并比较计算出的频谱。使用Hann窗口对数据进行窗口化。</p>
+
+---
+
+**为什么要加窗函数？** 
+
+每次FFT变换只能对有限长度的时域数据进行变换，因此，需要对时域信号进行信号截断。即使是周期信号，如果截断的时间长度不是周期的整数倍（周期截断），那么，截取后的信号将会存在泄漏。为了将这个泄漏误差减少到最小程度（注意我说是的减少，而不是消除），我们需要使用**加权函数**，也叫**窗函数**。**加窗主要是为了使时域信号似乎更好地满足FFT处理的周期性要求，减少泄漏。**[^3]
+
+![image-20210128233931764](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128233931.png)
+
+**Hann窗口**又称升余弦窗。Hann窗可以看作是3个矩形时间窗的频谱之和，或者说是 3个 sinc(t) 型函数之和，而括号中的两项相对于第一个谱窗向左、右各移动了π/T，从而使旁瓣互相抵消，消去高频干扰和漏能。[^4]
+$$
+w(n)=0.5\left(1-\cos \left(\frac{2 \pi n}{N-1}\right)\right)\tag{3}
+$$
+![img](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128231128.png)
+
+---
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 确定测量点的数量并调整矢量的长度(为FFT做准备)</span></span><br><span class="line">N = <span class="built_in">length</span>(F);</span><br><span class="line">N = N - <span class="built_in">mod</span>(N,<span class="number">2</span>);</span><br><span class="line">F = F(<span class="number">1</span>:N);</span><br><span class="line">Fu = Fu(<span class="number">1</span>:N);</span><br><span class="line">Fb = Fb(<span class="number">1</span>:N);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Hann窗函数</span></span><br><span class="line">win = hann(N);</span><br><span class="line"><span class="comment">% 幅度矫正</span></span><br><span class="line">Ampkorr = N./sum(win);</span><br><span class="line"><span class="comment">% 调整后的Hann窗数据</span></span><br><span class="line">F = F.*win.*Ampkorr;</span><br><span class="line">Fu = Fu.*win.*Ampkorr;</span><br><span class="line">Fb = Fb.*win.*Ampkorr;</span><br></pre></td></tr></table></figure>
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128235252.png" alt="image-20210128235252571" style="zoom: 80%;" />
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 使用FFT，快速傅里叶变换</span></span><br><span class="line">YF = fft(F)/N;</span><br><span class="line">YFu = fft(Fu)/N;</span><br><span class="line">YFb = fft(Fb)/N;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 提取幅度信息（注意对称性）</span></span><br><span class="line">YF = <span class="number">2</span>*<span class="built_in">abs</span>(YF(<span class="number">1</span>:N/<span class="number">2</span>+<span class="number">1</span>));</span><br><span class="line">YF(<span class="number">1</span>) = YF(<span class="number">1</span>)/<span class="number">2</span>;</span><br><span class="line">YFu = <span class="number">2</span>*<span class="built_in">abs</span>(YFu(<span class="number">1</span>:N/<span class="number">2</span>+<span class="number">1</span>));</span><br><span class="line">YFu(<span class="number">1</span>) = YFu(<span class="number">1</span>)/<span class="number">2</span>;</span><br><span class="line">YFb = <span class="number">2</span>*<span class="built_in">abs</span>(YFb(<span class="number">1</span>:N/<span class="number">2</span>+<span class="number">1</span>));</span><br><span class="line">YFb(<span class="number">1</span>) = YFb(<span class="number">1</span>)/<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+![image-20210129000208279](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210129000208.png)
+
+
+
+## 2. 声音信号处理
+
+警车的喇叭声记录在 "[Sirene.mp3](https://github.com/Mr-Maohaha/Matlab/blob/main/Modellierung%20und%20Simulation%20in%20der%20Fahrzeugtechnik/Signalanalyse/Sirene.mp3?raw=true)" 文件中。
+
+<p style="background-color:Wheat"><font size=4><b>任务1</b></font>: 将文件导入MATLAB工作区</p>
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[y,Fs] = audioread(<span class="string">&#x27;Sirene.mp3&#x27;</span>);</span><br><span class="line"><span class="comment">% y: 	sampled data</span></span><br><span class="line"><span class="comment">% Fs:	sample rate for that data</span></span><br><span class="line"><span class="comment">% 任务2仅需要第二条音轨</span></span><br><span class="line">y = y(:,<span class="number">2</span>);</span><br><span class="line">N = <span class="built_in">length</span>(y);</span><br><span class="line"><span class="comment">% 建立时间向量</span></span><br><span class="line">t = (<span class="number">0</span>:N<span class="number">-1</span>)./Fs;</span><br></pre></td></tr></table></figure>
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210130163900.png" alt="image-20210130163853277" style="zoom: 50%;" />
+
+<p style="background-color:Wheat"><font size=4><b>任务2</b></font>: 将信号分成 𝑛<sub>𝑠𝑒𝑐</sub> = 200 个独立部分，重叠率 (Überlappung) 为75％。 使用Hann窗口计算各个部分的频谱。 使用两个导入的立体声声轨中的第二个进行分析。</p>
+
+---
+
+FFT是为无限周期信号定义的。但音轨的振幅**不是恒定**的，更改信号频率时也会出现问题。
+
+因此分段对音频进行FFT处理。观察到一段数据记录完成后，立刻进行FFT处理，其中信号采集的时间比FFT计算时间长得多[^5]。
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131135001.jpeg" alt="img" style="zoom:67%;" />
+
+但可以发现，当一个FFT处理流程结束后，大部分时间都处于闲置状态。如果此时不是等待一个全新采集信号，而是将目前最新的信号记录与一些旧数据重叠，那么在计算FFT的同时将获得一个新的频谱，下图中说明了这种重叠处理。[^5]
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131135834.jpeg" alt="img" style="zoom:67%;" />
+
+这是一个随机信号在原始时域中的样子，与重叠的窗口相乘之后，在相乘的窗口上应用FFT之后，它的样子：[^6]
+
+<img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131140324.png" alt="image-20210131140324909" style="zoom:80%;" />
+
+![image-20210131141035744](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131141035.png)
+$$
+N=\left[1+\left(n_{s}-1\right)(1-\text { overlap })\right] \cdot L\tag{4}
+$$
+
+| 参数                 | 意义              |
+| -------------------- | ----------------- |
+| <i>N</i>             | 信号总长度        |
+| <i>L</i>             | 单节长度          |
+| <i>n<sub>s</sub></i> | 节数              |
+| <i>overlap</i>       | 各部分的重叠  [%] |
+
+---
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">ns = <span class="number">200</span>;</span><br><span class="line"><span class="comment">% 定义重叠率</span></span><br><span class="line">overlap = <span class="number">0.75</span>;</span><br><span class="line"><span class="comment">% 计算单节长度</span></span><br><span class="line">L = <span class="built_in">floor</span>(N/(<span class="number">1</span>+(ns<span class="number">-1</span>)*(<span class="number">1</span>-overlap)));</span><br><span class="line">L = L-<span class="built_in">mod</span>(L,<span class="number">2</span>);</span><br><span class="line"><span class="comment">% 根据式(3)给出Hann窗函数</span></span><br><span class="line">hannwin = @(N)<span class="number">0.5</span>*(<span class="number">1</span>+<span class="built_in">cos</span>((<span class="number">2</span>*<span class="built_in">pi</span>*<span class="built_in">linspace</span>(-N/<span class="number">2</span>,N/<span class="number">2</span><span class="number">-1</span>,N))/N));</span><br><span class="line"><span class="comment">% 计算每一节开始和结束的索引</span></span><br><span class="line">start = <span class="built_in">floor</span>(<span class="built_in">linspace</span>(<span class="number">1</span>,N-L,ns));</span><br><span class="line">ende = start+L<span class="number">-1</span>;</span><br><span class="line"><span class="comment">% 分配内存</span></span><br><span class="line">Amp = <span class="built_in">zeros</span>(L/<span class="number">2</span>+<span class="number">1</span>,ns);</span><br><span class="line"><span class="comment">% 窗函数</span></span><br><span class="line">win = hannwin(L);</span><br><span class="line"><span class="comment">% 进行FFT运算</span></span><br><span class="line"><span class="keyword">for</span> idx = <span class="number">1</span>:ns</span><br><span class="line">    <span class="comment">% 选择单节信号</span></span><br><span class="line">    y_idx = y(start(idx):ende(idx));</span><br><span class="line">    <span class="comment">% 窗口和幅度校正 (注意窗函数的维数)</span></span><br><span class="line">    y_idx = y_idx(:).*win(:).*L./sum(win);</span><br><span class="line">    <span class="comment">% 计算FFT</span></span><br><span class="line">    Yc = fft(y_idx)/L;</span><br><span class="line">    <span class="comment">% 计算振幅并储存在Amp</span></span><br><span class="line">    Amp(:,idx) = <span class="number">2</span>*<span class="built_in">abs</span>(Yc(<span class="number">1</span>:L/<span class="number">2</span>+<span class="number">1</span>));</span><br><span class="line">    Amp(<span class="number">1</span>,idx) = Amp(<span class="number">1</span>,idx)/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">% 建立时间矢量</span></span><br><span class="line">f = Fs/<span class="number">2.</span>*(<span class="number">0</span>:N/<span class="number">2</span>)./N;</span><br></pre></td></tr></table></figure>
+<p style="background-color:Wheat"><font size=4><b>任务3</b></font>: 在图中显示计算出的幅度（颜色编码的线性色轴），水平轴显示时间，垂直轴显示频率，范围为 <i>f</i> = [0 8000] <i>Hz</i>。 对色轴使用限制 [0，0.02]。</p>
+
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">fID = <span class="built_in">figure</span>;</span><br><span class="line">imagesc(t,f,<span class="built_in">log10</span>(Amp));</span><br><span class="line"><span class="comment">% 插入色轴</span></span><br><span class="line">c = colorbar;</span><br><span class="line"><span class="comment">% 旋转视图</span></span><br><span class="line">view(<span class="number">0</span>,<span class="number">-90</span>);</span><br><span class="line"><span class="comment">% 轴的标签</span></span><br><span class="line">title(<span class="string">&#x27;„Sirene.mp3“-频谱图&#x27;</span>);</span><br><span class="line">xlabel(<span class="string">&#x27;t [s]&#x27;</span>);</span><br><span class="line">ylabel(<span class="string">&#x27;f [Hz]&#x27;</span>);</span><br><span class="line">ylabel(c,<span class="string">&#x27;Amp -&#x27;</span>);</span><br><span class="line"><span class="comment">% 缩放轴</span></span><br><span class="line">ylim([<span class="number">0</span> <span class="number">8000</span>])</span><br></pre></td></tr></table></figure>
+![image-20210131160730026](https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210131160730.png)
+
+
+
+<font size=4><b>参考文献</b></font>
+
+<blockquote id="fn_1">
+<sup>1</sup>. WIKIPEDIA, ‘‘低通滤波器,” 2019. <a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 胡广书,现代信号处理教程.清华大学出版社, 2004.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. 谭祥军, ‘‘什么是窗函数?” 2016. url: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24318554">https://zhuanlan.zhihu.com/p/24318554</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. WIKIPEDIA, “Hann窗,” 2021.<a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. 天天杂谈, ‘‘信号分析之: fft计算中的”重叠”处理(overlap processing),” 2020.<a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. MathWorks, “dsp.stft.”<a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    
+      <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fas fa-paw"></i> 感谢阅读-------------</div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Matlab/" rel="tag"> <i class="fa fa-tag"></i> Matlab</a>
+              <a href="/tags/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF/" rel="tag"> <i class="fa fa-tag"></i> 车辆技术</a>
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 信号分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Typora-Note/" rel="prev" title="Typora使用笔记-记笔记篇">
+      <i class="fa fa-chevron-left"></i> Typora使用笔记-记笔记篇
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E4%BF%A1%E5%8F%B7%E5%AF%BC%E5%85%A5"><span class="nav-text">0. 信号导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8A%9B%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-text">1. 力信号的处理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kuihong CHEN"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">Kuihong CHEN</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chenkuihong@outlook.com" title="E-Mail → chenkuihong@outlook.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-paw"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kuihong CHEN</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">17k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">16 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'zeRKfQG9sKEr9UoM9vRbbkoN-MdYXbMMI',
+      appKey     : 's5oas99KAHm0w8dRRNVNliYE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

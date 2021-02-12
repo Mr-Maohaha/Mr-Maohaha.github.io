@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mr-maohaha.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="车辆技术中的建模与仿真-四分之一车辆模型振动分析">
+<meta property="og:url" content="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/index.html">
+<meta property="og:site_name" content="猫哈哈的笔记本">
+<meta property="og:description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214954.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209204844.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205159.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205554.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214235.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214712.png">
+<meta property="article:published_time" content="2021-02-12T14:09:58.000Z">
+<meta property="article:modified_time" content="2021-02-12T14:35:44.840Z">
+<meta property="article:author" content="Kuihong CHEN">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="车辆技术">
+<meta property="article:tag" content="信号分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png">
+
+<link rel="canonical" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>车辆技术中的建模与仿真-四分之一车辆模型振动分析 | 猫哈哈的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">猫哈哈的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Maohaha's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="Kuihong CHEN">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猫哈哈的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          车辆技术中的建模与仿真-四分之一车辆模型振动分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-12 15:09:58 / 修改时间：15:35:44" itemprop="dateCreated datePublished" datetime="2021-02-12T15:09:58+01:00">2021-02-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TU-Branschweig/" itemprop="url" rel="index"><span itemprop="name">TU-Branschweig</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/" class="post-meta-item leancloud_visitors" data-flag-title="车辆技术中的建模与仿真-四分之一车辆模型振动分析" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+            <div class="post-description">不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="任务描述">0. 任务描述</h2>
+<p>如图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png" style="zoom: 80%;" /></p>
+<p><strong>给定参数</strong>: <span class="math display">\[
+\begin{array}{lll}
+\mathrm{mr}=40 \mathrm{~kg} &amp; \mathrm{br}=0 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{Cr}=100 \mathrm{~kN} / \mathrm{m} \\ \mathrm{m}_{\mathrm{a}}=400 \mathrm{~kg} &amp; \mathrm{~b}_{\mathrm{a}}=1500 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{C}_{\mathrm{a}}=20 \mathrm{~kN} / \mathrm{m} \\ \mathrm{m}_{\mathrm{s}}=30 \mathrm{~kg} &amp; \mathrm{~b}_{\mathrm{s}}=300 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{C}_{\mathrm{s}}=10 \mathrm{~kN} / \mathrm{m} \\ \\\mathrm{u}_{0} =0.2 \mathrm{~m} &amp; \;\mathrm{t}_{\mathrm{s}}=0.5 \mathrm{~s} 
+\end{array}
+\]</span> <strong>运动方程:</strong> <span class="math display">\[
+\begin{eqnarray*} 
+m_{r} \ddot{x}_{1}&amp;+&amp;b_{a}\left(\dot{x}_{1}-\dot{x}_{2}\right)+b_{r} \dot{x}_{1}+c_{a}\left(x_{1}-x_{2}\right)+c_{r} x_{1}=c_{r} u(t)+b_{r} \dot{u}(t)\tag{1.1} \\ 
+m_{a} \ddot{x}_{2}&amp;+&amp;b_{s}\left(\dot{x}_{2}-\dot{x}_{3}\right)+b_{a}\left(\dot{x}_{2}-\dot{x}_{1}\right)+c_{s}\left(x_{2}-x_{3}\right)+c_{a}\left(x_{2}-x_{1}\right)=0 \tag{1.2}\\ 
+m_{s} \ddot{x}_{3}&amp;+&amp;b_{s}\left(\dot{x}_{3}-\dot{x}_{2}\right)+c_{s}\left(x_{3}-x_{2}\right)=0 \tag{1.3}
+\end{eqnarray*}
+\]</span> <strong>激励函数</strong>: <span class="math display">\[
+u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \geq t_{s}\end{array}\right.\tag{2}
+\]</span></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
+<h2 id="偏微分方程分析">1. 偏微分方程分析</h2>
+<p style="padding-left: 1em;">
+<b>一般求解过程 (线性系统):</b>
+</p>
+<ol type="1">
+<li><p>建立系统矩阵 <i><b>A</b></i></p></li>
+<li><p>求解特征多项式 <span class="math display">\[
+\operatorname{det}(A-\lambda E)=0
+\]</span></p></li>
+<li><p>插入特征值求特征向量</p></li>
+</ol>
+<p style="padding-left: 1em;">
+<b>数值求解方法 (非线性系统):</b>
+</p>
+<ol type="1">
+<li>线性化 → 用系统矩阵 <i><b>A</b></i> 进行特征值分析。</li>
+<li>在时域计算偏微分方程的数值解</li>
+</ol>
+<p><strong>线性系统的状态空间表示:</strong> <span class="math display">\[
+\begin{eqnarray*}
+\dot{\underline{x}}=\underline{\underline{A}}\, &amp;\underline{x}&amp;+\underline{\underline{B}}\, \underline{u}\tag{3}\\
+\underline{y}=\underline{\underline{C}}\, &amp;\underline{x}&amp;+\underline{\underline{D}}\, \underline{u}\tag{4}\\
+&amp;\Updownarrow&amp;\\
+\dot{\xi}=A &amp;\xi&amp;+F\tag{5}
+\end{eqnarray*}
+\]</span></p>
+<p>式 (3) 描述了输入变量 <i><b>u</b></i> 对状态变量 <i><b>x, ẋ</b></i> 的影响, 式 (4) 描述了输入变量 <i><b>u</b></i> 和输出变量 <i><b>y</b></i> 的关系。</p>
+<table>
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i>A</i></td>
+<td>系统矩阵 (Systemmatrix)</td>
+</tr>
+<tr class="even">
+<td><i>B</i></td>
+<td>输入矩阵 (Eingangsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i>C</i></td>
+<td>输出矩阵 (Ausgangsmatrix)</td>
+</tr>
+<tr class="even">
+<td><i>D</i></td>
+<td>连续性矩阵 (Durchgangsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i>u</i></td>
+<td>输入信号 (Eingangssignal)</td>
+</tr>
+<tr class="even">
+<td><i>x</i></td>
+<td>状态向量 (Zustandsvektor)</td>
+</tr>
+<tr class="odd">
+<td><i>y</i></td>
+<td>输出信号 (Ausgangssignal)</td>
+</tr>
+</tbody>
+</table>
+<p>运动方程 (1) 转换形式: <span class="math display">\[
+\begin{eqnarray*}
+\ddot{x}_{1}&amp;=&amp;\frac{1}{m_{r}}\left(c_{r} u(t)+b_{r} \dot{u}(t)-b_{a}\left(\dot{x}_{1}-\dot{x}_{2}\right)-b_{r} \dot{x}_{1}-c_{a}\left(x_{1}-x_{2}\right)-c_{r} x_{1}\right) \tag{6.1}\\ \ddot{x}_{2}&amp;=&amp;\frac{1}{m_{a}}\left(-b_{s}\left(\dot{x}_{2}-\dot{x}_{3}\right)-b_{a}\left(\dot{x}_{2}-\dot{x}_{1}\right)-c_{s}\left(x_{2}-x_{3}\right)-c_{a}\left(x_{2}-x_{1}\right)\right) \tag{6.2}\\ 
+\ddot{x}_{3}&amp;=&amp;\frac{1}{m_{s}}\left(-\left(\dot{x}_{3}-\dot{x}_{2}\right)-c_{s}\left(x_{3}-x_{2}\right)\right) \tag{6.3}
+\end{eqnarray*}
+\]</span> 结合 (3), (4) 和 (6)，建立状态向量:</p>
+<p><span class="math display">\[
+\underline{x}=\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] ; \quad 
+\dot{x}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
+\underline{y}=\left[\begin{array}{l}
+x_{1} \\ 
+x_{2} \\ 
+x_{3} \\ 
+\end{array}\right]
+\]</span></p>
+<p>因为状态向量 <i><b>x</b></i> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
+<p><span class="math display">\[
+\underline{\underline{C}} = 
+\begin{bmatrix}
+1&amp;0&amp;0&amp;&amp;&amp;\\
+0&amp;1&amp;0&amp;&amp;\underline{\underline{0}}&amp;\\
+0&amp;0&amp;1&amp;&amp;&amp;\\
+&amp;&amp;&amp;&amp;&amp;\\
+&amp;\underline{\underline{0}}&amp;&amp;&amp;\underline{\underline{0}}&amp;\\
+&amp;&amp;&amp;&amp;&amp;
+\end{bmatrix};\qquad
+\underline{\underline{D}} = 
+\underline{\underline{0}}_{(6 \times 6)}
+\]</span></p>
+<p>状态方程: <span class="math display">\[
+\underline{\underline{B}} = 
+\begin{bmatrix}
+&amp;&amp;&amp;&amp;&amp;\\
+&amp;\underline{\underline{0}}&amp;&amp;&amp;\underline{\underline{0}}&amp;\\
+&amp;&amp;&amp;&amp;&amp;\\
+{\Large\frac{c_r}{m_r}}&amp;0&amp;0&amp;{\Large\frac{b_r}{m_r}}&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\underline{\underline{A}} = 
+\begin{bmatrix}
+0&amp;0&amp;0&amp;1&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;1&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;1\\
+-{\large\frac{c_r+c_a}{m_r}}&amp;{\large\frac{c_a}{m_r}}&amp;0&amp;-{\large\frac{b_r+b_a}{m_r}}&amp;{\large\frac{b_a}{m_r}}&amp;0\\
+{\large\frac{c_a}{m_a}}&amp;-{\large\frac{c_a+c_s}{m_a}}&amp;{\large\frac{c_s}{m_a}}&amp;{\large\frac{b_a}{b_a}}&amp;-{\large\frac{b_a+b_s}{m_a}}&amp;{\large\frac{b_s}{m_a}}\\
+0&amp;{\large\frac{c_s}{m_s}}&amp;-{\large\frac{c_s}{m_s}}&amp;0&amp;{\large\frac{b_s}{m_s}}&amp;-{\large\frac{b_s}{m_s}}
+\end{bmatrix}\tag{7}
+\]</span></p>
+<p>将 (7) 代入 (3): <span class="math display">\[
+\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]=\begin{bmatrix}
+0&amp;0&amp;0&amp;1&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;1&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;1\\
+-{\frac{c_r+c_a}{m_r}}&amp;{\frac{c_a}{m_r}}&amp;0&amp;-{\frac{b_r+b_a}{m_r}}&amp;{\frac{b_a}{m_r}}&amp;0\\
+{\frac{c_a}{m_a}}&amp;-{\frac{c_a+c_s}{m_a}}&amp;{\frac{c_s}{m_a}}&amp;{\frac{b_a}{b_a}}&amp;-{\frac{b_a+b_s}{m_a}}&amp;{\frac{b_s}{m_a}}\\
+0&amp;{\frac{c_s}{m_s}}&amp;-{\frac{c_s}{m_s}}&amp;0&amp;{\frac{b_s}{m_s}}&amp;-{\frac{b_s}{m_s}}
+\end{bmatrix}\cdot
+\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] 
++\\
+\begin{bmatrix}
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+\frac{c_r}{m_r}&amp;0&amp;0&amp;{\frac{b_r}{m_r}}&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}\cdot
+\left[\begin{array}{l}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]
+\]</span></p>
+<p>将 (7) 简化: <span class="math display">\[
+\underline{\underline{A}}=\left[\begin{array}{cc}
+\underline{\underline{0}} &amp; I \\ 
+-M^{-1} K &amp; -M^{-1} DM 
+\end{array}\right]\tag{8}
+\]</span> 其中 <span class="math display">\[
+M = \begin{bmatrix}
+m_r&amp;0&amp;0\\
+0&amp;m_a&amp;0\\
+0&amp;0&amp;m_s
+\end{bmatrix}\\
+K = \begin{bmatrix}
+c_r+c_a&amp;-c_a&amp;0\\
+-c_a&amp;c_a+c_s&amp;-c_s\\
+0&amp;-c_s&amp;c_s
+\end{bmatrix}\\ 
+DM = \begin{bmatrix}
+b_r+b_a&amp;-b_a&amp;0\\
+-b_a&amp;c_a+b_s&amp;-b_s\\
+0&amp;-b_s&amp;b_s
+\end{bmatrix}
+\]</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i><b>M</b></i></td>
+<td>质量矩阵 (Massenmatrix)</td>
+</tr>
+<tr class="even">
+<td><i><b>K</b></i></td>
+<td>刚度矩阵 (Steifigkeitsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i><b>DM</b></i></td>
+<td>阻尼矩阵 (Dämpfungsmatrix)</td>
+</tr>
+</tbody>
+</table>
+<p>将 (8) 代入 (5): <span class="math display">\[
+\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} D\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F
+\]</span> 其中 <span class="math display">\[
+\underline{\dot{\xi}}=
+\begin{bmatrix}
+\dot{\xi}_1\\
+\dot{\xi}_2
+\end{bmatrix}=
+\begin{bmatrix}
+\dot{x}\\
+\ddot{x}
+\end{bmatrix}=
+\begin{bmatrix}
+\dot{x}_1\\
+\dot{x}_2\\
+\dot{x}_3\\
+\ddot{x}_1\\
+\ddot{x}_2\\
+\ddot{x}_3
+\end{bmatrix};\quad
+\underline{\xi}=
+\begin{bmatrix}
+{\xi}_1\\
+{\xi}_2
+\end{bmatrix}=
+\begin{bmatrix}
+x\\
+\dot{x}
+\end{bmatrix}=
+\begin{bmatrix}
+{x}_1\\
+{x}_2\\
+{x}_3\\
+\dot{x}_1\\
+\dot{x}_2\\
+\dot{x}_3
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+F=\begin{bmatrix}
+0\\
+0\\
+0\\
+\frac{1}{m_r}\cdot\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
+\begin{bmatrix}u(t)\\\dot{u}(t)\end{bmatrix}\\
+0\\
+0
+\end{bmatrix}
+\]</span></p>
+<h2 id="matlab-skript">2. MATLAB Skript</h2>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 定义全局变量</span></span><br><span class="line"><span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"><span class="comment">% 定义时间向量，这里选择0到5s</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">5</span>;</span><br><span class="line"><span class="comment">% 定义初始值，系统初始为</span></span><br><span class="line">xi0 = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>MATLAB 解偏微分方程的函数:</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
+<table>
+<thead>
+<tr class="header">
+<th>Solvername</th>
+<th>选择领域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ode23</td>
+<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
+</tr>
+<tr class="even">
+<td>ode45</td>
+<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
+</tr>
+<tr class="odd">
+<td>ode113</td>
+<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
+</tr>
+<tr class="even">
+<td>ode23t</td>
+<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
+</tr>
+<tr class="odd">
+<td>ode15s</td>
+<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
+</tr>
+<tr class="even">
+<td>ode23s</td>
+<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
+</tr>
+<tr class="odd">
+<td>ode23tb</td>
+<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 1. 有显性方程的数值解</span></span><br><span class="line">[t_exp,xi_exp] = ode45(@ODE_exp, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="comment">% ODE公式的显式表示法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_exp</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="comment">% 从全局工作区加载系统参数</span></span><br><span class="line">	<span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line">	<span class="comment">% 将 xip (\dot&#123;\xi&#125;) 分配为列向量(并非必要)</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="comment">% 计算激励函数与时间的关系</span></span><br><span class="line">	<span class="comment">% 由于br = 0，因此导数up可以设置为0。</span></span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 以显式形式计算xip中的元素</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">5</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = xi(<span class="number">6</span>);</span><br><span class="line">	xip(<span class="number">4</span>) = <span class="number">1</span>/mr*(cr*u+br*up-ba*(xi(<span class="number">4</span>)-xi(<span class="number">5</span>))-br*xi(<span class="number">4</span>)-ca*(xi(<span class="number">1</span>)-xi(<span class="number">2</span>))-cr*xi(<span class="number">1</span>));</span><br><span class="line">	xip(<span class="number">5</span>) = <span class="number">1</span>/ma*(-bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))-ba*(xi(<span class="number">5</span>)-xi(<span class="number">4</span>))-ca*(xi(<span class="number">2</span>)-xi(<span class="number">1</span>))-cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line">	xip(<span class="number">6</span>) = <span class="number">1</span>/ms*(bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))+cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 矩阵方程式</span></span><br><span class="line"><span class="keyword">global</span> A</span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">B = [	br+ba,	-ba,	<span class="number">0</span>;</span><br><span class="line">		-ba,	ba+bs,	-bs;</span><br><span class="line">		<span class="number">0</span>,		-bs,	bs];</span><br><span class="line">C = [	cr+ca,	-ca,	<span class="number">0</span>;</span><br><span class="line">		-ca,	ca+cs,	-cs;</span><br><span class="line">		<span class="number">0</span>,		-cs,	cs];</span><br><span class="line">A = [	<span class="built_in">zeros</span>(<span class="number">3</span>), 	<span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-M\C,		-M\B];</span><br><span class="line"><span class="comment">% 2. 矩阵形式的数值解</span></span><br><span class="line">[t_mat,xi_mat] = ode45(@ODE_mat, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_mat</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="keyword">global</span> A mr cr br ts u0</span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 考虑到外部激励</span></span><br><span class="line">	U = [u; up];</span><br><span class="line">	F = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; [cr, br]*U/mr; <span class="number">0</span>; <span class="number">0</span>];</span><br><span class="line">	<span class="comment">% 计算 xip</span></span><br><span class="line">	<span class="comment">% A*xi 考虑系统内部反馈，向量F考虑作用在系统上的外力</span></span><br><span class="line">	xip = A*xi+F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png" title="振幅-时间图" style="zoom:70%;" /></p>
+<h2 id="matlab-simulink">3. MATLAB Simulink</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png" title="Simulink模型" style="zoom:80%;" /></p>
+<p><strong>模块及参数设置</strong></p>
+<ul>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214832.png"   /> Clock × 1</li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214954.png"  style="zoom:80%;" /> Scope × 1</li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209204844.png" style="zoom:80%;" /> Constant × 2
+<ol type="1">
+<li>Constant Value: 0</li>
+<li>Constant Value: u0</li>
+</ol></li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205159.png"  style="zoom:80%;" /> Switch × 1
+<ul>
+<li>Criteria for passing first input: <code>&gt;=Threshold</code></li>
+<li>Threshold: 0.5</li>
+</ul></li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205554.png"  style="zoom:80%;" /> State-Space × 1
+<ul>
+<li>Parameters, A: A</li>
+<li>Parameters, B: B</li>
+<li>Parameters, C: C</li>
+<li>Parameters, D: D</li>
+</ul></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 将 u0, A, B, C, D 另存于 Parameter.m</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"></span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">DM = [br+ba,	 -ba,		<span class="number">0</span>;</span><br><span class="line">	-ba,	ba+bs,	 -bs;</span><br><span class="line">	<span class="number">0</span>,			-bs,	bs];</span><br><span class="line">K = [cr+ca,	 -ca,		<span class="number">0</span>;</span><br><span class="line">	-ca,	ca+cs,	 -cs;</span><br><span class="line">	<span class="number">0</span>,			-cs,	cs];</span><br><span class="line">    </span><br><span class="line"><span class="comment">% for State-Space </span></span><br><span class="line">A = [<span class="built_in">zeros</span>(<span class="number">3</span>), <span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-inv(M)*K,		-inv(M)*DM];</span><br><span class="line">B = [<span class="number">0</span>;<span class="number">0</span>;<span class="number">0</span>;cr/mr;<span class="number">0</span>;<span class="number">0</span>];</span><br><span class="line">C = [<span class="built_in">eye</span>(<span class="number">3</span>),<span class="built_in">zeros</span>(<span class="number">3</span>);<span class="built_in">zeros</span>(<span class="number">3</span>),<span class="built_in">zeros</span>(<span class="number">3</span>)];</span><br><span class="line">D = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>为了在运行Simulink模型时预加载 Parameter.m，模型空白处 <kbd>right click</kbd>→<kbd>Model Properities</kbd>→<kbd>Callbacks</kbd>→<kbd>InitFcn</kbd></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214235.png"  style="zoom:80%;" /></p>
+<p>然后运行Simulink模型，在Scope模块中显示:</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214712.png"  style="zoom:80%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+    
+      <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fas fa-paw"></i> 感谢阅读-------------</div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Matlab/" rel="tag"> <i class="fa fa-tag"></i> Matlab</a>
+              <a href="/tags/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF/" rel="tag"> <i class="fa fa-tag"></i> 车辆技术</a>
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 信号分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Modeling%20and%20simulation%20in%20vehicle%20technology-Signalanalyse/" rel="prev" title="车辆技术中的建模与仿真-信号分析">
+      <i class="fa fa-chevron-left"></i> 车辆技术中的建模与仿真-信号分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="nav-text">0. 任务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%88%86%E6%9E%90"><span class="nav-text">1. 偏微分方程分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-skript"><span class="nav-text">2. MATLAB Skript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-simulink"><span class="nav-text">3. MATLAB Simulink</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kuihong CHEN"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">Kuihong CHEN</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chenkuihong@outlook.com" title="E-Mail → chenkuihong@outlook.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-paw"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kuihong CHEN</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">25k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">23 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"zeRKfQG9sKEr9UoM9vRbbkoN-MdYXbMMI","app_key":"s5oas99KAHm0w8dRRNVNliYE","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'zeRKfQG9sKEr9UoM9vRbbkoN-MdYXbMMI',
+      appKey     : 's5oas99KAHm0w8dRRNVNliYE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

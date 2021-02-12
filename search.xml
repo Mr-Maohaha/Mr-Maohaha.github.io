@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>车辆技术中的建模与仿真(3)-信号分析</title>
-    <url>/Modeling-and-simulation-in-vehicle-technology-3-md/</url>
+    <title>车辆技术中的建模与仿真-信号分析</title>
+    <url>/Modeling%20and%20simulation%20in%20vehicle%20technology-Signalanalyse/</url>
     <content><![CDATA[<h2 id="信号导入">0. 信号导入</h2>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128160721.png" style="zoom:50%;" /></p>
 <h2 id="力信号的处理">1. 力信号的处理</h2>
@@ -277,6 +277,506 @@ N=\left[1+\left(n_{s}-1\right)(1-\text { overlap })\right] \cdot L\tag{4}
       </tags>
   </entry>
   <entry>
+    <title>车辆技术中的建模与仿真-四分之一车辆模型振动分析</title>
+    <url>/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/</url>
+    <content><![CDATA[<h2 id="任务描述">0. 任务描述</h2>
+<p>如图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png" style="zoom: 80%;" /></p>
+<p><strong>给定参数</strong>: <span class="math display">\[
+\begin{array}{lll}
+\mathrm{mr}=40 \mathrm{~kg} &amp; \mathrm{br}=0 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{Cr}=100 \mathrm{~kN} / \mathrm{m} \\ \mathrm{m}_{\mathrm{a}}=400 \mathrm{~kg} &amp; \mathrm{~b}_{\mathrm{a}}=1500 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{C}_{\mathrm{a}}=20 \mathrm{~kN} / \mathrm{m} \\ \mathrm{m}_{\mathrm{s}}=30 \mathrm{~kg} &amp; \mathrm{~b}_{\mathrm{s}}=300 \mathrm{~Ns} / \mathrm{m} &amp; \mathrm{C}_{\mathrm{s}}=10 \mathrm{~kN} / \mathrm{m} \\ \\\mathrm{u}_{0} =0.2 \mathrm{~m} &amp; \;\mathrm{t}_{\mathrm{s}}=0.5 \mathrm{~s} 
+\end{array}
+\]</span> <strong>运动方程:</strong> <span class="math display">\[
+\begin{eqnarray*} 
+m_{r} \ddot{x}_{1}&amp;+&amp;b_{a}\left(\dot{x}_{1}-\dot{x}_{2}\right)+b_{r} \dot{x}_{1}+c_{a}\left(x_{1}-x_{2}\right)+c_{r} x_{1}=c_{r} u(t)+b_{r} \dot{u}(t)\tag{1.1} \\ 
+m_{a} \ddot{x}_{2}&amp;+&amp;b_{s}\left(\dot{x}_{2}-\dot{x}_{3}\right)+b_{a}\left(\dot{x}_{2}-\dot{x}_{1}\right)+c_{s}\left(x_{2}-x_{3}\right)+c_{a}\left(x_{2}-x_{1}\right)=0 \tag{1.2}\\ 
+m_{s} \ddot{x}_{3}&amp;+&amp;b_{s}\left(\dot{x}_{3}-\dot{x}_{2}\right)+c_{s}\left(x_{3}-x_{2}\right)=0 \tag{1.3}
+\end{eqnarray*}
+\]</span> <strong>激励函数</strong>: <span class="math display">\[
+u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \geq t_{s}\end{array}\right.\tag{2}
+\]</span></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
+<h2 id="偏微分方程分析">1. 偏微分方程分析</h2>
+<p style="padding-left: 1em;">
+<b>一般求解过程 (线性系统):</b>
+</p>
+<ol type="1">
+<li><p>建立系统矩阵 <i><b>A</b></i></p></li>
+<li><p>求解特征多项式 <span class="math display">\[
+\operatorname{det}(A-\lambda E)=0
+\]</span></p></li>
+<li><p>插入特征值求特征向量</p></li>
+</ol>
+<p style="padding-left: 1em;">
+<b>数值求解方法 (非线性系统):</b>
+</p>
+<ol type="1">
+<li>线性化 → 用系统矩阵 <i><b>A</b></i> 进行特征值分析。</li>
+<li>在时域计算偏微分方程的数值解</li>
+</ol>
+<p><strong>线性系统的状态空间表示:</strong> <span class="math display">\[
+\begin{eqnarray*}
+\dot{\underline{x}}=\underline{\underline{A}}\, &amp;\underline{x}&amp;+\underline{\underline{B}}\, \underline{u}\tag{3}\\
+\underline{y}=\underline{\underline{C}}\, &amp;\underline{x}&amp;+\underline{\underline{D}}\, \underline{u}\tag{4}\\
+&amp;\Updownarrow&amp;\\
+\dot{\xi}=A &amp;\xi&amp;+F\tag{5}
+\end{eqnarray*}
+\]</span></p>
+<p>式 (3) 描述了输入变量 <i><b>u</b></i> 对状态变量 <i><b>x, ẋ</b></i> 的影响, 式 (4) 描述了输入变量 <i><b>u</b></i> 和输出变量 <i><b>y</b></i> 的关系。</p>
+<table>
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i>A</i></td>
+<td>系统矩阵 (Systemmatrix)</td>
+</tr>
+<tr class="even">
+<td><i>B</i></td>
+<td>输入矩阵 (Eingangsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i>C</i></td>
+<td>输出矩阵 (Ausgangsmatrix)</td>
+</tr>
+<tr class="even">
+<td><i>D</i></td>
+<td>连续性矩阵 (Durchgangsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i>u</i></td>
+<td>输入信号 (Eingangssignal)</td>
+</tr>
+<tr class="even">
+<td><i>x</i></td>
+<td>状态向量 (Zustandsvektor)</td>
+</tr>
+<tr class="odd">
+<td><i>y</i></td>
+<td>输出信号 (Ausgangssignal)</td>
+</tr>
+</tbody>
+</table>
+<p>运动方程 (1) 转换形式: <span class="math display">\[
+\begin{eqnarray*}
+\ddot{x}_{1}&amp;=&amp;\frac{1}{m_{r}}\left(c_{r} u(t)+b_{r} \dot{u}(t)-b_{a}\left(\dot{x}_{1}-\dot{x}_{2}\right)-b_{r} \dot{x}_{1}-c_{a}\left(x_{1}-x_{2}\right)-c_{r} x_{1}\right) \tag{6.1}\\ \ddot{x}_{2}&amp;=&amp;\frac{1}{m_{a}}\left(-b_{s}\left(\dot{x}_{2}-\dot{x}_{3}\right)-b_{a}\left(\dot{x}_{2}-\dot{x}_{1}\right)-c_{s}\left(x_{2}-x_{3}\right)-c_{a}\left(x_{2}-x_{1}\right)\right) \tag{6.2}\\ 
+\ddot{x}_{3}&amp;=&amp;\frac{1}{m_{s}}\left(-\left(\dot{x}_{3}-\dot{x}_{2}\right)-c_{s}\left(x_{3}-x_{2}\right)\right) \tag{6.3}
+\end{eqnarray*}
+\]</span> 结合 (3), (4) 和 (6)，建立状态向量:</p>
+<p><span class="math display">\[
+\underline{x}=\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] ; \quad 
+\dot{x}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
+\underline{y}=\left[\begin{array}{l}
+x_{1} \\ 
+x_{2} \\ 
+x_{3} \\ 
+\end{array}\right]
+\]</span></p>
+<p>因为状态向量 <i><b>x</b></i> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
+<p><span class="math display">\[
+\underline{\underline{C}} = 
+\begin{bmatrix}
+1&amp;0&amp;0&amp;&amp;&amp;\\
+0&amp;1&amp;0&amp;&amp;\underline{\underline{0}}&amp;\\
+0&amp;0&amp;1&amp;&amp;&amp;\\
+&amp;&amp;&amp;&amp;&amp;\\
+&amp;\underline{\underline{0}}&amp;&amp;&amp;\underline{\underline{0}}&amp;\\
+&amp;&amp;&amp;&amp;&amp;
+\end{bmatrix};\qquad
+\underline{\underline{D}} = 
+\underline{\underline{0}}_{(6 \times 6)}
+\]</span></p>
+<p>状态方程: <span class="math display">\[
+\underline{\underline{B}} = 
+\begin{bmatrix}
+&amp;&amp;&amp;&amp;&amp;\\
+&amp;\underline{\underline{0}}&amp;&amp;&amp;\underline{\underline{0}}&amp;\\
+&amp;&amp;&amp;&amp;&amp;\\
+{\Large\frac{c_r}{m_r}}&amp;0&amp;0&amp;{\Large\frac{b_r}{m_r}}&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\underline{\underline{A}} = 
+\begin{bmatrix}
+0&amp;0&amp;0&amp;1&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;1&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;1\\
+-{\large\frac{c_r+c_a}{m_r}}&amp;{\large\frac{c_a}{m_r}}&amp;0&amp;-{\large\frac{b_r+b_a}{m_r}}&amp;{\large\frac{b_a}{m_r}}&amp;0\\
+{\large\frac{c_a}{m_a}}&amp;-{\large\frac{c_a+c_s}{m_a}}&amp;{\large\frac{c_s}{m_a}}&amp;{\large\frac{b_a}{b_a}}&amp;-{\large\frac{b_a+b_s}{m_a}}&amp;{\large\frac{b_s}{m_a}}\\
+0&amp;{\large\frac{c_s}{m_s}}&amp;-{\large\frac{c_s}{m_s}}&amp;0&amp;{\large\frac{b_s}{m_s}}&amp;-{\large\frac{b_s}{m_s}}
+\end{bmatrix}\tag{7}
+\]</span></p>
+<p>将 (7) 代入 (3): <span class="math display">\[
+\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]=\begin{bmatrix}
+0&amp;0&amp;0&amp;1&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;1&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;1\\
+-{\frac{c_r+c_a}{m_r}}&amp;{\frac{c_a}{m_r}}&amp;0&amp;-{\frac{b_r+b_a}{m_r}}&amp;{\frac{b_a}{m_r}}&amp;0\\
+{\frac{c_a}{m_a}}&amp;-{\frac{c_a+c_s}{m_a}}&amp;{\frac{c_s}{m_a}}&amp;{\frac{b_a}{b_a}}&amp;-{\frac{b_a+b_s}{m_a}}&amp;{\frac{b_s}{m_a}}\\
+0&amp;{\frac{c_s}{m_s}}&amp;-{\frac{c_s}{m_s}}&amp;0&amp;{\frac{b_s}{m_s}}&amp;-{\frac{b_s}{m_s}}
+\end{bmatrix}\cdot
+\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] 
++\\
+\begin{bmatrix}
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+\frac{c_r}{m_r}&amp;0&amp;0&amp;{\frac{b_r}{m_r}}&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}\cdot
+\left[\begin{array}{l}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]
+\]</span></p>
+<p>将 (7) 简化: <span class="math display">\[
+\underline{\underline{A}}=\left[\begin{array}{cc}
+\underline{\underline{0}} &amp; I \\ 
+-M^{-1} K &amp; -M^{-1} DM 
+\end{array}\right]\tag{8}
+\]</span> 其中 <span class="math display">\[
+M = \begin{bmatrix}
+m_r&amp;0&amp;0\\
+0&amp;m_a&amp;0\\
+0&amp;0&amp;m_s
+\end{bmatrix}\\
+K = \begin{bmatrix}
+c_r+c_a&amp;-c_a&amp;0\\
+-c_a&amp;c_a+c_s&amp;-c_s\\
+0&amp;-c_s&amp;c_s
+\end{bmatrix}\\ 
+DM = \begin{bmatrix}
+b_r+b_a&amp;-b_a&amp;0\\
+-b_a&amp;c_a+b_s&amp;-b_s\\
+0&amp;-b_s&amp;b_s
+\end{bmatrix}
+\]</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i><b>M</b></i></td>
+<td>质量矩阵 (Massenmatrix)</td>
+</tr>
+<tr class="even">
+<td><i><b>K</b></i></td>
+<td>刚度矩阵 (Steifigkeitsmatrix)</td>
+</tr>
+<tr class="odd">
+<td><i><b>DM</b></i></td>
+<td>阻尼矩阵 (Dämpfungsmatrix)</td>
+</tr>
+</tbody>
+</table>
+<p>将 (8) 代入 (5): <span class="math display">\[
+\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} D\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F
+\]</span> 其中 <span class="math display">\[
+\underline{\dot{\xi}}=
+\begin{bmatrix}
+\dot{\xi}_1\\
+\dot{\xi}_2
+\end{bmatrix}=
+\begin{bmatrix}
+\dot{x}\\
+\ddot{x}
+\end{bmatrix}=
+\begin{bmatrix}
+\dot{x}_1\\
+\dot{x}_2\\
+\dot{x}_3\\
+\ddot{x}_1\\
+\ddot{x}_2\\
+\ddot{x}_3
+\end{bmatrix};\quad
+\underline{\xi}=
+\begin{bmatrix}
+{\xi}_1\\
+{\xi}_2
+\end{bmatrix}=
+\begin{bmatrix}
+x\\
+\dot{x}
+\end{bmatrix}=
+\begin{bmatrix}
+{x}_1\\
+{x}_2\\
+{x}_3\\
+\dot{x}_1\\
+\dot{x}_2\\
+\dot{x}_3
+\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+F=\begin{bmatrix}
+0\\
+0\\
+0\\
+\frac{1}{m_r}\cdot\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
+\begin{bmatrix}u(t)\\\dot{u}(t)\end{bmatrix}\\
+0\\
+0
+\end{bmatrix}
+\]</span></p>
+<h2 id="matlab-skript">2. MATLAB Skript</h2>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 定义全局变量</span></span><br><span class="line"><span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"><span class="comment">% 定义时间向量，这里选择0到5s</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">5</span>;</span><br><span class="line"><span class="comment">% 定义初始值，系统初始为</span></span><br><span class="line">xi0 = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>MATLAB 解偏微分方程的函数:</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
+<table>
+<thead>
+<tr class="header">
+<th>Solvername</th>
+<th>选择领域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ode23</td>
+<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
+</tr>
+<tr class="even">
+<td>ode45</td>
+<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
+</tr>
+<tr class="odd">
+<td>ode113</td>
+<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
+</tr>
+<tr class="even">
+<td>ode23t</td>
+<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
+</tr>
+<tr class="odd">
+<td>ode15s</td>
+<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
+</tr>
+<tr class="even">
+<td>ode23s</td>
+<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
+</tr>
+<tr class="odd">
+<td>ode23tb</td>
+<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 1. 有显性方程的数值解</span></span><br><span class="line">[t_exp,xi_exp] = ode45(@ODE_exp, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="comment">% ODE公式的显式表示法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_exp</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="comment">% 从全局工作区加载系统参数</span></span><br><span class="line">	<span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line">	<span class="comment">% 将 xip (\dot&#123;\xi&#125;) 分配为列向量(并非必要)</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="comment">% 计算激励函数与时间的关系</span></span><br><span class="line">	<span class="comment">% 由于br = 0，因此导数up可以设置为0。</span></span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 以显式形式计算xip中的元素</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">5</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = xi(<span class="number">6</span>);</span><br><span class="line">	xip(<span class="number">4</span>) = <span class="number">1</span>/mr*(cr*u+br*up-ba*(xi(<span class="number">4</span>)-xi(<span class="number">5</span>))-br*xi(<span class="number">4</span>)-ca*(xi(<span class="number">1</span>)-xi(<span class="number">2</span>))-cr*xi(<span class="number">1</span>));</span><br><span class="line">	xip(<span class="number">5</span>) = <span class="number">1</span>/ma*(-bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))-ba*(xi(<span class="number">5</span>)-xi(<span class="number">4</span>))-ca*(xi(<span class="number">2</span>)-xi(<span class="number">1</span>))-cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line">	xip(<span class="number">6</span>) = <span class="number">1</span>/ms*(bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))+cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 矩阵方程式</span></span><br><span class="line"><span class="keyword">global</span> A</span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">B = [	br+ba,	-ba,	<span class="number">0</span>;</span><br><span class="line">		-ba,	ba+bs,	-bs;</span><br><span class="line">		<span class="number">0</span>,		-bs,	bs];</span><br><span class="line">C = [	cr+ca,	-ca,	<span class="number">0</span>;</span><br><span class="line">		-ca,	ca+cs,	-cs;</span><br><span class="line">		<span class="number">0</span>,		-cs,	cs];</span><br><span class="line">A = [	<span class="built_in">zeros</span>(<span class="number">3</span>), 	<span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-M\C,		-M\B];</span><br><span class="line"><span class="comment">% 2. 矩阵形式的数值解</span></span><br><span class="line">[t_mat,xi_mat] = ode45(@ODE_mat, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_mat</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="keyword">global</span> A mr cr br ts u0</span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 考虑到外部激励</span></span><br><span class="line">	U = [u; up];</span><br><span class="line">	F = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; [cr, br]*U/mr; <span class="number">0</span>; <span class="number">0</span>];</span><br><span class="line">	<span class="comment">% 计算 xip</span></span><br><span class="line">	<span class="comment">% A*xi 考虑系统内部反馈，向量F考虑作用在系统上的外力</span></span><br><span class="line">	xip = A*xi+F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png" title="振幅-时间图" style="zoom:70%;" /></p>
+<h2 id="matlab-simulink">3. MATLAB Simulink</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png" title="Simulink模型" style="zoom:80%;" /></p>
+<p><strong>模块及参数设置</strong></p>
+<ul>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214832.png"   /> Clock × 1</li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214954.png"  style="zoom:80%;" /> Scope × 1</li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209204844.png" style="zoom:80%;" /> Constant × 2
+<ol type="1">
+<li>Constant Value: 0</li>
+<li>Constant Value: u0</li>
+</ol></li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205159.png"  style="zoom:80%;" /> Switch × 1
+<ul>
+<li>Criteria for passing first input: <code>&gt;=Threshold</code></li>
+<li>Threshold: 0.5</li>
+</ul></li>
+<li><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209205554.png"  style="zoom:80%;" /> State-Space × 1
+<ul>
+<li>Parameters, A: A</li>
+<li>Parameters, B: B</li>
+<li>Parameters, C: C</li>
+<li>Parameters, D: D</li>
+</ul></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 将 u0, A, B, C, D 另存于 Parameter.m</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"></span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">DM = [br+ba,	 -ba,		<span class="number">0</span>;</span><br><span class="line">	-ba,	ba+bs,	 -bs;</span><br><span class="line">	<span class="number">0</span>,			-bs,	bs];</span><br><span class="line">K = [cr+ca,	 -ca,		<span class="number">0</span>;</span><br><span class="line">	-ca,	ca+cs,	 -cs;</span><br><span class="line">	<span class="number">0</span>,			-cs,	cs];</span><br><span class="line">    </span><br><span class="line"><span class="comment">% for State-Space </span></span><br><span class="line">A = [<span class="built_in">zeros</span>(<span class="number">3</span>), <span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-inv(M)*K,		-inv(M)*DM];</span><br><span class="line">B = [<span class="number">0</span>;<span class="number">0</span>;<span class="number">0</span>;cr/mr;<span class="number">0</span>;<span class="number">0</span>];</span><br><span class="line">C = [<span class="built_in">eye</span>(<span class="number">3</span>),<span class="built_in">zeros</span>(<span class="number">3</span>);<span class="built_in">zeros</span>(<span class="number">3</span>),<span class="built_in">zeros</span>(<span class="number">3</span>)];</span><br><span class="line">D = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>为了在运行Simulink模型时预加载 Parameter.m，模型空白处 <kbd>right click</kbd>→<kbd>Model Properities</kbd>→<kbd>Callbacks</kbd>→<kbd>InitFcn</kbd></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214235.png"  style="zoom:80%;" /></p>
+<p>然后运行Simulink模型，在Scope模块中显示:</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214712.png"  style="zoom:80%;" /></p>
+]]></content>
+      <categories>
+        <category>TU-Branschweig</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>车辆技术</tag>
+        <tag>信号分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-HTML篇</title>
+    <url>/Typora-HTML/</url>
+    <content><![CDATA[<h2 id="前言">0. 前言</h2>
+<p>刚开始使用<strong>Typora</strong>的时候只会用 $ $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
+<h2 id="文字-段落格式">1. 文字 + 段落格式</h2>
+<h3 id="字体大小">1.1 字体大小</h3>
+<p><font size="1">我字体大小为1</font></p>
+<p><font size="2">我字体大小为2</font></p>
+<p><font size="3">我字体大小为3</font></p>
+<p><font size="4">我字体大小为4</font></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="文字颜色">1.2 文字颜色</h3>
+<p>​ <span style="color:red">文字</span></p>
+<p>​ <font color="red">文字</font></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
+</blockquote>
+<h3 id="背景颜色">1.3 背景颜色</h3>
+<table>
+<tr>
+<td bgcolor="HotPink">
+占满整行的段落背景颜色
+</td>
+</tr>
+</table>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="排版">2. 排版</h2>
+<h3 id="空格">2.1 空格</h3>
+<p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
+<p> 1个&amp;thinsp</p>
+<p> 1个&amp;nbsp</p>
+<p> 1个&amp;ensp</p>
+<p> 1个&amp;emsp</p>
+<p>  2个&amp;emsp</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
+<h3 id="文本两端对齐">2.2 文本两端对齐</h3>
+<p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
+<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在"Typora使用笔记-CSS篇"中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="整段缩进">2.3 整段缩进</h3>
+<p>有时候想要体现层次感，需要将整段文字缩进。</p>
+<p style="padding-left: 2em;">
+这是整段缩进2em
+</p>
+<p style="padding-left: 4em;">
+这是整段缩进4em
+</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="图片居中缩放注释">2.4 图片居中+缩放+注释</h3>
+<p><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="图片横向并排">2.5 图片横向并排</h3>
+<table>
+<tr>
+<td>
+<a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a>
+</td>
+<td>
+<a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a>
+</td>
+</tr>
+</table>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div data-align="center">
+<img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%>
+</div>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align&#x3D;&quot;center&quot;&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="图片文字">2.6 图片文字</h3>
+<p>表格 + HTML 列表</p>
+<table>
+<tr>
+<td>
+<ul>
+<li>
+<b>TASK 1:</b>
+</li>
+<ul>
+<li>
+≡ω≡
+</li>
+<li>
+≡ω≡
+</li>
+</ul>
+<li>
+<b>TASK 2:</b>
+</li>
+<ul>
+<li>
+≡ω≡
+</li>
+<li>
+≡ω≡
+</li>
+</ul>
+</td>
+<td>
+<div align="center">
+<img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%>
+</td>
+<pre><code>&lt;/tr&gt;</code></pre>
+</table>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="html符号">3. HTML符号</h2>
+<p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 ∑ , 有些则是一些奇奇怪怪的符号 🎲。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
+<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
+<p>如欧元符号: €</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>€</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Unicode</strong></td>
+<td>U+020AC</td>
+</tr>
+<tr class="even">
+<td><strong>Hex Code</strong></td>
+<td>20AC</td>
+</tr>
+<tr class="odd">
+<td><strong>HTML Code</strong></td>
+<td>8364</td>
+</tr>
+<tr class="even">
+<td><strong>HTML Entity</strong></td>
+<td>euro</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
+<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
+</blockquote>
+<h2 id="杂项">4. 杂项</h2>
+<h3 id="折叠标签">4.1 折叠标签</h3>
+<details>
+<summary>
+折叠标签
+</summary>
+这是个折叠标题
+</details>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="跳转">4.2 跳转</h3>
+<blockquote>
+<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Typora使用笔记-LaTex篇</title>
     <url>/Typora-LaTeX/</url>
     <content><![CDATA[<h2 id="数学符号">1. 数学符号</h2>
@@ -451,170 +951,6 @@ c
       </tags>
   </entry>
   <entry>
-    <title>Typora使用笔记-HTML篇</title>
-    <url>/Typora-HTML/</url>
-    <content><![CDATA[<h2 id="前言">0. 前言</h2>
-<p>刚开始使用<strong>Typora</strong>的时候只会用 $ $ 写公式，不知道<strong>Markdown​</strong>还支持 （ <strong>HTML</strong> 其实就<strong>Typora</strong>官网上写着 (°ー°〃) ），在排版和表达方面都受到很大限制。后来逐渐在使用中摸索、尝试，搜集了一些在Typora中我常使用 <strong>HTML</strong> 命令。做个记录。</p>
-<h2 id="文字-段落格式">1. 文字 + 段落格式</h2>
-<h3 id="字体大小">1.1 字体大小</h3>
-<p><font size="1">我字体大小为1</font></p>
-<p><font size="2">我字体大小为2</font></p>
-<p><font size="3">我字体大小为3</font></p>
-<p><font size="4">我字体大小为4</font></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">&quot;4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="文字颜色">1.2 文字颜色</h3>
-<p>​ <span style="color:red">文字</span></p>
-<p>​ <font color="red">文字</font></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&quot;red&quot;</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 颜色参考</a></p>
-</blockquote>
-<h3 id="背景颜色">1.3 背景颜色</h3>
-<table>
-<tr>
-<td bgcolor="HotPink">
-占满整行的段落背景颜色
-</td>
-</tr>
-</table>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">HotPink</span>&gt;</span>背景颜色<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>能放在任何位置的<span style="background-color:DarkOrange">色块</span></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;background-color:DarkOrange&quot;</span>&gt;</span>色块<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="排版">2. 排版</h2>
-<h3 id="空格">2.1 空格</h3>
-<p>在<strong>Markdown</strong>中可以用空格将文本推到想要的位置，但是在导出<strong>PDF</strong>文件时却发现无论多少个空格只算一个。后发现用 <strong>HTML</strong> 的空格方法打出的空格会在<strong>PDF</strong>中保留，因此如果想要最后导出PDF文件的话最好用 <strong>HTML</strong> 的空格方法。</p>
-<p> 1个&amp;thinsp</p>
-<p> 1个&amp;nbsp</p>
-<p> 1个&amp;ensp</p>
-<p> 1个&amp;emsp</p>
-<p>  2个&amp;emsp</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;thinsp;</span>	:小于一个字符的空格</span><br><span class="line"><span class="symbol">&amp;nbsp;</span> 		:一个字符的半角的不断行的空格</span><br><span class="line"><span class="symbol">&amp;ensp;</span> 		:一个字符的半角的空格</span><br><span class="line"><span class="symbol">&amp;emsp;</span> 		:两个字符的全角的空格</span><br></pre></td></tr></table></figure>
-<h3 id="文本两端对齐">2.2 文本两端对齐</h3>
-<p>如果使用中文书写，不会有这种困扰。但假如用外文书写，经常出现单词因为过长而换行的现象，导致排版过于丑陋。在<strong>Typora</strong>默认的几个主题中，只有 <strong>Whitey</strong> 支持段落文本两端对齐，但这个主题丑拒。</p>
-<p>其实最简单的方法是在 <strong>CSS</strong> 主题文件中添加命令（在"Typora使用笔记-CSS篇"中介绍）。但考虑到易用性，想要写出的 <strong>.md</strong> 文件别人能直接使用，那 <strong>HTML</strong> 方法也需要了解:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;text-align:justify; text-justify:inter-ideograph;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="整段缩进">2.3 整段缩进</h3>
-<p>有时候想要体现层次感，需要将整段文字缩进。</p>
-<p style="padding-left: 2em;">
-这是整段缩进2em
-</p>
-<p style="padding-left: 4em;">
-这是整段缩进4em
-</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 2em;&quot;</span>&gt;</span>这是整段缩进2em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;padding-left: 4em;&quot;</span>&gt;</span>这是整段缩进4em<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="图片居中缩放注释">2.4 图片居中+缩放+注释</h3>
-<p><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width="50%" height="50%" title="图片标题."/></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span> /&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=<span class="string">2</span>&gt;</span>图片标题<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="图片横向并排">2.5 图片横向并排</h3>
-<table>
-<tr>
-<td>
-<a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a>
-</td>
-<td>
-<a data-fancybox data-caption="Caption"><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg"/></a>
-</td>
-</tr>
-</table>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span>       </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<div data-align="center">
-<img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%><img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%>
-</div>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align&#x3D;&quot;center&quot;&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;img src&#x3D;&quot;http:&#x2F;&#x2F;i1.fuimg.com&#x2F;695542&#x2F;42e94e685ed0a68f.jpg&quot; width&#x3D;50%&gt;&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="图片文字">2.6 图片文字</h3>
-<p>表格 + HTML 列表</p>
-<table>
-<tr>
-<td>
-<ul>
-<li>
-<b>TASK 1:</b>
-</li>
-<ul>
-<li>
-≡ω≡
-</li>
-<li>
-≡ω≡
-</li>
-</ul>
-<li>
-<b>TASK 2:</b>
-</li>
-<ul>
-<li>
-≡ω≡
-</li>
-<li>
-≡ω≡
-</li>
-</ul>
-</td>
-<td>
-<div align="center">
-<img data-src="http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg" width=50%>
-</td>
-<pre><code>&lt;/tr&gt;</code></pre>
-</table>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 1:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>TASK 2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span>≡ω≡<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://i1.fuimg.com/695542/42e94e685ed0a68f.jpg&quot;</span> <span class="attr">width</span>=<span class="string">50%</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="html符号">3. HTML符号</h2>
-<p>在写笔记的时候有时候总能碰各种符号，有些是数学符号如 ∑ , 有些则是一些奇奇怪怪的符号 🎲。对于前者我们还可以使用行间公式，但对于后者则不得不用 <strong>HTML</strong> 的方式来表示符号。同时在长篇 <strong>.md</strong> 中尽量少使用行间公式能加快渲染速度。</p>
-<p>表示方法大致可以分为<strong>Hex Code</strong>、<strong>HTML Code</strong> 和 <strong>HTML Entity</strong> 三种。</p>
-<p>如欧元符号: €</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="symbol">&amp;#x20AC;</span> 	Hex Code, 16进制 &quot;&amp;#x&quot; + Hexcode + &quot;;&quot;</span><br><span class="line"><span class="symbol">&amp;#8364;</span>		HTML Code, 10进制 &quot;&amp;#&quot; + HTML Code + &quot;;&quot;</span><br><span class="line">&amp;#euro;		HTML Entity, 名字 &quot;&amp;#&quot; + HTML Entity + &quot;;&quot;</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>€</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Unicode</strong></td>
-<td>U+020AC</td>
-</tr>
-<tr class="even">
-<td><strong>Hex Code</strong></td>
-<td>20AC</td>
-</tr>
-<tr class="odd">
-<td><strong>HTML Code</strong></td>
-<td>8364</td>
-</tr>
-<tr class="even">
-<td><strong>HTML Entity</strong></td>
-<td>euro</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
-<p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
-</blockquote>
-<h2 id="杂项">4. 杂项</h2>
-<h3 id="折叠标签">4.1 折叠标签</h3>
-<details>
-<summary>
-折叠标签
-</summary>
-这是个折叠标题
-</details>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">summary</span>&gt;</span>折叠标签<span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">    这是个折叠标题</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="跳转">4.2 跳转</h3>
-<blockquote>
-<p><a href="https://blog.csdn.net/u013502146/article/details/103171825">Typora页内跳转，真正能用的方法</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-记笔记篇</title>
     <url>/Typora-Note/</url>
     <content><![CDATA[<h2 id="前言">0. 前言</h2>
@@ -622,14 +958,14 @@ c
 <p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
 <h2 id="截图软件---snipaste">1. 截图软件 - Snipaste</h2>
 <p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" alt="N3QEb3VA" style="zoom: 67%;" title="Snipaste"/></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" style="zoom: 67%;" title="Snipaste"/></p>
 <p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
 <blockquote>
 <p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
 </blockquote>
 <h2 id="图片自动上传---picgo">2. 图片自动上传 - PicGo</h2>
 <p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png" alt="image-20210123001230690" style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png"  style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
 <p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
 <blockquote>
 <p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
@@ -680,7 +1016,7 @@ c
 <p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
 </blockquote>
 <p>实际操作流程如下所示。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" alt="Mathpix-Snip+Quicker" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
 <h2 id="相关网站">4. 相关网站</h2>
 <blockquote>
 <p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
@@ -751,13 +1087,13 @@ c
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;page-break-after: always;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="列表符号">3. 列表符号</h2>
 <p>在 <strong>Newsprint</strong> 主题中，列表抬头样式皆为圆点</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png" alt="image-20210120115421997"  /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210120115422.png"   /></p>
 <p>在 <strong>newsprint.css</strong> 中找到以下内容（93行），用 <code>/* */</code> 注释掉，</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">ol</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: decimal;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">	<span class="attribute">list-style-type</span>: disc;</span><br><span class="line">	<span class="attribute">list-style-position</span>: outside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">ol</span>,</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">	<span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>添加以下内容（取自 <strong>Github</strong> 主题）</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.task-list</span>&#123;</span><br><span class="line">	<span class="attribute">padding-left</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &#123;</span><br><span class="line">	<span class="attribute">padding-left</span>:<span class="number">34px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.25rem</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: initial;</span><br><span class="line">	<span class="attribute">top</span>: -<span class="number">0.2rem</span>;</span><br><span class="line">	<span class="attribute">margin-left</span>: -<span class="number">1.6em</span>;</span><br><span class="line">	<span class="attribute">margin-top</span>: <span class="built_in">calc</span>(<span class="number">1rem</span> - <span class="number">7px</span>);</span><br><span class="line">	<span class="attribute">border</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">	<span class="attribute">outline</span>: none;</span><br><span class="line">	<span class="attribute">box-shadow</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#555</span>;</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">1.5rem</span>;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:before</span>&#123;</span><br><span class="line">	<span class="attribute">background</span>: <span class="number">#333</span>;</span><br><span class="line">	<span class="attribute">border-width</span>: <span class="number">2px</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline-block;</span><br><span class="line">	<span class="attribute">transition</span>: background-color <span class="number">200ms</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:checked</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-attr">[checked]</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.md-task-list-item</span> &gt; <span class="selector-tag">input</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">-webkit-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-moz-transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">transition</span>: opacity <span class="number">0.05s</span> ease-in-out;</span><br><span class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">-moz-transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">transform</span>: <span class="built_in">rotate</span>(-<span class="number">45deg</span>);</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0.4375rem</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0.28125rem</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">0.9375rem</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0.5rem</span>;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#fff</span>;</span><br><span class="line">	<span class="attribute">border-top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">border-right</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>之后列表样式如下所示</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png" alt="image-20210122001140344"  /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122001140.png"   /></p>
 <h2 id="两端对齐">4. 两端对齐</h2>
 <p>在 <strong>newsprint.css</strong> 中找到以下内容（62行）：</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#f3f2ee</span>;</span><br><span class="line">	<span class="attribute">font-family</span>: <span class="string">&quot;PT Serif&quot;</span>, <span class="string">&#x27;Times New Roman&#x27;</span>, Times, serif;</span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#1f0909</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="number">1.5em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

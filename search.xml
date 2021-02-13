@@ -277,180 +277,6 @@ N=\left[1+\left(n_{s}-1\right)(1-\text { overlap })\right] \cdot L\tag{4}
       </tags>
   </entry>
   <entry>
-    <title>Typora使用笔记-LaTex篇</title>
-    <url>/Typora-LaTeX/</url>
-    <content><![CDATA[<h2 id="数学符号">1. 数学符号</h2>
-<blockquote>
-<p><a href="https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols">List of Latex mathematical symbols</a></p>
-</blockquote>
-<h2 id="运算公式">2. 运算公式</h2>
-<table>
-<thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Command</th>
-<th>Symbol</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(\frac{a}{b}\)</span></td>
-<td></td>
-<td><span class="math inline">\(a\cdot b, a\times b\)</span></td>
-<td>ab, ab</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\sqrt[a]{b}\)</span></td>
-<td></td>
-<td><span class="math inline">\(\cancelto{0}{f(x)}\)</span></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\sum_{a}^{b}\)</span></td>
-<td>_{a}^{b}</td>
-<td><span class="math inline">\(a,\dot{a},\ddot{a},\vec{a}\)</span></td>
-<td>a,,,</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\prod_{a}^{b}\)</span></td>
-<td>_{a}^{b}</td>
-<td><span class="math inline">\(\int_{a}^{b}{x}\,dx\)</span></td>
-<td>_{a}^{b}{x},dx</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\lim_{ {a} \to {\infty}}\)</span></td>
-<td>_{ {a} }</td>
-<td><span class="math inline">\(\int,\iint,\iiint,\oint\)</span></td>
-<td>,,,</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p><strong>上下标位置 (数学运算符号):</strong> <span class="math display">\[
-\int_{a}^{b}\rightarrow\int \limits_{a}^{b}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\int</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;  </span><br><span class="line"><span class="keyword">\int</span><span class="keyword">\limits</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>上下标位置 (普通符号):</strong></p>
-<p>先用 转换普通符号为数学符号 <span class="math display">\[
-C_{a}^{b}\rightarrow\mathop{C} \limits_{a}^{b}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">C<span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br><span class="line"><span class="keyword">\mathop</span>&#123;C&#125; <span class="keyword">\limits</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="公式样式">3. 公式样式</h2>
-<h3 id="公式内文字公式编号">3.1 公式内文字+公式编号</h3>
-<p><span class="math display">\[
-y=ax\quad \text{Text} \tag{2}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">y=ax<span class="keyword">\quad</span> <span class="keyword">\text</span>&#123;Text&#125; <span class="keyword">\tag</span>&#123;2&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公式加粗">3.2 公式加粗</h3>
-<p><span class="math display">\[
-\boldsymbol{f(x)}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\boldsymbol</span>&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[
-\mathbf{f(x)}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\mathbf</span>&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公式颜色">3.3 公式颜色</h3>
-<p><span class="math display">\[
-\textcolor{red}{f(x)}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\textcolor</span>&#123;red&#125;&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公式大小缩放">3.4 公式大小缩放</h3>
-<p><span class="math display">\[
-{\tiny  f(x)}\quad{\scriptsize  f(x)}\quad{\small f(x)}\quad{\normalsize f(x)}\quad{\large f(x)}\quad{\Large f(x)}\quad{\LARGE f(x)}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">&#123;<span class="keyword">\tiny</span>  f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\scriptsize</span>  f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\small</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\normalsize</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\large</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\Large</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\LARGE</span> f(x)&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公式对齐">3.5 公式对齐</h3>
-<p><span class="math display">\[
-\begin{aligned}
-a&amp;=x\\
-b&amp;=x^2
-\end{aligned}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;aligned&#125;</span><br><span class="line">a<span class="built_in">&amp;</span>=x<span class="keyword">\\</span></span><br><span class="line">b<span class="built_in">&amp;</span>=x<span class="built_in">^</span>2</span><br><span class="line"><span class="keyword">\end</span>&#123;aligned&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="公式注释">3.6 公式注释</h3>
-<p><span class="math display">\[
-f(x)=\underbrace{ax^2+bx}_{=0}+\overbrace{c}^{\text{const}}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">f(x)=<span class="keyword">\underbrace</span>&#123;ax<span class="built_in">^</span>2+bx&#125;<span class="built_in">_</span>&#123;=0&#125;+<span class="keyword">\overbrace</span>&#123;c&#125;<span class="built_in">^</span>&#123;<span class="keyword">\text</span>&#123;const&#125;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="条件成立">3.7 条件成立</h3>
-<p><span class="math display">\[
-X\stackrel{F}{\longrightarrow}Y
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">X<span class="keyword">\stackrel</span>&#123;F&#125;&#123;<span class="keyword">\longrightarrow</span>&#125;Y</span><br></pre></td></tr></table></figure>
-<h2 id="矩阵">4. 矩阵</h2>
-<h3 id="普通矩阵">4.1 普通矩阵</h3>
-<p><span class="math display">\[
-\begin{matrix}
-1 &amp; 2\\
-4 &amp; 5 
-\end{matrix}
-\quad
-\begin{bmatrix}
-1 &amp; 2\\
-4 &amp; 5 
-\end{bmatrix}
-\quad
-\begin{Bmatrix}
-1 &amp; 2\\
-4 &amp; 5 
-\end{Bmatrix}
-\quad
-\begin{pmatrix}
-1 &amp; 2\\
-4 &amp; 5 
-\end{pmatrix}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;matrix&#125;</span><br><span class="line">1 <span class="built_in">&amp;</span> 2 <span class="built_in">&amp;</span> 3<span class="keyword">\\</span></span><br><span class="line">4 <span class="built_in">&amp;</span> 5 <span class="built_in">&amp;</span> 6<span class="keyword">\\</span></span><br><span class="line">7 <span class="built_in">&amp;</span> 8 <span class="built_in">&amp;</span> 9</span><br><span class="line"><span class="keyword">\end</span>&#123;matrix&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;...<span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;Bmatrix&#125;...<span class="keyword">\end</span>&#123;Bmatrix&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;pmatrix&#125;...<span class="keyword">\end</span>&#123;pmatrix&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="带省略号的矩阵">4.2 带省略号的矩阵</h3>
-<p><span class="math display">\[
-\begin{matrix}
- 1      &amp; 2      &amp; \cdots &amp; 4      \\
- 7      &amp; 6      &amp; \cdots &amp; 5      \\
- \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
- 8      &amp; 9      &amp; \cdots &amp; 0      \\
-\end{matrix}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;matrix&#125;</span><br><span class="line"> 1      <span class="built_in">&amp;</span> 2      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 4      <span class="keyword">\\</span></span><br><span class="line"> 7      <span class="built_in">&amp;</span> 6      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 5      <span class="keyword">\\</span></span><br><span class="line"> <span class="keyword">\vdots</span> <span class="built_in">&amp;</span> <span class="keyword">\vdots</span> <span class="built_in">&amp;</span> <span class="keyword">\ddots</span> <span class="built_in">&amp;</span> <span class="keyword">\vdots</span> <span class="keyword">\\</span></span><br><span class="line"> 8      <span class="built_in">&amp;</span> 9      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 0      <span class="keyword">\\</span></span><br><span class="line"><span class="keyword">\end</span>&#123;matrix&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="增广矩阵">4.3 增广矩阵</h3>
-<p><span class="math display">\[
-\left[
-    \begin{array}{cc|c}
-      1 &amp; 2 &amp; 3 \\
-      4 &amp; 5 &amp; 6
-    \end{array}
-\right]
-\quad
-\begin{bmatrix}
-    1 &amp; 2 \\
-    3 &amp; 4 \\\hline
-    5 &amp; 6
-\end{bmatrix}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\left</span>[</span><br><span class="line">    <span class="keyword">\begin</span>&#123;array&#125;&#123;cc|c&#125;</span><br><span class="line">      1 <span class="built_in">&amp;</span> 2 <span class="built_in">&amp;</span> 3 <span class="keyword">\\</span></span><br><span class="line">      4 <span class="built_in">&amp;</span> 5 <span class="built_in">&amp;</span> 6</span><br><span class="line">    <span class="keyword">\end</span>&#123;array&#125;</span><br><span class="line"><span class="keyword">\right</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">	1 <span class="built_in">&amp;</span> 2 <span class="keyword">\\</span></span><br><span class="line">	3 <span class="built_in">&amp;</span> 4 <span class="keyword">\\</span><span class="keyword">\hline</span></span><br><span class="line">	5 <span class="built_in">&amp;</span> 6</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="大括号">4.4 大括号</h3>
-<p><span class="math display">\[
-\left\{ 
-\begin{array}\\
-a\\
-b\\
-c
-\end{array}
-\right.
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\left</span><span class="keyword">\&#123;</span> </span><br><span class="line"><span class="keyword">\begin</span>&#123;array&#125;<span class="keyword">\\</span></span><br><span class="line">a<span class="keyword">\\</span> b<span class="keyword">\\</span> c</span><br><span class="line"><span class="keyword">\end</span>&#123;array&#125;</span><br><span class="line"><span class="keyword">\right</span>.</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>LaTeX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>车辆技术中的建模与仿真-四分之一车辆模型振动分析</title>
     <url>/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/</url>
     <content><![CDATA[<h2 id="任务描述">0. 任务描述</h2>
@@ -948,6 +774,180 @@ F=\begin{bmatrix}
       <tags>
         <tag>Typora</tag>
         <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-LaTex篇</title>
+    <url>/Typora-LaTeX/</url>
+    <content><![CDATA[<h2 id="数学符号">1. 数学符号</h2>
+<blockquote>
+<p><a href="https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols">List of Latex mathematical symbols</a></p>
+</blockquote>
+<h2 id="运算公式">2. 运算公式</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Command</th>
+<th>Symbol</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\frac{a}{b}\)</span></td>
+<td></td>
+<td><span class="math inline">\(a\cdot b, a\times b\)</span></td>
+<td>ab, ab</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sqrt[a]{b}\)</span></td>
+<td></td>
+<td><span class="math inline">\(\cancelto{0}{f(x)}\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sum_{a}^{b}\)</span></td>
+<td>_{a}^{b}</td>
+<td><span class="math inline">\(a,\dot{a},\ddot{a},\vec{a}\)</span></td>
+<td>a,,,</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\prod_{a}^{b}\)</span></td>
+<td>_{a}^{b}</td>
+<td><span class="math inline">\(\int_{a}^{b}{x}\,dx\)</span></td>
+<td>_{a}^{b}{x},dx</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\lim_{ {a} \to {\infty}}\)</span></td>
+<td>_{ {a} }</td>
+<td><span class="math inline">\(\int,\iint,\iiint,\oint\)</span></td>
+<td>,,,</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><strong>上下标位置 (数学运算符号):</strong> <span class="math display">\[
+\int_{a}^{b}\rightarrow\int \limits_{a}^{b}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\int</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;  </span><br><span class="line"><span class="keyword">\int</span><span class="keyword">\limits</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>上下标位置 (普通符号):</strong></p>
+<p>先用 转换普通符号为数学符号 <span class="math display">\[
+C_{a}^{b}\rightarrow\mathop{C} \limits_{a}^{b}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">C<span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br><span class="line"><span class="keyword">\mathop</span>&#123;C&#125; <span class="keyword">\limits</span><span class="built_in">_</span>&#123;a&#125;<span class="built_in">^</span>&#123;b&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="公式样式">3. 公式样式</h2>
+<h3 id="公式内文字公式编号">3.1 公式内文字+公式编号</h3>
+<p><span class="math display">\[
+y=ax\quad \text{Text} \tag{2}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">y=ax<span class="keyword">\quad</span> <span class="keyword">\text</span>&#123;Text&#125; <span class="keyword">\tag</span>&#123;2&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公式加粗">3.2 公式加粗</h3>
+<p><span class="math display">\[
+\boldsymbol{f(x)}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\boldsymbol</span>&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[
+\mathbf{f(x)}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\mathbf</span>&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公式颜色">3.3 公式颜色</h3>
+<p><span class="math display">\[
+\textcolor{red}{f(x)}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\textcolor</span>&#123;red&#125;&#123;f(x)&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公式大小缩放">3.4 公式大小缩放</h3>
+<p><span class="math display">\[
+{\tiny  f(x)}\quad{\scriptsize  f(x)}\quad{\small f(x)}\quad{\normalsize f(x)}\quad{\large f(x)}\quad{\Large f(x)}\quad{\LARGE f(x)}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">&#123;<span class="keyword">\tiny</span>  f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\scriptsize</span>  f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\small</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\normalsize</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\large</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\Large</span> f(x)&#125;</span><br><span class="line">&#123;<span class="keyword">\LARGE</span> f(x)&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公式对齐">3.5 公式对齐</h3>
+<p><span class="math display">\[
+\begin{aligned}
+a&amp;=x\\
+b&amp;=x^2
+\end{aligned}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;aligned&#125;</span><br><span class="line">a<span class="built_in">&amp;</span>=x<span class="keyword">\\</span></span><br><span class="line">b<span class="built_in">&amp;</span>=x<span class="built_in">^</span>2</span><br><span class="line"><span class="keyword">\end</span>&#123;aligned&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="公式注释">3.6 公式注释</h3>
+<p><span class="math display">\[
+f(x)=\underbrace{ax^2+bx}_{=0}+\overbrace{c}^{\text{const}}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">f(x)=<span class="keyword">\underbrace</span>&#123;ax<span class="built_in">^</span>2+bx&#125;<span class="built_in">_</span>&#123;=0&#125;+<span class="keyword">\overbrace</span>&#123;c&#125;<span class="built_in">^</span>&#123;<span class="keyword">\text</span>&#123;const&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="条件成立">3.7 条件成立</h3>
+<p><span class="math display">\[
+X\stackrel{F}{\longrightarrow}Y
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">X<span class="keyword">\stackrel</span>&#123;F&#125;&#123;<span class="keyword">\longrightarrow</span>&#125;Y</span><br></pre></td></tr></table></figure>
+<h2 id="矩阵">4. 矩阵</h2>
+<h3 id="普通矩阵">4.1 普通矩阵</h3>
+<p><span class="math display">\[
+\begin{matrix}
+1 &amp; 2\\
+4 &amp; 5 
+\end{matrix}
+\quad
+\begin{bmatrix}
+1 &amp; 2\\
+4 &amp; 5 
+\end{bmatrix}
+\quad
+\begin{Bmatrix}
+1 &amp; 2\\
+4 &amp; 5 
+\end{Bmatrix}
+\quad
+\begin{pmatrix}
+1 &amp; 2\\
+4 &amp; 5 
+\end{pmatrix}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;matrix&#125;</span><br><span class="line">1 <span class="built_in">&amp;</span> 2 <span class="built_in">&amp;</span> 3<span class="keyword">\\</span></span><br><span class="line">4 <span class="built_in">&amp;</span> 5 <span class="built_in">&amp;</span> 6<span class="keyword">\\</span></span><br><span class="line">7 <span class="built_in">&amp;</span> 8 <span class="built_in">&amp;</span> 9</span><br><span class="line"><span class="keyword">\end</span>&#123;matrix&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;...<span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;Bmatrix&#125;...<span class="keyword">\end</span>&#123;Bmatrix&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;pmatrix&#125;...<span class="keyword">\end</span>&#123;pmatrix&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="带省略号的矩阵">4.2 带省略号的矩阵</h3>
+<p><span class="math display">\[
+\begin{matrix}
+ 1      &amp; 2      &amp; \cdots &amp; 4      \\
+ 7      &amp; 6      &amp; \cdots &amp; 5      \\
+ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+ 8      &amp; 9      &amp; \cdots &amp; 0      \\
+\end{matrix}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;matrix&#125;</span><br><span class="line"> 1      <span class="built_in">&amp;</span> 2      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 4      <span class="keyword">\\</span></span><br><span class="line"> 7      <span class="built_in">&amp;</span> 6      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 5      <span class="keyword">\\</span></span><br><span class="line"> <span class="keyword">\vdots</span> <span class="built_in">&amp;</span> <span class="keyword">\vdots</span> <span class="built_in">&amp;</span> <span class="keyword">\ddots</span> <span class="built_in">&amp;</span> <span class="keyword">\vdots</span> <span class="keyword">\\</span></span><br><span class="line"> 8      <span class="built_in">&amp;</span> 9      <span class="built_in">&amp;</span> <span class="keyword">\cdots</span> <span class="built_in">&amp;</span> 0      <span class="keyword">\\</span></span><br><span class="line"><span class="keyword">\end</span>&#123;matrix&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="增广矩阵">4.3 增广矩阵</h3>
+<p><span class="math display">\[
+\left[
+    \begin{array}{cc|c}
+      1 &amp; 2 &amp; 3 \\
+      4 &amp; 5 &amp; 6
+    \end{array}
+\right]
+\quad
+\begin{bmatrix}
+    1 &amp; 2 \\
+    3 &amp; 4 \\\hline
+    5 &amp; 6
+\end{bmatrix}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\left</span>[</span><br><span class="line">    <span class="keyword">\begin</span>&#123;array&#125;&#123;cc|c&#125;</span><br><span class="line">      1 <span class="built_in">&amp;</span> 2 <span class="built_in">&amp;</span> 3 <span class="keyword">\\</span></span><br><span class="line">      4 <span class="built_in">&amp;</span> 5 <span class="built_in">&amp;</span> 6</span><br><span class="line">    <span class="keyword">\end</span>&#123;array&#125;</span><br><span class="line"><span class="keyword">\right</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">	1 <span class="built_in">&amp;</span> 2 <span class="keyword">\\</span></span><br><span class="line">	3 <span class="built_in">&amp;</span> 4 <span class="keyword">\\</span><span class="keyword">\hline</span></span><br><span class="line">	5 <span class="built_in">&amp;</span> 6</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="大括号">4.4 大括号</h3>
+<p><span class="math display">\[
+\left\{ 
+\begin{array}\\
+a\\
+b\\
+c
+\end{array}
+\right.
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\left</span><span class="keyword">\&#123;</span> </span><br><span class="line"><span class="keyword">\begin</span>&#123;array&#125;<span class="keyword">\\</span></span><br><span class="line">a<span class="keyword">\\</span> b<span class="keyword">\\</span> c</span><br><span class="line"><span class="keyword">\end</span>&#123;array&#125;</span><br><span class="line"><span class="keyword">\right</span>.</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>LaTeX</tag>
       </tags>
   </entry>
   <entry>

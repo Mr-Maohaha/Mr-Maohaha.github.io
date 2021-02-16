@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.mr-maohaha.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单车辆模型-纵向动力学">
+<meta property="og:url" content="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/index.html">
+<meta property="og:site_name" content="猫哈哈的笔记本">
+<meta property="og:description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174037.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174145.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201159.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201521.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214230350.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214205242.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140539.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140859.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215191019.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215193649.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215194941.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215195151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200008.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200013.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123012.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123020.jpg">
+<meta property="article:published_time" content="2021-02-14T16:39:08.000Z">
+<meta property="article:modified_time" content="2021-02-16T11:31:38.121Z">
+<meta property="article:author" content="Kuihong CHEN">
+<meta property="article:tag" content="Matlab">
+<meta property="article:tag" content="车辆技术">
+<meta property="article:tag" content="振动分析">
+<meta property="article:tag" content="行驶动力学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174037.png">
+
+<link rel="canonical" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>简单车辆模型-纵向动力学 | 猫哈哈的笔记本</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">猫哈哈的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Maohaha's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="Kuihong CHEN">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猫哈哈的笔记本">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简单车辆模型-纵向动力学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-14 17:39:08" itemprop="dateCreated datePublished" datetime="2021-02-14T17:39:08+01:00">2021-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-16 12:31:38" itemprop="dateModified" datetime="2021-02-16T12:31:38+01:00">2021-02-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TU-Branschweig/" itemprop="url" rel="index"><span itemprop="name">TU-Branschweig</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TU-Branschweig/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF%E4%B8%AD%E7%9A%84%E5%BB%BA%E6%A8%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" itemprop="url" rel="index"><span itemprop="name">车辆技术中的建模与仿真</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/" class="post-meta-item leancloud_visitors" data-flag-title="简单车辆模型-纵向动力学" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="纵向动力学">0. 纵向动力学</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174037.png" style="zoom:80%;" /></p>
+<p>一个简单的平面纵向动力学模型如下所示</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174145.png"  style="zoom: 50%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 我们正在寻找在水平道路上以速度 <i>v<sub>0</sub></i> 行驶的车辆的制动距离。 滚动阻力可以忽略。 产生的制动扭矩 <i>M<sub>B</sub></i> 分别为：1500 <i>Nm</i>, 1700 <i>Nm</i>, 2000 <i>Nm</i>
+</p>
+<p><strong>给定参数</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>数值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i><b>v<sub>0</sub></b></i></td>
+<td>100 [<i>km/h</i>]</td>
+<td>车辆初始速度</td>
+</tr>
+<tr class="even">
+<td><i><b>g</b></i></td>
+<td>9.81 [<i>m/s<sup>2</sup></i>]</td>
+<td>重力加速度</td>
+</tr>
+<tr class="odd">
+<td><i><b>m</b></i></td>
+<td>1500 [<i>kg</i>]</td>
+<td>车辆质量</td>
+</tr>
+<tr class="even">
+<td><i><b>J</b></i></td>
+<td>1.6 [<i>kg/m<sup>2</sup></i>]</td>
+<td>转动惯量</td>
+</tr>
+<tr class="odd">
+<td><i><b>F<sub>z</sub></b></i></td>
+<td>0.5·<i>m</i>·<i>g</i></td>
+<td>车轮负载</td>
+</tr>
+<tr class="even">
+<td><i><b>r<sub>Rad</sub></b></i></td>
+<td>0.3 [<i>m</i>]</td>
+<td>车轮半径</td>
+</tr>
+<tr class="odd">
+<td><i><b>ρ<sub>L</sub></b></i></td>
+<td>1.2 [<i>kg/m<sup>3</sup></i>]</td>
+<td>空气密度</td>
+</tr>
+<tr class="even">
+<td><i><b>c<sub>w</sub></b></i></td>
+<td>0.3</td>
+<td>空气阻力系数</td>
+</tr>
+<tr class="odd">
+<td><i><b>A</b></i></td>
+<td>2 [<i>m</i>]</td>
+<td>车辆迎风面积</td>
+</tr>
+<tr class="even">
+<td><i><b>a</b></i></td>
+<td>0.86</td>
+<td>摩擦系数参数</td>
+</tr>
+<tr class="odd">
+<td><i><b>b</b></i></td>
+<td>33.82</td>
+<td>摩擦系数参数</td>
+</tr>
+<tr class="even">
+<td><i><b>c</b></i></td>
+<td>0.36</td>
+<td>摩擦系数参数</td>
+</tr>
+</tbody>
+</table>
+<p>车辆的运动方程 <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-F_{L}-F_{x, v}-F_{x, h}\tag{1} \\ 
+J \cdot \ddot{\varphi}_{v}&amp;=&amp;M+F_{x, v} \cdot r_{R a d}\tag{2} \\ 
+J \cdot \ddot{\varphi}_{h}&amp;=&amp;M+F_{x, h} \cdot r_{R a d}\tag{3}
+\end{eqnarray*}
+\]</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><b><i>F<sub>L</sub></i></b></td>
+<td>空气阻力</td>
+</tr>
+<tr class="even">
+<td><b><i>F<sub>G</sub></i></b></td>
+<td>重力</td>
+</tr>
+<tr class="odd">
+<td><b><i>M</i></b></td>
+<td>驱动/制动力矩</td>
+</tr>
+<tr class="even">
+<td><b><i>F<sub>z</sub></i></b></td>
+<td>轮毂法向力</td>
+</tr>
+<tr class="odd">
+<td><b><i>F<sub>x</sub></i></b></td>
+<td>摩擦力 (转动摩擦力，车轮滑移)</td>
+</tr>
+</tbody>
+</table>
+<p>忽略由于制动而改变车轴负载: <span class="math display">\[
+F_{z, v}=F_{z, h}=F_{z} ;\quad F_{x, v}=F_{x, h}=F_{x} ;\quad  \varphi_{v}=\varphi_{h}=\varphi
+\]</span> 因此，(1) 可用 (4) 表示，(2)，(3) 可用 (5) 表示， <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-F_{L}-2F_{x}\tag{4} \\ 
+J \cdot \ddot{\varphi}&amp;=&amp;M+F_{x} \cdot r_{R a d}\tag{5}
+\end{eqnarray*}
+\]</span> 式 (4) 中空气阻力 <i><b>F<sub>L</sub></b></i>，摩擦力 <i><b>F<sub>x</sub></b></i> 如式 (6) - (7): <span class="math display">\[
+\begin{eqnarray*}
+F_{L}&amp;=&amp;\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}\tag{6} \\ 
+\left|F_{x}\right|&amp;=&amp;\left|\mu * F_{z}\right|\tag{7}
+\end{eqnarray*}
+\]</span> 式 (7) 中的摩擦系数 <b><i>μ</i></b> 并不是固定系数，而是会随着轮毂的滑移率 <b><i>s</i></b> 变化。</p>
+<p><font size=4><b>滑移率</b></font></p>
+<p>下图为轮毂在不同情况下滑移率 <b><i>s</i></b> 与车轮速度 <b><i>ωR</i></b> 和车身速度 <b><i>v</i></b> 的关系</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201159.png" title="轮毂在不同情况下的滑移率" style="zoom: 67%;" /></p>
+<p>借助这个模型，主要研究刹车时的情况，因此滑移率式为: <span class="math display">\[
+s=\frac{\dot{x}-\dot{\varphi} r_{R a d}}{\dot{x}}\tag{8}
+\]</span> 同时，摩擦系数 <b><i>μ</i></b> 也随滑移率 <b><i>s</i></b> 变化。下图描述了不同路况的摩擦系数型曲线。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201521.gif" title="不同路面条件下摩擦系数随滑移率变化曲线" style="zoom:80%;" /></p>
+<p>上图的曲线可用式 (9) 描述, 其中 <b><i>a, b, c</i></b> 为路面相关系数: <span class="math display">\[
+\mu(s)=a \cdot\left(1-e^{-b s}\right)-c s\tag{9}
+\]</span> 因此，式子 (7) 用符号函数 <b><i>sign</i></b> 去掉绝对值符号: <span class="math display">\[
+F_{x}=\mu \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{10}
+\]</span> 同理 (5) 中力矩 <b><i>M</i></b> 用刹车力矩表示也可用到符号函数 <b><i>sign</i></b>: <span class="math display">\[
+M=M_{B} \cdot \operatorname{sign}(\dot{\varphi})\tag{11}
+\]</span> 因此，最终运动方程可用 (12) - (14) 表示: <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}-2 \cdot \mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{12}\\
+J \cdot \ddot{\varphi}&amp;=&amp;-M_{B} \cdot \operatorname{sign}(\dot{\varphi})+\mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right) \cdot r_{R a d}\tag{13}\\
+\mu(s)&amp;=&amp;a \cdot\left(1-e^{-b s}\right)-c s\tag{9}
+\end{eqnarray*}
+\]</span></p>
+<h2 id="基础知识">1. 基础知识</h2>
+<h3 id="符号函数-sign">1.1 符号函数 <b><i>sign</i></b></h3>
+<p>符号函数（Sign function，简称sgn）是一个逻辑函数，用以判断实数的正负号。其定义为<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>： <span class="math display">\[
+\operatorname{sign} x=\left\{\begin{array}{ccc}-1 &amp; : &amp; x&lt;0 \\ 0 &amp; : &amp; x=0 \\ 1 &amp; : &amp; x&gt;0\end{array}\right.
+\]</span> <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214230350.png" style="zoom:70%;" /></p>
+<p>但这个函数为阶跃函数，会导致不连续性。因此，在编写代码时可用 <b><i>arctan</i></b> 函数 "软化" 边缘。通过式 (14) 来拟合。 <span class="math display">\[
+y = \frac{2}{\pi}\cdot\operatorname{atan}(\frac{\pi}{2}\cdot 1000\cdot x)\tag{14}
+\]</span> <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214205242.png" style="zoom:67%;" /></p>
+<p>MATLAB 函数如下</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[y]</span> = <span class="title">nsign</span><span class="params">(x)</span></span></span><br><span class="line">	y = <span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="built_in">pi</span>/<span class="number">2</span>*<span class="number">1000</span>*x);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="偏微分方程降阶">1.2 偏微分方程降阶</h3>
+<p>本问题的偏微分方程: <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}-2 \cdot \mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{12}\\
+J \cdot \ddot{\varphi}&amp;=&amp;-M_{B} \cdot \operatorname{sign}(\dot{\varphi})+\mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right) \cdot r_{R a d}\tag{13}\\
+\end{eqnarray*}
+\]</span> 降阶的思路是将偏微分方程转为状态空间，用状态向量 <span class="math inline">\(\underline{\xi}=\left[\begin{array}{l}\underline{x} \\ \dot{\underline{x}}\end{array}\right]\)</span> 表示。</p>
+<ol type="1">
+<li><p>将 (12), (13) 用显式 <span class="math inline">\(\underline{\ddot{x}}= ...\)</span> 表示: <span class="math display">\[
+\begin{eqnarray*}
+\ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2 m} A c_{w} \dot{x}^{2}-2 \cdot \frac{\mu(S)}{m} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right)\tag{14} \\ 
+\ddot{\varphi}&amp;=&amp;-\frac{M_{B}}{J} \cdot \operatorname{sign}(\dot{\varphi})+\frac{\mu(S)}{J} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \cdot r_{R a d}\tag{15}
+\end{eqnarray*}
+\]</span></p></li>
+<li><p>建立方程组 <span class="math display">\[
+\begin{array}{l}\dot{x}=\dot{x} \\ \dot{\varphi}=\dot{\varphi} \\ \ddot{x}=-\frac{\rho_{L}}{2 m} A c_{w} \dot{x}^{2}-2 \cdot \frac{\mu(S)}{m} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \\ \ddot{\varphi}=-\frac{M_{B}}{J} \cdot \operatorname{sign}(\dot{\varphi})+\frac{\mu(S)}{J} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \cdot r_{R a d}\end{array}
+\]</span></p></li>
+<li><p>设置状态向量 <span class="math display">\[
+\underline{x}=\left[\begin{array}{l}x \\ \varphi\end{array}\right]
+\]</span> 因此: <span class="math display">\[
+\underline{\xi}=\left[\begin{array}{c}\xi_{1} \\ \xi_{2} \\ \xi_{3} \\ \xi_{4}\end{array}\right]=\left[\begin{array}{c}x \\ \varphi \\ \dot{x} \\ \dot{\varphi}\end{array}\right] ;\qquad \underline{\dot{\xi}}=\left[\begin{array}{c}\dot{\xi}_{1} \\ \dot{\xi}_{2} \\ \dot{\xi}_{3} \\ \dot{\xi}_{4}\end{array}\right]=\left[\begin{array}{c}\dot{x} \\ \dot{\varphi} \\ \ddot{x} \\ \ddot{\varphi}\end{array}\right]
+\]</span></p></li>
+<li><p>将左侧 <span class="math inline">\(\underline{\dot{\xi}}\)</span> 和右侧 <span class="math inline">\(\underline{ {\xi}}\)</span> 联系起来 <span class="math display">\[
+\dot{\xi}=\left\{\begin{array}{l}\dot{\xi}_{1}=\dot{x}=\dot{x}=\xi_{3} \\ \dot{\xi}_{2}=\dot{\varphi}=\dot{\varphi}=\xi_{4} \\ \dot{\xi}_{3}=\ddot{x}=\frac{1}{m}\left(-\frac{\rho_{L}}{2} A c_{w} \xi_{3}^{2}-2 \cdot \mu(S) \cdot F_{z} \cdot \operatorname{sign}\left(\xi_{3}-\xi_{4} \cdot r_{R a d}\right)\right) \\ \dot{\xi}_{4}=\ddot{\varphi}=\frac{1}{J}\left(-M_{B} \cdot \operatorname{sign}\left(\xi_{4}\right)+\mu(S) \cdot F_{z} \cdot \operatorname{sign}\left(\xi_{3}-\xi_{4} \cdot r_{R a d}\right) \cdot r_{R a d}\right)\end{array}\right.
+\]</span></p></li>
+</ol>
+<h3 id="matlab-解偏微分方程">1.3 MATLAB 解偏微分方程</h3>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
+<p><strong>solver</strong> 的可用函数如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>Solvername</th>
+<th>选择领域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ode23</td>
+<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
+</tr>
+<tr class="even">
+<td>ode45</td>
+<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
+</tr>
+<tr class="odd">
+<td>ode113</td>
+<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
+</tr>
+<tr class="even">
+<td>ode23t</td>
+<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
+</tr>
+<tr class="odd">
+<td>ode15s</td>
+<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
+</tr>
+<tr class="even">
+<td>ode23s</td>
+<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
+</tr>
+<tr class="odd">
+<td>ode23tb</td>
+<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
+</tr>
+</tbody>
+</table>
+<p><strong><span class="citation" data-cites="odefunction">@odefunction</span></strong> 中描述状态向量 <span class="math inline">\(\underline{\dot\xi}\)</span> 和 <span class="math inline">\(\underline\xi\)</span> 的关系。在这里必须将大于一阶的偏微分方程转换为一阶的偏微分方程，通过 1.2 中的方法降阶。</p>
+<p><strong>odeopts</strong> 优化 <strong>solver</strong> 的解偏微分方程过程。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options = odeset(<span class="string">&#x27;name1&#x27;</span>,value1,<span class="string">&#x27;name2&#x27;</span>,value2,...)</span><br></pre></td></tr></table></figure>
+<p><strong>odeopts</strong> 提供了多个选项，具体参考 <a target="_blank" rel="noopener" href="https://de.mathworks.com/help/matlab/ref/odeset.html">odeopts 的 Help Center</a>，下面介绍几个常用的选项:</p>
+<ul>
+<li><p><strong>误差控制</strong> (Fehlerkontrolle)</p>
+<ul>
+<li><font color='DarkViolet'>'RelTol'</font> : 相对误差界限，它控制所有解决方案中的正确位数，但小于 <font color='DarkViolet'>'AbsTol'</font>。在每个步骤中，ODE求解器都会估计解决方案的第i个部分中的局部误差 e。</li>
+<li><font color='DarkViolet'>'AbsTol'</font> : 绝对误差，该值是一个阈值。</li>
+<li><font color='DarkViolet'>'NormControl'</font> : 有 on 和 off 两个状态，当NormControl处于 on 状态时，求解器将使用解决方案的范式而非绝对值来控制误差e的每一步：</li>
+</ul>
+<p><span class="math display">\[
+|e(i)| \leqslant \max(RelTol\cdot abs(y(i)),\,AbsTol(i))
+\]</span></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140539.png" style="zoom:67%;" /></p></li>
+<li><p><strong>步长控制</strong> (Schrittweitenkontrolle)</p>
+<ul>
+<li><p><font color='DarkViolet'>'InitialStep'</font> : 初始步长，有关第一次积分步长的建议 (可能受到tspan 影响)</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140859.png"  style="zoom:50%;" /></p></li>
+<li><p><font color='DarkViolet'>'MaxStep'</font> : 积分步骤的步骤大小的最大允许值。MaxStep设置求解器采取的任何步骤的大小的上限。例如，如果方程具有周期性，则将MaxStep设置为周期的一小部分可确保求解器不会将步长扩大得太大，以至于无法跨过感兴趣区域。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215191019.png" style="zoom: 80%;" /></p></li>
+</ul></li>
+<li><p><strong>解算器输出功能</strong> (Solver Ausgabefunktionen)</p>
+<ul>
+<li><p><font color='DarkViolet'>'OutputFcn'</font> : 每个成功的时间步之后，ODE求解器都会调用输出函数。 如果调用不带输出的ODE求解器，则输出函数默认为@odeplot，该函数将在计算所有求解分量时将其绘制出来。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215193649.png" title="自定义函数打印结果" style="zoom:80%;" /></p></li>
+<li><p><font color='DarkViolet'>'OutputSel'</font> : 向量指定要传递给输出函数的解决方案的哪些组成部分。</p></li>
+</ul></li>
+</ul>
+<blockquote>
+<p><strong>例子 - 摆</strong></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215194941.png" style="zoom: 80%;" /></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 设置ODE函数参数</span></span><br><span class="line">odeopts = odeset(<span class="string">&#x27;reltol&#x27;</span>,<span class="number">1e-9</span>,<span class="string">&#x27;abstol&#x27;</span>,<span class="number">1e-12</span>);</span><br><span class="line"><span class="comment">% 引入数值解</span></span><br><span class="line">[t2,xi2] = ode45(@ODE_Pendel_nlin,tspan,xi_0,odeopts);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215195151.png" title="没设置误差(蓝线)，设置误差（红线）" style="zoom: 67%;" /></p>
+</blockquote>
+<h2 id="matlab-skript">2. MATLAB Skript</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 我们正在寻找在水平道路上以速度 <i>v<sub>0</sub></i> 行驶的车辆的制动距离。 滚动阻力可以忽略。 产生的制动扭矩 <i>M<sub>B</sub></i> 分别为：1500 <i>Nm</i>, 1700 <i>Nm</i>, 2000 <i>Nm</i>
+</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 定义全局向量</span></span><br><span class="line"><span class="keyword">global</span> v0 g m J Fz rR rhoL cw A RSK s_ABS</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">v0 = <span class="number">100</span>/<span class="number">3.6</span>; <span class="comment">% in m/s</span></span><br><span class="line">g = <span class="number">9.81</span>; <span class="comment">% m/s^2</span></span><br><span class="line">m = <span class="number">1500</span>; <span class="comment">% kg</span></span><br><span class="line">J = <span class="number">1.6</span>; <span class="comment">% kgm^2</span></span><br><span class="line">Fz = <span class="number">0.5</span>*m*g;</span><br><span class="line">rR = <span class="number">0.3</span>; <span class="comment">% m</span></span><br><span class="line">rhoL = <span class="number">1.2</span>; <span class="comment">% kg/m^3</span></span><br><span class="line">cw = <span class="number">0.3</span>; <span class="comment">%-</span></span><br><span class="line">A = <span class="number">2</span>; <span class="comment">% m^2</span></span><br><span class="line"><span class="comment">% 计算 mu(s) 的参数</span></span><br><span class="line">a = <span class="number">0.86</span>;</span><br><span class="line">b = <span class="number">33.82</span>;</span><br><span class="line">c = <span class="number">0.36</span>;</span><br><span class="line"><span class="comment">% mu = a*(1-exp(-b*s))-c*s;</span></span><br><span class="line">RSK = @(s)a*(<span class="number">1</span>-<span class="built_in">exp</span>(-b*s))-c*s;</span><br><span class="line"><span class="comment">% 制动力矩</span></span><br><span class="line">MB = [<span class="number">1500</span> <span class="number">1700</span> <span class="number">2000</span>]; <span class="comment">% Nm</span></span><br><span class="line"><span class="comment">% ABS的滑移极限值</span></span><br><span class="line">s_ABS = <span class="number">0.14</span>;</span><br><span class="line"><span class="comment">% 创建时间向量</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">10</span>; <span class="comment">% s</span></span><br><span class="line"><span class="comment">% 创建系统初始值 [x, phi, xp, phip]</span></span><br><span class="line">xi0 = [<span class="number">0</span>, <span class="number">0</span>, v0, v0/rR];</span><br></pre></td></tr></table></figure>
+<p><strong>计算无ABS时的情况</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[t1,xi1] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">1</span>),<span class="built_in">false</span>);</span><br><span class="line">[t2,xi2] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">2</span>),<span class="number">0</span>);</span><br><span class="line">[t3,xi3] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">3</span>),<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>函数定义:</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% ODE-函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_Bremsen</span><span class="params">(t,xi,MB,ABS)</span></span></span><br><span class="line">	<span class="comment">% 导入全局变量</span></span><br><span class="line">	<span class="keyword">global</span> v0 g m J Fz rR rhoL cw A RSK s_ABS</span><br><span class="line">	<span class="comment">% 分配 xip</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">4</span>,<span class="number">1</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 车轮转速最小为零，不为负数</span></span><br><span class="line">	xi(<span class="number">4</span>) = <span class="built_in">max</span>(<span class="number">0</span>, xi(<span class="number">4</span>))</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 计算滑移率</span></span><br><span class="line">	<span class="keyword">if</span> xi(<span class="number">3</span>)&lt;<span class="number">0.0000001</span></span><br><span class="line">		s = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		s = (xi(<span class="number">3</span>)-xi(<span class="number">4</span>)*rR)/xi(<span class="number">3</span>);</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 计算摩擦系数 mu</span></span><br><span class="line">	mu = RSK(s);</span><br><span class="line"></span><br><span class="line">	<span class="comment">% ABS作为单点控制实施</span></span><br><span class="line">	<span class="keyword">if</span> ABS</span><br><span class="line">		MB = (nsign(s_ABS-s)+<span class="number">1</span>)/<span class="number">2</span>*MB;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">% 力的计算</span></span><br><span class="line">	Fl = rhoL/<span class="number">2</span>*A*cw*xi(<span class="number">3</span>)^<span class="number">2</span>;</span><br><span class="line">	Fx = mu*Fz*nsign(xi(<span class="number">3</span>)-xi(<span class="number">4</span>)*rR);</span><br><span class="line"></span><br><span class="line">	<span class="comment">% ODE系统的显性方式</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">3</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = (<span class="number">1</span>/m)*(-Fl<span class="number">-2</span>*Fx);</span><br><span class="line">	xip(<span class="number">4</span>) = (<span class="number">1</span>/J)*(-MB*nsign(xi(<span class="number">4</span>))+Fx*rR);</span><br><span class="line">	</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>定义用actan近似Sign函数</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 用 arctan 近似 sign</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[out]</span> = <span class="title">nsign</span><span class="params">(inp)</span></span></span><br><span class="line">	out = <span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="built_in">pi</span>/<span class="number">2</span>*<span class="number">1000</span>*inp);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200008.jpg" style="zoom:67%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200013.jpg" style="zoom: 67%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 纵向动态模型可以扩展为包括简单的防抱死制动系统 (ABS)。 该控制器应设计为单点控制器，该控制器可以在 s = 0.14 处断开外部制动扭矩。 使用反正切函数可以避免此处的不连续性。
+</p>
+<p><strong>计算有ABS时的情况</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[t1a,xi1a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(1),true);</span><br><span class="line">[t2a,xi2a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(2),1);</span><br><span class="line">[t3a,xi3a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(3),1);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123012.jpg" style="zoom:67%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123020.jpg" style="zoom:67%;" /></p>
+<p>可用看到，在具备ABS系统的刹车系统中在减少制动距离的同时减少了刹车时间。</p>
+<h2 id="参考文献">参考文献</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>WIKIPEDIA, ‘‘符号函数,” 2021<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+
+    
+      <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fas fa-paw"></i> 感谢阅读-------------</div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Matlab/" rel="tag"> <i class="fa fa-tag"></i> Matlab</a>
+              <a href="/tags/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF/" rel="tag"> <i class="fa fa-tag"></i> 车辆技术</a>
+              <a href="/tags/%E6%8C%AF%E5%8A%A8%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 振动分析</a>
+              <a href="/tags/%E8%A1%8C%E9%A9%B6%E5%8A%A8%E5%8A%9B%E5%AD%A6/" rel="tag"> <i class="fa fa-tag"></i> 行驶动力学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Modeling%20and%20simulation%20in%20vehicle%20technology-Eigenfrequenz/" rel="prev" title="简单车辆模型-垂直动力学2">
+      <i class="fa fa-chevron-left"></i> 简单车辆模型-垂直动力学2
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%B5%E5%90%91%E5%8A%A8%E5%8A%9B%E5%AD%A6"><span class="nav-text">0. 纵向动力学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">1. 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E5%87%BD%E6%95%B0-sign"><span class="nav-text">1.1 符号函数 sign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E9%99%8D%E9%98%B6"><span class="nav-text">1.2 偏微分方程降阶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#matlab-%E8%A7%A3%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-text">1.3 MATLAB 解偏微分方程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-skript"><span class="nav-text">2. MATLAB Skript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kuihong CHEN"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">Kuihong CHEN</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chenkuihong@outlook.com" title="E-Mail → chenkuihong@outlook.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-paw"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kuihong CHEN</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">38 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'zeRKfQG9sKEr9UoM9vRbbkoN-MdYXbMMI',
+      appKey     : 's5oas99KAHm0w8dRRNVNliYE',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

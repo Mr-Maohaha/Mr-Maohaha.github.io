@@ -23,14 +23,17 @@
 
   <meta name="description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="车辆技术中的建模与仿真-四分之一车辆模型振动分析">
+<meta property="og:title" content="简单车辆模型-垂直动力学1">
 <meta property="og:url" content="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/index.html">
 <meta property="og:site_name" content="猫哈哈的笔记本">
 <meta property="og:description" content="不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214165941.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213175746.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181119.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181130.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181138.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214832.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214954.png">
@@ -40,13 +43,14 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214235.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209214712.png">
 <meta property="article:published_time" content="2021-02-12T14:09:58.000Z">
-<meta property="article:modified_time" content="2021-02-12T14:35:44.840Z">
+<meta property="article:modified_time" content="2021-02-15T21:29:45.352Z">
 <meta property="article:author" content="Kuihong CHEN">
 <meta property="article:tag" content="Matlab">
 <meta property="article:tag" content="车辆技术">
-<meta property="article:tag" content="信号分析">
+<meta property="article:tag" content="振动分析">
+<meta property="article:tag" content="行驶动力学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214165941.png">
 
 <link rel="canonical" href="http://www.mr-maohaha.com/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/">
 
@@ -61,7 +65,7 @@
   };
 </script>
 
-  <title>车辆技术中的建模与仿真-四分之一车辆模型振动分析 | 猫哈哈的笔记本</title>
+  <title>简单车辆模型-垂直动力学1 | 猫哈哈的笔记本</title>
   
 
 
@@ -218,7 +222,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          车辆技术中的建模与仿真-四分之一车辆模型振动分析
+          简单车辆模型-垂直动力学1
         </h1>
 
         <div class="post-meta">
@@ -227,10 +231,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-12 15:09:58 / 修改时间：15:35:44" itemprop="dateCreated datePublished" datetime="2021-02-12T15:09:58+01:00">2021-02-12</time>
+              <time title="创建时间：2021-02-12 15:09:58" itemprop="dateCreated datePublished" datetime="2021-02-12T15:09:58+01:00">2021-02-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-15 22:29:45" itemprop="dateModified" datetime="2021-02-15T22:29:45+01:00">2021-02-15</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -239,10 +249,14 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/TU-Branschweig/" itemprop="url" rel="index"><span itemprop="name">TU-Branschweig</span></a>
                 </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TU-Branschweig/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF%E4%B8%AD%E7%9A%84%E5%BB%BA%E6%A8%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" itemprop="url" rel="index"><span itemprop="name">车辆技术中的建模与仿真</span></a>
+                </span>
             </span>
 
           
-            <span id="/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/" class="post-meta-item leancloud_visitors" data-flag-title="车辆技术中的建模与仿真-四分之一车辆模型振动分析" title="阅读次数">
+            <span id="/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/" class="post-meta-item leancloud_visitors" data-flag-title="简单车辆模型-垂直动力学1" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -268,14 +282,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.7k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>10 分钟</span>
             </span>
             <div class="post-description">不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。</div>
 
@@ -288,8 +302,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="任务描述">0. 任务描述</h2>
-<p>如图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
+        <h2 id="四分之一车辆模型">0. 四分之一车辆模型</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214165941.png" style="zoom:80%;" /></p>
+<p>如下图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png" style="zoom: 80%;" /></p>
 <p><strong>给定参数</strong>: <span class="math display">\[
 \begin{array}{lll}
@@ -304,9 +319,12 @@ m_{s} \ddot{x}_{3}&amp;+&amp;b_{s}\left(\dot{x}_{3}-\dot{x}_{2}\right)+c_{s}\lef
 \]</span> <strong>激励函数</strong>: <span class="math display">\[
 u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \geq t_{s}\end{array}\right.\tag{2}
 \]</span></p>
-<p style="background-color:Wheat">
-<font size=4><b>任务</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
-</p>
+<p>式中的激励 <i><b>u</b></i><b>(<i>t</i>)</b> 的来源有三:</p>
+<ol type="1">
+<li>颠簸</li>
+<li>驱动扭矩的波动</li>
+<li>自行车与道路之间的相互作用</li>
+</ol>
 <h2 id="偏微分方程分析">1. 偏微分方程分析</h2>
 <p style="padding-left: 1em;">
 <b>一般求解过程 (线性系统):</b>
@@ -380,14 +398,25 @@ u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \g
 \]</span> 结合 (3), (4) 和 (6)，建立状态向量:</p>
 <p><span class="math display">\[
 \underline{x}=\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] ; \quad 
-\dot{x}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
-\underline{y}=\left[\begin{array}{l}
+\underline{\dot{x}}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
+\underline{y}=\left[\begin{array}{c}
 x_{1} \\ 
 x_{2} \\ 
-x_{3} \\ 
+x_{3} \\
+0 \\ 
+0 \\ 
+0 
+\end{array}\right]; \quad
+\underline{u}=\left[\begin{array}{c}
+u(t) \\ 
+0 \\ 
+0 \\ 
+\dot{u}(t) \\ 
+0 \\ 
+0 
 \end{array}\right]
 \]</span></p>
-<p>因为状态向量 <i><b>x</b></i> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
+<p>因为状态向量 <span class="math inline">\(\underline{x}\)</span> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
 <p><span class="math display">\[
 \underline{\underline{C}} = 
 \begin{bmatrix}
@@ -401,7 +430,7 @@ x_{3} \\
 \underline{\underline{D}} = 
 \underline{\underline{0}}_{(6 \times 6)}
 \]</span></p>
-<p>状态方程: <span class="math display">\[
+<p>系统矩阵和输入矩阵如下: <span class="math display">\[
 \underline{\underline{B}} = 
 \begin{bmatrix}
 &amp;&amp;&amp;&amp;&amp;\\
@@ -421,45 +450,70 @@ x_{3} \\
 -{\large\frac{c_r+c_a}{m_r}}&amp;{\large\frac{c_a}{m_r}}&amp;0&amp;-{\large\frac{b_r+b_a}{m_r}}&amp;{\large\frac{b_a}{m_r}}&amp;0\\
 {\large\frac{c_a}{m_a}}&amp;-{\large\frac{c_a+c_s}{m_a}}&amp;{\large\frac{c_s}{m_a}}&amp;{\large\frac{b_a}{b_a}}&amp;-{\large\frac{b_a+b_s}{m_a}}&amp;{\large\frac{b_s}{m_a}}\\
 0&amp;{\large\frac{c_s}{m_s}}&amp;-{\large\frac{c_s}{m_s}}&amp;0&amp;{\large\frac{b_s}{m_s}}&amp;-{\large\frac{b_s}{m_s}}
-\end{bmatrix}\tag{7}
+\end{bmatrix}
 \]</span></p>
-<p>将 (7) 代入 (3): <span class="math display">\[
-\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]=\begin{bmatrix}
+<p>因此 (3), (4) 展开形式如 (7), (8): <span class="math display">\[
+\begin{array}{c}
+\underbrace{\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]}_{\Large\underline{\dot{x}}}=
+\underbrace{\begin{bmatrix}
 0&amp;0&amp;0&amp;1&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;1&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;1\\
 -{\frac{c_r+c_a}{m_r}}&amp;{\frac{c_a}{m_r}}&amp;0&amp;-{\frac{b_r+b_a}{m_r}}&amp;{\frac{b_a}{m_r}}&amp;0\\
 {\frac{c_a}{m_a}}&amp;-{\frac{c_a+c_s}{m_a}}&amp;{\frac{c_s}{m_a}}&amp;{\frac{b_a}{b_a}}&amp;-{\frac{b_a+b_s}{m_a}}&amp;{\frac{b_s}{m_a}}\\
 0&amp;{\frac{c_s}{m_s}}&amp;-{\frac{c_s}{m_s}}&amp;0&amp;{\frac{b_s}{m_s}}&amp;-{\frac{b_s}{m_s}}
-\end{bmatrix}\cdot
-\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] 
-+\\
-\begin{bmatrix}
+\end{bmatrix}}_{\Large\underline{\underline{A}}}
+\cdot
+\underbrace{\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right]}_{\Large\underline{x}}
++
+\underbrace{\begin{bmatrix}
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 \frac{c_r}{m_r}&amp;0&amp;0&amp;{\frac{b_r}{m_r}}&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0
-\end{bmatrix}\cdot
-\left[\begin{array}{l}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]
+\end{bmatrix}}_{\Large\underline{\underline{B}}}
+\cdot
+\underbrace{\left[\begin{array}{c}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]}_{\Large\underline{u}}
+\end{array}\tag{7}
 \]</span></p>
-<p>将 (7) 简化: <span class="math display">\[
+<p><span class="math display">\[
+\left[\begin{array}{c}
+x_{1} \\ 
+x_{2} \\ 
+x_{3} \\
+0 \\ 
+0 \\ 
+0 
+\end{array}\right] = 
+\begin{bmatrix}
+1&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;1&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;1&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}
+\cdot
+\left[\begin{array}{l}{x}_{1} \\ {x}_{2} \\ {x}_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right]\tag{8}
+\]</span></p>
+<p>将 (7) 中的 <span class="math inline">\(\underline{\underline{A}}\)</span> 简化: <span class="math display">\[
 \underline{\underline{A}}=\left[\begin{array}{cc}
 \underline{\underline{0}} &amp; I \\ 
 -M^{-1} K &amp; -M^{-1} DM 
-\end{array}\right]\tag{8}
+\end{array}\right]
 \]</span> 其中 <span class="math display">\[
 M = \begin{bmatrix}
 m_r&amp;0&amp;0\\
 0&amp;m_a&amp;0\\
 0&amp;0&amp;m_s
-\end{bmatrix}\\
+\end{bmatrix}\quad
 K = \begin{bmatrix}
 c_r+c_a&amp;-c_a&amp;0\\
 -c_a&amp;c_a+c_s&amp;-c_s\\
 0&amp;-c_s&amp;c_s
-\end{bmatrix}\\ 
+\end{bmatrix}\quad 
 DM = \begin{bmatrix}
 b_r+b_a&amp;-b_a&amp;0\\
 -b_a&amp;c_a+b_s&amp;-b_s\\
@@ -489,7 +543,7 @@ b_r+b_a&amp;-b_a&amp;0\\
 </tbody>
 </table>
 <p>将 (8) 代入 (5): <span class="math display">\[
-\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} D\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F
+\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} DM\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F\tag{9}
 \]</span> 其中 <span class="math display">\[
 \underline{\dot{\xi}}=
 \begin{bmatrix}
@@ -525,64 +579,59 @@ x\\
 \dot{x}_2\\
 \dot{x}_3
 \end{bmatrix}
-\]</span></p>
-<p><span class="math display">\[
+;\quad
 F=\begin{bmatrix}
 0\\
 0\\
 0\\
-\frac{1}{m_r}\cdot\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
+\frac{1}{m_r}\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
 \begin{bmatrix}u(t)\\\dot{u}(t)\end{bmatrix}\\
 0\\
 0
 \end{bmatrix}
 \]</span></p>
+<p>或者从偏微分方程的矩阵表达 (10) 直接推导: <span class="math display">\[
+\underline{\underline{M}}\,
+\underline{\ddot{z}}+
+\underline{\underline{DM}}\,
+\underline{\dot{z}}+
+\underline{\underline{K}}\,
+\underline{\ddot{z}}=
+\underline{F}\tag{10}
+\]</span></p>
+<p><span class="math display">\[
+\,
+\underline{\ddot{z}}=
+-\underline{\underline{M}}^{-1}\underline{\underline{DM}}\,
+\underline{\dot{z}}
+-\underline{\underline{M}}^{-1}\underline{\underline{K}}\,
+\underline{\ddot{z}}+
+-\underline{\underline{M}}^{-1}\underline{F}
+\]</span></p>
+<p>然后也可以推导出系统矩阵 <span class="math inline">\(\underline{\underline{A}}\)</span> 。</p>
 <h2 id="matlab-skript">2. MATLAB Skript</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 定义全局变量</span></span><br><span class="line"><span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"><span class="comment">% 定义时间向量，这里选择0到5s</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">5</span>;</span><br><span class="line"><span class="comment">% 定义初始值，系统初始为</span></span><br><span class="line">xi0 = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>];</span><br></pre></td></tr></table></figure>
-<p>MATLAB 解偏微分方程的函数:</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
-<table>
-<thead>
-<tr class="header">
-<th>Solvername</th>
-<th>选择领域</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ode23</td>
-<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
-</tr>
-<tr class="even">
-<td>ode45</td>
-<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
-</tr>
-<tr class="odd">
-<td>ode113</td>
-<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
-</tr>
-<tr class="even">
-<td>ode23t</td>
-<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
-</tr>
-<tr class="odd">
-<td>ode15s</td>
-<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
-</tr>
-<tr class="even">
-<td>ode23s</td>
-<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
-</tr>
-<tr class="odd">
-<td>ode23tb</td>
-<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
-</tr>
-</tbody>
-</table>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 1. 有显性方程的数值解</span></span><br><span class="line">[t_exp,xi_exp] = ode45(@ODE_exp, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="comment">% ODE公式的显式表示法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_exp</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="comment">% 从全局工作区加载系统参数</span></span><br><span class="line">	<span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line">	<span class="comment">% 将 xip (\dot&#123;\xi&#125;) 分配为列向量(并非必要)</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="comment">% 计算激励函数与时间的关系</span></span><br><span class="line">	<span class="comment">% 由于br = 0，因此导数up可以设置为0。</span></span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 以显式形式计算xip中的元素</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">5</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = xi(<span class="number">6</span>);</span><br><span class="line">	xip(<span class="number">4</span>) = <span class="number">1</span>/mr*(cr*u+br*up-ba*(xi(<span class="number">4</span>)-xi(<span class="number">5</span>))-br*xi(<span class="number">4</span>)-ca*(xi(<span class="number">1</span>)-xi(<span class="number">2</span>))-cr*xi(<span class="number">1</span>));</span><br><span class="line">	xip(<span class="number">5</span>) = <span class="number">1</span>/ma*(-bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))-ba*(xi(<span class="number">5</span>)-xi(<span class="number">4</span>))-ca*(xi(<span class="number">2</span>)-xi(<span class="number">1</span>))-cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line">	xip(<span class="number">6</span>) = <span class="number">1</span>/ms*(bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))+cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 矩阵方程式</span></span><br><span class="line"><span class="keyword">global</span> A</span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">B = [	br+ba,	-ba,	<span class="number">0</span>;</span><br><span class="line">		-ba,	ba+bs,	-bs;</span><br><span class="line">		<span class="number">0</span>,		-bs,	bs];</span><br><span class="line">C = [	cr+ca,	-ca,	<span class="number">0</span>;</span><br><span class="line">		-ca,	ca+cs,	-cs;</span><br><span class="line">		<span class="number">0</span>,		-cs,	cs];</span><br><span class="line">A = [	<span class="built_in">zeros</span>(<span class="number">3</span>), 	<span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-M\C,		-M\B];</span><br><span class="line"><span class="comment">% 2. 矩阵形式的数值解</span></span><br><span class="line">[t_mat,xi_mat] = ode45(@ODE_mat, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_mat</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="keyword">global</span> A mr cr br ts u0</span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 考虑到外部激励</span></span><br><span class="line">	U = [u; up];</span><br><span class="line">	F = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; [cr, br]*U/mr; <span class="number">0</span>; <span class="number">0</span>];</span><br><span class="line">	<span class="comment">% 计算 xip</span></span><br><span class="line">	<span class="comment">% A*xi 考虑系统内部反馈，向量F考虑作用在系统上的外力</span></span><br><span class="line">	xip = A*xi+F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png" title="振幅-时间图" style="zoom:70%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 在三个子图中绘制 <i>x</i>(t), <i>ẋ</i>(t) 和相图 <i>ẋ</i>(<i>x</i>)
+</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">figure</span>(<span class="string">&#x27;Position&#x27;</span>,[<span class="number">0</span> <span class="number">0</span> <span class="number">1200</span> <span class="number">600</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">% 创建并选择用于绘制x(t)的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>,[<span class="number">1</span> <span class="number">2</span>])</span><br><span class="line"><span class="built_in">plot</span>(t_exp,xi_exp(:,<span class="number">1</span>:<span class="number">3</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;时间 [s]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;位移 [m]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;四分之一车辆模型的各质量块运动过程&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;eastoutside&#x27;</span>)</span><br><span class="line">grid on</span><br><span class="line"><span class="comment">% 创建并选择用于绘制xp(t)的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>,[<span class="number">6</span> <span class="number">7</span>])</span><br><span class="line"><span class="built_in">plot</span>(t_exp,xi_exp(:,<span class="number">4</span>:<span class="keyword">end</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;时间 [s]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;速度 [m/s]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;四分之一车辆模型的各质量块运动速度&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;eastoutside&#x27;</span>)</span><br><span class="line">grid on</span><br><span class="line"><span class="comment">% 创建和选择用于绘制相图的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>, [<span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>])</span><br><span class="line"><span class="built_in">plot</span>(xi_exp(:,<span class="number">1</span>:<span class="number">3</span>),xi_exp(:,<span class="number">4</span>:<span class="keyword">end</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;位移 [m]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;速度 [m/s]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;各质量块的相图&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;best&#x27;</span>)</span><br><span class="line">grid on</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213175746.png" style="zoom:80%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务3</b></font>: 在没有外部刺激的情况下，确定一个质量块最初偏移 <i>x</i><sub>0</sub>= 0.3 <i>m</i> 的情况下,位移随时间变化的过程。
+</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 重新建立初始条件</span></span><br><span class="line">xi0_1 = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line">xi0_2 = [<span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line">xi0_3 = [<span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line"><span class="comment">% 外部激励为0</span></span><br><span class="line">u0 = <span class="number">0</span>;</span><br><span class="line"><span class="comment">% 计算数值解</span></span><br><span class="line">[t1,xi1] = ode45(@ODE_UE4_exp,tspan,xi0_1);</span><br><span class="line">[t2,xi2] = ode45(@ODE_UE4_exp,tspan,xi0_2);</span><br><span class="line">[t3,xi3] = ode45(@ODE_UE4_exp,tspan,xi0_3);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181119.jpg" style="zoom:80%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181130.jpg" style="zoom:80%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181138.jpg" style="zoom:80%;" /></p>
 <h2 id="matlab-simulink">3. MATLAB Simulink</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png" title="Simulink模型" style="zoom:80%;" /></p>
 <p><strong>模块及参数设置</strong></p>
 <ul>
@@ -626,7 +675,8 @@ F=\begin{bmatrix}
           <div class="post-tags">
               <a href="/tags/Matlab/" rel="tag"> <i class="fa fa-tag"></i> Matlab</a>
               <a href="/tags/%E8%BD%A6%E8%BE%86%E6%8A%80%E6%9C%AF/" rel="tag"> <i class="fa fa-tag"></i> 车辆技术</a>
-              <a href="/tags/%E4%BF%A1%E5%8F%B7%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 信号分析</a>
+              <a href="/tags/%E6%8C%AF%E5%8A%A8%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 振动分析</a>
+              <a href="/tags/%E8%A1%8C%E9%A9%B6%E5%8A%A8%E5%8A%9B%E5%AD%A6/" rel="tag"> <i class="fa fa-tag"></i> 行驶动力学</a>
           </div>
 
         
@@ -635,10 +685,13 @@ F=\begin{bmatrix}
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Modeling%20and%20simulation%20in%20vehicle%20technology-Signalanalyse/" rel="prev" title="车辆技术中的建模与仿真-信号分析">
-      <i class="fa fa-chevron-left"></i> 车辆技术中的建模与仿真-信号分析
+    <a href="/Modeling%20and%20simulation%20in%20vehicle%20technology-Signalanalyse/" rel="prev" title="信号分析">
+      <i class="fa fa-chevron-left"></i> 信号分析
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/Modeling%20and%20simulation%20in%20vehicle%20technology-Eigenfrequenz/" rel="next" title="简单车辆模型-垂直动力学2">
+      简单车辆模型-垂直动力学2 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -699,7 +752,7 @@ F=\begin{bmatrix}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="nav-text">0. 任务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%88%86%E6%9E%90"><span class="nav-text">1. 偏微分方程分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-skript"><span class="nav-text">2. MATLAB Skript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-simulink"><span class="nav-text">3. MATLAB Simulink</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%88%86%E4%B9%8B%E4%B8%80%E8%BD%A6%E8%BE%86%E6%A8%A1%E5%9E%8B"><span class="nav-text">0. 四分之一车辆模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%88%86%E6%9E%90"><span class="nav-text">1. 偏微分方程分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-skript"><span class="nav-text">2. MATLAB Skript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matlab-simulink"><span class="nav-text">3. MATLAB Simulink</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -715,20 +768,20 @@ F=\begin{bmatrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -769,12 +822,12 @@ F=\begin{bmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">25k</span>
+    <span title="站点总字数">42k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23 分钟</span>
+    <span title="站点阅读时长">38 分钟</span>
 </div>
 
         

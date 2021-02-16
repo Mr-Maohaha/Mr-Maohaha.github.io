@@ -1,7 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>车辆技术中的建模与仿真-信号分析</title>
+    <title>简单车辆模型-垂直动力学2</title>
+    <url>/Modeling%20and%20simulation%20in%20vehicle%20technology-Eigenfrequenz/</url>
+    <content><![CDATA[<h2 id="垂直动力学">0. 垂直动力学</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214165941.png" style="zoom:80%;" /></p>
+<p>车辆开发的目标之一为优化驾驶舒适性。实现驾驶舒适性通过:</p>
+<ul>
+<li>防止振动从车道传递到车辆乘员。</li>
+<li>车道与车体的分离。</li>
+<li>驾驶舒适性与行驶安全要求冲突。</li>
+<li>通过积极和创新的概念改善舒适度和安全性。</li>
+</ul>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213202008.png"  style="zoom: 67%;" /></p>
+<p>使用惰性气体的被动车辆悬架具有性能优势, 既改善驾驶舒适性又提高驾驶安全性。这里引入了一种新的理想的网络元件，称为惯性器(Inerter)，并被证明是可行的，其特性是施加的力与元件两端的相对加速度成比例。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+F=k\cdot\ddot{x}
+\]</span> 飞轮由高传动比的变速箱驱动:</p>
+<ul>
+<li>较小的相对运动导致较大的旋转角度</li>
+<li>对加速度具有惰性</li>
+</ul>
+<p>下图展示了传统的四分之一车辆模型与添加了惯性器的四分之一车辆模型</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213215112.png" title='传统模型与添加惯性器之后' style="zoom:67%;" /></p>
+<h2 id="运动方程及参数">1. 运动方程及参数</h2>
+<p>整个系统的运动方程如下: <span class="math display">\[
+\underline{\underline{M}} \cdot \ddot{\underline{z}}+\underline{\underline{D}} \cdot \dot{\underline{z}}+\underline{\underline{C}} \cdot \underline{z}=\underline{F}\tag{1}
+\]</span> 传统的四分之一车辆模型的参数: <span class="math display">\[
+\begin{align}
+\underline{z}&amp;=\left[\begin{array}{c}z_{3} \\ z_{2}\\ z_{1}\end{array}\right]\\
+\underline{M}&amp;=\left[\begin{array}{cccc}m_{3} &amp; 0 &amp; 0 \\ 0 &amp; m_{2} &amp; 0  \\ 0 &amp; 0 &amp; m_1\end{array}\right] \\ \underline{\underline{D}}&amp;=\left[\begin{array}{cccc}d_{3} &amp; -d_3 &amp; 0 \\ -d_{3} &amp; d_{3}+d_2 &amp; -d_2  \\ 0 &amp; -d_2 &amp; d_2  \\\end{array}\right] \\ 
+\underline{C}&amp;=\left[\begin{array}{cccc}c_{3} &amp; -c_3 &amp; 0 \\ -c_{3} &amp; c_{3}+c_2 &amp; -c_2  \\ 0 &amp; -c_2 &amp; c_2+c_1  \\\end{array}\right]\\
+\underline{F}&amp;=\left[\begin{array}{c}-m_{3} \cdot g \\ -m_{2} \cdot g \\ -m_{1} \cdot g + c_1\cdot u(t) \end{array}\right]
+\end{align}
+\]</span> 添加了惯性器的四分之一车辆模型: <span class="math display">\[
+\begin{align}
+\underline{z}&amp;=\left[\begin{array}{c}z_{3} \\ z_{2} \\ z_{d l} \\ z_{1}\end{array}\right]\\
+\underline{M}&amp;=\left[\begin{array}{cccc}m_{3} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; m_{2} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; m_{d l}+k_{i 2} &amp; -k_{i 2} \\ 0 &amp; 0 &amp; -k_{i 2} &amp; m_{1}+k_{i 2}\end{array}\right] \\ \underline{\underline{D}}&amp;=\left[\begin{array}{cccc}d_{3} &amp; -d_3 &amp; -d_{3} &amp; 0 &amp; 0 \\ -d_{3} &amp; d_{3}+d_{B}+d_{d l} &amp; -d_{d l} &amp; -d_{B} \\ 0 &amp; -d_{d l} &amp; d_{d l} &amp; 0 \\ 0 &amp; -d_{B} &amp; 0 &amp; d_{B}\end{array}\right] \\ 
+\underline{C}&amp;=\left[\begin{array}{cccc}c_{3} &amp; -c_{3} &amp; 0 &amp; 0 \\ -c_{3} &amp; c_{3}+c_{B}+c_{d l} &amp; -c_{d l} &amp; -c_{B} \\ 0 &amp; -c_{d l} &amp; c_{d l}+c_{2} &amp; -c_{2} \\ 0 &amp; -c_{B} &amp; -c_{2} &amp; c_{1}+c_{B}+c_{2}\end{array}\right]\\
+\underline{F}&amp;=\left[\begin{array}{c}-m_{3} \cdot g \\ -m_{2} \cdot g \\ -m_{d l} \cdot g \\ -m_{1} \cdot g+c_{1} \cdot u(t)\end{array}\right]
+\end{align}
+\]</span> 其中道路激励如式所示 <span class="math display">\[
+u(t) = u_0\cdot \cos(\omega\cdot t)\tag{2}
+\]</span> 转换式(1): <span class="math display">\[
+\ddot{\underline{z}} = -\underline{\underline{M}}^{-1}\,\underline{\underline{D}} \cdot \dot{\underline{z}}-\underline{\underline{M}}^{-1}\,\underline{\underline{C}} \cdot \underline{z}+\underline{\underline{M}}^{-1}\,\underline{F}
+\]</span> 规定 <span class="math inline">\(\xi=\begin{bmatrix}{z}\\\dot{z}\end{bmatrix},\;\dot{\xi}=\begin{bmatrix}\dot{z}\\\ddot{z}\end{bmatrix}\)</span>， 因此可以得到: <span class="math display">\[
+\dot{\xi}=\begin{bmatrix}0&amp;1\\-\underline{\underline{M}}^{-1}\,\underline{\underline{C}} &amp; -\underline{\underline{M}}^{-1}\,\underline{\underline{D}}\end{bmatrix}\xi+\begin{bmatrix}0\\\underline{\underline{M}}^{-1}\,\underline{F}\end{bmatrix}\tag{3}
+\]</span> 这个微分方程的解可以为如下形式: <span class="math display">\[
+\underline{x}_{i}(t)=\operatorname{Re}\left(\underline{v}_{i} \cdot e^{a_{i} t} \cdot\left(\cos \left(\omega_{i} t\right)+j \cdot \sin \left(\omega_{i} t\right)\right)\right)=\operatorname{Re}\left(\underline{v}_{i} \cdot e^{\lambda_{i} t}\right)
+\]</span></p>
+<ul>
+<li><p><strong>特征值</strong> <span class="math inline">\(\lambda_{i}=a+j \omega \in \mathbb{C}\)</span></p>
+<ul>
+<li><p>特征值<strong>实部</strong> <i>Re(λ<sub>i</sub>)</i> 确定了系统的稳定性 (Stabilität)</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213233658.png" style="zoom:67%;" /></p></li>
+<li><p>特征值<strong>虚部</strong> <i>Imag(λ<sub>i</sub>)</i> 确定了系统的固有频率 <span class="math display">\[
+\operatorname{Imag}\left(\lambda_{i}\right)=\omega_{i}
+\]</span> 固有频率 <i>f<sub>i</sub></i>: <span class="math display">\[
+f_{i}=\frac{\omega_{i}}{2 \pi}
+\]</span></p></li>
+</ul></li>
+<li><p><strong>特征向量</strong> <span class="math inline">\(\underline{v}_{i} \in \mathbb{C}\)</span></p>
+<ul>
+<li><span class="math inline">\(\underline{\mathrm{K}}_{i}=\left|\underline{v}_{i}\right|\)</span> 决定振幅大小</li>
+<li><span class="math inline">\(\underline{\varphi}_{i}=\arg \left(\underline{v}_{i}\right)\)</span> 决定相移</li>
+</ul>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213234507.png" style="zoom:80%;" /></p></li>
+</ul>
+<h2 id="任务-skript">2. 任务 &amp; Skript</h2>
+<p><strong>给定参数</strong> <span class="math display">\[
+\begin{array}{llll}m_{1}=50 \mathrm{~kg} &amp; c_{1}=245 \frac{N}{m m} &amp; c_{d l, I}=10 \frac{N}{m m} &amp; g=9.81 m / s^{2} \\ m_{2}=500 k g &amp; c_{2, I}=10 \frac{N}{m m} &amp; d_{2, k}=1650 \frac{N s}{m} &amp; u_{0}=1 m m \\ m_{3}=20 k g &amp; c_{2, k}=37,5 \frac{N}{m m} &amp; d_{B, I}=400 \frac{N s}{m} &amp; \\ m_{d l, I}=1 k g &amp; c_{3}=20 \frac{N}{m m} &amp; d_{d l, I}=1650 \frac{N s}{m} \\ k_{I}=380 k g &amp; c_{B, I}=32 \frac{N}{m m} &amp; d_{3}=500 \frac{N s}{m}\end{array}
+\]</span></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 计算添加了惯性器的和传统的四分之一车辆模型的固有频率
+</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 系统参数</span></span><br><span class="line"><span class="keyword">global</span> m1 m2 m3 mdl c1 u0 A_I M_I g A_k M_k</span><br><span class="line">m1 = <span class="number">50</span>; <span class="comment">%kg</span></span><br><span class="line">m2 = <span class="number">500</span>; <span class="comment">%kg</span></span><br><span class="line">m3 = <span class="number">20</span>; <span class="comment">%kg</span></span><br><span class="line">c1 = <span class="number">245e3</span>; <span class="comment">%N/m</span></span><br><span class="line">c3 = <span class="number">20e3</span>; <span class="comment">%N/m</span></span><br><span class="line">d3 = <span class="number">500</span>; <span class="comment">%Ns/m</span></span><br><span class="line">g = <span class="number">9.81</span>; <span class="comment">%m/s^2</span></span><br><span class="line">u0 = <span class="number">1e-3</span>; <span class="comment">%m</span></span><br><span class="line"><span class="comment">% 带惯性器的系统参数</span></span><br><span class="line">mdl = <span class="number">1</span>; <span class="comment">%kg</span></span><br><span class="line">ki2 = <span class="number">380</span>; <span class="comment">%kg</span></span><br><span class="line">c2i = <span class="number">10e3</span>; <span class="comment">%N/m</span></span><br><span class="line">cB = <span class="number">32e3</span>; <span class="comment">%N/m</span></span><br><span class="line">cdl = <span class="number">10e3</span>; <span class="comment">%N/m</span></span><br><span class="line">dB = <span class="number">400</span>; <span class="comment">%Ns/m</span></span><br><span class="line">ddl = <span class="number">1650</span>; <span class="comment">%Ns/m</span></span><br><span class="line"><span class="comment">% 1. 传统系统</span></span><br><span class="line">c2k = <span class="number">37.5e3</span>; <span class="comment">%N/m</span></span><br><span class="line">d2k = <span class="number">1650</span>; <span class="comment">%Ns/m</span></span><br><span class="line"></span><br><span class="line">M_I = [m3 <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line">        <span class="number">0</span> m2 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">        <span class="number">0</span> <span class="number">0</span> mdl+ki2 -ki2</span><br><span class="line">        <span class="number">0</span> <span class="number">0</span> -ki2 m1+ki2];</span><br><span class="line">D_I = [d3 -d3 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">       -d3 d3+dB+ddl -ddl -dB</span><br><span class="line">       <span class="number">0</span> -ddl ddl <span class="number">0</span></span><br><span class="line">       <span class="number">0</span> -dB <span class="number">0</span> dB];</span><br><span class="line">C_I = [c3 -c3 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">       -c3 c3+cB+cdl -cdl -cB</span><br><span class="line">       <span class="number">0</span> -cdl cdl+c2i -c2i</span><br><span class="line">       <span class="number">0</span> -cB -c2i cB+c2i+c1];</span><br><span class="line">A_I = [<span class="built_in">zeros</span>(<span class="number">4</span>),<span class="built_in">eye</span>(<span class="number">4</span>); -M_I\C_I, -M_I\D_I];</span><br><span class="line"><span class="comment">% 2. 添加惯性器的系统</span></span><br><span class="line">M_I = [m3 <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line">        <span class="number">0</span> m2 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">        <span class="number">0</span> <span class="number">0</span> mdl+ki2 -ki2</span><br><span class="line">        <span class="number">0</span> <span class="number">0</span> -ki2 m1+ki2];</span><br><span class="line">D_I = [d3 -d3 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">       -d3 d3+dB+ddl -ddl -dB</span><br><span class="line">       <span class="number">0</span> -ddl ddl <span class="number">0</span></span><br><span class="line">       <span class="number">0</span> -dB <span class="number">0</span> dB];</span><br><span class="line">C_I = [c3 -c3 <span class="number">0</span> <span class="number">0</span></span><br><span class="line">       -c3 c3+cB+cdl -cdl -cB</span><br><span class="line">       <span class="number">0</span> -cdl cdl+c2i -c2i</span><br><span class="line">       <span class="number">0</span> -cB -c2i cB+c2i+c1];</span><br><span class="line">A_I = [<span class="built_in">zeros</span>(<span class="number">4</span>),<span class="built_in">eye</span>(<span class="number">4</span>); -M_I\C_I, -M_I\D_I];</span><br><span class="line"></span><br><span class="line"><span class="comment">% 解式(3)，对两个系统分别求固有频率</span></span><br><span class="line">la_k = eig(A_k);</span><br><span class="line">w_eig_k = <span class="built_in">abs</span>(<span class="built_in">imag</span>(la_k));</span><br><span class="line">w_eig_k = unique(w_eig_k);</span><br><span class="line">w_eig_k = <span class="built_in">sort</span>(w_eig_k);</span><br><span class="line"></span><br><span class="line">la_I = eig(A_I);</span><br><span class="line">w_eig_I = <span class="built_in">abs</span>(<span class="built_in">imag</span>(la_I));</span><br><span class="line">w_eig_I = unique(w_eig_I);</span><br><span class="line">w_eig_I = <span class="built_in">sort</span>(w_eig_I);</span><br></pre></td></tr></table></figure>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 通过车轮上最低点的激励以自然频率激励系统。比较座椅加速度的幅度（驾驶舒适性）和车轮负载波动的幅度（驾驶安全性），并评估结果(对比两个系统)。 计算应在间隔 t = [0 10]𝑠 中进行，并从静态静止位置开始。
+</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">tspan = <span class="number">0</span>:<span class="number">1e-2</span>:<span class="number">10</span>;</span><br><span class="line"><span class="comment">%% 1. 模拟传统系统</span></span><br><span class="line">F0_k = [-m3; -m2; -m1]*g;</span><br><span class="line">z0_k = C_k\F0_k;</span><br><span class="line">xi0_k = [z0_k;<span class="built_in">zeros</span>(<span class="number">3</span>,<span class="number">1</span>)];</span><br><span class="line"><span class="comment">% ODE Setting</span></span><br><span class="line">odeopts = odeset();</span><br><span class="line"><span class="comment">% 调用计算函数（传统系统）</span></span><br><span class="line">[t1_k, xi1_k] = ode45(@ODE_2S,tspan,xi0_k,odeopts,w_eig_k(<span class="number">1</span>),<span class="string">&#x27;konventionell&#x27;</span>);</span><br><span class="line">[t2_k, xi2_k] = ode45(@ODE_2S,tspan,xi0_k,odeopts,w_eig_k(<span class="number">2</span>),<span class="string">&#x27;konventionell&#x27;</span>);</span><br><span class="line">[t3_k, xi3_k] = ode45(@ODE_2S,tspan,xi0_k,odeopts,w_eig_k(<span class="number">3</span>),<span class="string">&#x27;konventionell&#x27;</span>);</span><br><span class="line"><span class="comment">% 计算座椅上的加速度和车轮负载波动</span></span><br><span class="line"><span class="comment">% 思路是用diff函数计算差商 a = dxp/dt 来计算座椅加速度</span></span><br><span class="line">a1_k = diff(xi1_k(:,<span class="number">4</span>))./diff(t1_k);</span><br><span class="line">a2_k = diff(xi2_k(:,<span class="number">4</span>))./diff(t2_k);</span><br><span class="line">a3_k = diff(xi3_k(:,<span class="number">4</span>))./diff(t3_k);</span><br><span class="line"><span class="comment">% 加速过程的振幅</span></span><br><span class="line">Sitz_k(<span class="number">1</span>) = (<span class="built_in">max</span>(a1_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>))-<span class="built_in">min</span>(a1_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>)))/<span class="number">2</span>;</span><br><span class="line">Sitz_k(<span class="number">2</span>) = (<span class="built_in">max</span>(a2_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>))-<span class="built_in">min</span>(a2_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>)))/<span class="number">2</span>;</span><br><span class="line">Sitz_k(<span class="number">3</span>) = (<span class="built_in">max</span>(a3_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>))-<span class="built_in">min</span>(a3_k(<span class="built_in">round</span>(<span class="keyword">end</span>/<span class="number">2</span>):<span class="keyword">end</span>)))/<span class="number">2</span>;</span><br><span class="line"><span class="comment">% 计算车轮负载波动</span></span><br><span class="line">f1_k = c1*(xi1_k(:,<span class="number">3</span>)-u0*<span class="built_in">sin</span>(w_eig_k(<span class="number">1</span>)*t1_k));</span><br><span class="line">f2_k = c1*(xi2_k(:,<span class="number">3</span>)-u0*<span class="built_in">sin</span>(w_eig_k(<span class="number">2</span>)*t2_k));</span><br><span class="line">f3_k = c1*(xi3_k(:,<span class="number">3</span>)-u0*<span class="built_in">sin</span>(w_eig_k(<span class="number">3</span>)*t3_k));</span><br><span class="line"><span class="comment">%% 2. 添加惯性器的系统 (参照传统系统)</span></span><br><span class="line"><span class="comment">% 略</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_2S</span><span class="params">(t,xi,w,System)</span></span></span><br><span class="line">	<span class="comment">% 导入全局变量</span></span><br><span class="line">	<span class="keyword">global</span> m1 m2 m3 mdl c1 u0 A_I M_I g A_k M_k</span><br><span class="line">	<span class="comment">% 选择系统</span></span><br><span class="line">	<span class="keyword">if</span> strcmp(System,<span class="string">&#x27;inerter&#x27;</span>)</span><br><span class="line">		<span class="comment">% 惰性系统的外力计算</span></span><br><span class="line">		F = [-m3*g; -m2*g; -mdl*g; -m1*g+c1*u0*<span class="built_in">sin</span>(w*t)];</span><br><span class="line">		<span class="comment">% 显式的ODE(矩阵表示法)</span></span><br><span class="line">		xip = A_I*xi+[<span class="built_in">zeros</span>(<span class="number">4</span>,<span class="number">1</span>);inv(M_I)*F];</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="comment">% 计算常规系统的外力</span></span><br><span class="line">		F = [-m3*g; -m2*g; -m1*g+c1*u0*<span class="built_in">sin</span>(w*t)];</span><br><span class="line">		<span class="comment">% 显式的ODE(矩阵表示法)</span></span><br><span class="line">		xip = A_k*xi+[<span class="built_in">zeros</span>(<span class="number">3</span>,<span class="number">1</span>);inv(M_k)*F];</span><br><span class="line">	<span class="keyword">end</span>	</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>结果展示:</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">figID = <span class="built_in">figure</span>(<span class="string">&#x27;Position&#x27;</span>,[<span class="number">100</span> <span class="number">100</span> <span class="number">800</span> <span class="number">600</span>]);</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(w_eig_I/<span class="number">2</span>/<span class="built_in">pi</span>,Sitz_I,<span class="string">&#x27;or&#x27;</span>)</span><br><span class="line"><span class="built_in">plot</span>(w_eig_k/<span class="number">2</span>/<span class="built_in">pi</span>,Sitz_k,<span class="string">&#x27;sb&#x27;</span>)</span><br><span class="line">grid on; box on;</span><br><span class="line">title(<span class="string">&#x27;激发固有频率时的座椅加速度振幅&#x27;</span>)</span><br><span class="line">xlabel(<span class="string">&#x27;激励频率 [Hz]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;加速度 [m/s^2]&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;添加惯性器系统&#x27;</span>,<span class="string">&#x27;传统系统&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;southeast&#x27;</span>)</span><br><span class="line">ylim([<span class="number">0</span> <span class="number">1.1</span>*<span class="built_in">max</span>(<span class="built_in">max</span>(Sitz_I),<span class="built_in">max</span>(Sitz_k))])</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"><span class="built_in">plot</span>(w_eig_I/<span class="number">2</span>/<span class="built_in">pi</span>,Kraft_I,<span class="string">&#x27;or&#x27;</span>)</span><br><span class="line"><span class="built_in">plot</span>(w_eig_k/<span class="number">2</span>/<span class="built_in">pi</span>,Kraft_k,<span class="string">&#x27;sb&#x27;</span>)</span><br><span class="line">grid on; box on;</span><br><span class="line">title(<span class="string">&#x27;激发固有频率时的车轮负载波动的幅度&#x27;</span>)</span><br><span class="line">xlabel(<span class="string">&#x27;激励频率 [Hz]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;力 [N]&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;添加惯性器系统&#x27;</span>,<span class="string">&#x27;传统系统&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;southeast&#x27;</span>)</span><br><span class="line">ylim([<span class="number">0</span> <span class="number">1.1</span>*<span class="built_in">max</span>(<span class="built_in">max</span>(Kraft_I),<span class="built_in">max</span>(Kraft_k))])</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214171751.png" style="zoom:80%;" /></p>
+<h2 id="参考文献">参考文献</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>M. C. Smith and F.-C. Wang, “Performancebenefits in passive vehicle suspensions em-ploying inerters,”Vehicle system dynamics,vol. 42, no. 4, pp. 235–257, 2004.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>TU-Branschweig</category>
+        <category>车辆技术中的建模与仿真</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>车辆技术</tag>
+        <tag>振动分析</tag>
+        <tag>行驶动力学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>信号分析</title>
     <url>/Modeling%20and%20simulation%20in%20vehicle%20technology-Signalanalyse/</url>
     <content><![CDATA[<h2 id="信号导入">0. 信号导入</h2>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128160721.png" style="zoom:50%;" /></p>
@@ -269,6 +369,7 @@ N=\left[1+\left(n_{s}-1\right)(1-\text { overlap })\right] \cdot L\tag{4}
 ]]></content>
       <categories>
         <category>TU-Branschweig</category>
+        <category>车辆技术中的建模与仿真</category>
       </categories>
       <tags>
         <tag>Matlab</tag>
@@ -277,10 +378,11 @@ N=\left[1+\left(n_{s}-1\right)(1-\text { overlap })\right] \cdot L\tag{4}
       </tags>
   </entry>
   <entry>
-    <title>车辆技术中的建模与仿真-四分之一车辆模型振动分析</title>
+    <title>简单车辆模型-垂直动力学1</title>
     <url>/Modeling-and-simulation-in-vehicle-technology-Analyse-von-Eigenschwingungen/</url>
-    <content><![CDATA[<h2 id="任务描述">0. 任务描述</h2>
-<p>如图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
+    <content><![CDATA[<h2 id="四分之一车辆模型">0. 四分之一车辆模型</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214165941.png" style="zoom:80%;" /></p>
+<p>如下图给出了简化为三质量块的四分之一车辆模型的车辆。 目的是检查由于行驶在路缘上而导致的车轮垂直振动。其中 <i>m<sub>s</sub></i> 代表座位，<i>m<sub>a</sub></i> 代表车身， <i>m<sub>r</sub></i> 代表车轮。</p>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210207164259.png" style="zoom: 80%;" /></p>
 <p><strong>给定参数</strong>: <span class="math display">\[
 \begin{array}{lll}
@@ -295,9 +397,12 @@ m_{s} \ddot{x}_{3}&amp;+&amp;b_{s}\left(\dot{x}_{3}-\dot{x}_{2}\right)+c_{s}\lef
 \]</span> <strong>激励函数</strong>: <span class="math display">\[
 u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \geq t_{s}\end{array}\right.\tag{2}
 \]</span></p>
-<p style="background-color:Wheat">
-<font size=4><b>任务</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
-</p>
+<p>式中的激励 <i><b>u</b></i><b>(<i>t</i>)</b> 的来源有三:</p>
+<ol type="1">
+<li>颠簸</li>
+<li>驱动扭矩的波动</li>
+<li>自行车与道路之间的相互作用</li>
+</ol>
 <h2 id="偏微分方程分析">1. 偏微分方程分析</h2>
 <p style="padding-left: 1em;">
 <b>一般求解过程 (线性系统):</b>
@@ -371,14 +476,25 @@ u(t)=\left\{\begin{array}{ll}0 &amp; \quad  t&lt;t_{s} \\ u_{0} &amp; \quad t \g
 \]</span> 结合 (3), (4) 和 (6)，建立状态向量:</p>
 <p><span class="math display">\[
 \underline{x}=\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] ; \quad 
-\dot{x}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
-\underline{y}=\left[\begin{array}{l}
+\underline{\dot{x}}=\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]; \quad
+\underline{y}=\left[\begin{array}{c}
 x_{1} \\ 
 x_{2} \\ 
-x_{3} \\ 
+x_{3} \\
+0 \\ 
+0 \\ 
+0 
+\end{array}\right]; \quad
+\underline{u}=\left[\begin{array}{c}
+u(t) \\ 
+0 \\ 
+0 \\ 
+\dot{u}(t) \\ 
+0 \\ 
+0 
 \end{array}\right]
 \]</span></p>
-<p>因为状态向量 <i><b>x</b></i> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
+<p>因为状态向量 <span class="math inline">\(\underline{x}\)</span> 和输出信号 <i><b>y</b></i> 相等, 因此:</p>
 <p><span class="math display">\[
 \underline{\underline{C}} = 
 \begin{bmatrix}
@@ -392,7 +508,7 @@ x_{3} \\
 \underline{\underline{D}} = 
 \underline{\underline{0}}_{(6 \times 6)}
 \]</span></p>
-<p>状态方程: <span class="math display">\[
+<p>系统矩阵和输入矩阵如下: <span class="math display">\[
 \underline{\underline{B}} = 
 \begin{bmatrix}
 &amp;&amp;&amp;&amp;&amp;\\
@@ -412,45 +528,70 @@ x_{3} \\
 -{\large\frac{c_r+c_a}{m_r}}&amp;{\large\frac{c_a}{m_r}}&amp;0&amp;-{\large\frac{b_r+b_a}{m_r}}&amp;{\large\frac{b_a}{m_r}}&amp;0\\
 {\large\frac{c_a}{m_a}}&amp;-{\large\frac{c_a+c_s}{m_a}}&amp;{\large\frac{c_s}{m_a}}&amp;{\large\frac{b_a}{b_a}}&amp;-{\large\frac{b_a+b_s}{m_a}}&amp;{\large\frac{b_s}{m_a}}\\
 0&amp;{\large\frac{c_s}{m_s}}&amp;-{\large\frac{c_s}{m_s}}&amp;0&amp;{\large\frac{b_s}{m_s}}&amp;-{\large\frac{b_s}{m_s}}
-\end{bmatrix}\tag{7}
+\end{bmatrix}
 \]</span></p>
-<p>将 (7) 代入 (3): <span class="math display">\[
-\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]=\begin{bmatrix}
+<p>因此 (3), (4) 展开形式如 (7), (8): <span class="math display">\[
+\begin{array}{c}
+\underbrace{\left[\begin{array}{l}\dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3} \\ \ddot{x}_{1} \\ \ddot{x}_{2} \\ \ddot{x}_{3}\end{array}\right]}_{\Large\underline{\dot{x}}}=
+\underbrace{\begin{bmatrix}
 0&amp;0&amp;0&amp;1&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;1&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;1\\
 -{\frac{c_r+c_a}{m_r}}&amp;{\frac{c_a}{m_r}}&amp;0&amp;-{\frac{b_r+b_a}{m_r}}&amp;{\frac{b_a}{m_r}}&amp;0\\
 {\frac{c_a}{m_a}}&amp;-{\frac{c_a+c_s}{m_a}}&amp;{\frac{c_s}{m_a}}&amp;{\frac{b_a}{b_a}}&amp;-{\frac{b_a+b_s}{m_a}}&amp;{\frac{b_s}{m_a}}\\
 0&amp;{\frac{c_s}{m_s}}&amp;-{\frac{c_s}{m_s}}&amp;0&amp;{\frac{b_s}{m_s}}&amp;-{\frac{b_s}{m_s}}
-\end{bmatrix}\cdot
-\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right] 
-+\\
-\begin{bmatrix}
+\end{bmatrix}}_{\Large\underline{\underline{A}}}
+\cdot
+\underbrace{\left[\begin{array}{l}x_{1} \\ x_{2} \\ x_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right]}_{\Large\underline{x}}
++
+\underbrace{\begin{bmatrix}
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 \frac{c_r}{m_r}&amp;0&amp;0&amp;{\frac{b_r}{m_r}}&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0\\
 0&amp;0&amp;0&amp;0&amp;0&amp;0
-\end{bmatrix}\cdot
-\left[\begin{array}{l}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]
+\end{bmatrix}}_{\Large\underline{\underline{B}}}
+\cdot
+\underbrace{\left[\begin{array}{c}u_1(t) \\ 0 \\ 0 \\ \dot{u}_{1}(t) \\ 0 \\ 0\end{array}\right]}_{\Large\underline{u}}
+\end{array}\tag{7}
 \]</span></p>
-<p>将 (7) 简化: <span class="math display">\[
+<p><span class="math display">\[
+\left[\begin{array}{c}
+x_{1} \\ 
+x_{2} \\ 
+x_{3} \\
+0 \\ 
+0 \\ 
+0 
+\end{array}\right] = 
+\begin{bmatrix}
+1&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;1&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;1&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;0
+\end{bmatrix}
+\cdot
+\left[\begin{array}{l}{x}_{1} \\ {x}_{2} \\ {x}_{3} \\ \dot{x}_{1} \\ \dot{x}_{2} \\ \dot{x}_{3}\end{array}\right]\tag{8}
+\]</span></p>
+<p>将 (7) 中的 <span class="math inline">\(\underline{\underline{A}}\)</span> 简化: <span class="math display">\[
 \underline{\underline{A}}=\left[\begin{array}{cc}
 \underline{\underline{0}} &amp; I \\ 
 -M^{-1} K &amp; -M^{-1} DM 
-\end{array}\right]\tag{8}
+\end{array}\right]
 \]</span> 其中 <span class="math display">\[
 M = \begin{bmatrix}
 m_r&amp;0&amp;0\\
 0&amp;m_a&amp;0\\
 0&amp;0&amp;m_s
-\end{bmatrix}\\
+\end{bmatrix}\quad
 K = \begin{bmatrix}
 c_r+c_a&amp;-c_a&amp;0\\
 -c_a&amp;c_a+c_s&amp;-c_s\\
 0&amp;-c_s&amp;c_s
-\end{bmatrix}\\ 
+\end{bmatrix}\quad 
 DM = \begin{bmatrix}
 b_r+b_a&amp;-b_a&amp;0\\
 -b_a&amp;c_a+b_s&amp;-b_s\\
@@ -480,7 +621,7 @@ b_r+b_a&amp;-b_a&amp;0\\
 </tbody>
 </table>
 <p>将 (8) 代入 (5): <span class="math display">\[
-\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} D\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F
+\underline{\dot{\xi}} = \underbrace{\left[\begin{array}{cc}0 &amp; 1 \\ -M^{-1} K &amp; -M^{-1} DM\end{array}\right]}_{\text{系统矩阵 } {\underline{\underline{A}}}}\cdot\underline{\xi} + F\tag{9}
 \]</span> 其中 <span class="math display">\[
 \underline{\dot{\xi}}=
 \begin{bmatrix}
@@ -516,64 +657,59 @@ x\\
 \dot{x}_2\\
 \dot{x}_3
 \end{bmatrix}
-\]</span></p>
-<p><span class="math display">\[
+;\quad
 F=\begin{bmatrix}
 0\\
 0\\
 0\\
-\frac{1}{m_r}\cdot\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
+\frac{1}{m_r}\begin{bmatrix}c_r&amp;b_r\end{bmatrix}\cdot
 \begin{bmatrix}u(t)\\\dot{u}(t)\end{bmatrix}\\
 0\\
 0
 \end{bmatrix}
 \]</span></p>
+<p>或者从偏微分方程的矩阵表达 (10) 直接推导: <span class="math display">\[
+\underline{\underline{M}}\,
+\underline{\ddot{z}}+
+\underline{\underline{DM}}\,
+\underline{\dot{z}}+
+\underline{\underline{K}}\,
+\underline{\ddot{z}}=
+\underline{F}\tag{10}
+\]</span></p>
+<p><span class="math display">\[
+\,
+\underline{\ddot{z}}=
+-\underline{\underline{M}}^{-1}\underline{\underline{DM}}\,
+\underline{\dot{z}}
+-\underline{\underline{M}}^{-1}\underline{\underline{K}}\,
+\underline{\ddot{z}}+
+-\underline{\underline{M}}^{-1}\underline{F}
+\]</span></p>
+<p>然后也可以推导出系统矩阵 <span class="math inline">\(\underline{\underline{A}}\)</span> 。</p>
 <h2 id="matlab-skript">2. MATLAB Skript</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
 <figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 定义全局变量</span></span><br><span class="line"><span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">mr = <span class="number">40</span>;</span><br><span class="line">ma = <span class="number">400</span>;</span><br><span class="line">ms = <span class="number">30</span>;</span><br><span class="line">br = <span class="number">0</span>;</span><br><span class="line">ba = <span class="number">1500</span>;</span><br><span class="line">bs = <span class="number">300</span>;</span><br><span class="line">cr = <span class="number">100e3</span>;</span><br><span class="line">ca = <span class="number">20e3</span>;</span><br><span class="line">cs = <span class="number">10e3</span>;</span><br><span class="line">ts = <span class="number">0.5</span>;</span><br><span class="line">u0 = <span class="number">0.2</span>;</span><br><span class="line"><span class="comment">% 定义时间向量，这里选择0到5s</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">5</span>;</span><br><span class="line"><span class="comment">% 定义初始值，系统初始为</span></span><br><span class="line">xi0 = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>];</span><br></pre></td></tr></table></figure>
-<p>MATLAB 解偏微分方程的函数:</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
-<table>
-<thead>
-<tr class="header">
-<th>Solvername</th>
-<th>选择领域</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ode23</td>
-<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
-</tr>
-<tr class="even">
-<td>ode45</td>
-<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
-</tr>
-<tr class="odd">
-<td>ode113</td>
-<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
-</tr>
-<tr class="even">
-<td>ode23t</td>
-<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
-</tr>
-<tr class="odd">
-<td>ode15s</td>
-<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
-</tr>
-<tr class="even">
-<td>ode23s</td>
-<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
-</tr>
-<tr class="odd">
-<td>ode23tb</td>
-<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
-</tr>
-</tbody>
-</table>
 <figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 1. 有显性方程的数值解</span></span><br><span class="line">[t_exp,xi_exp] = ode45(@ODE_exp, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="comment">% ODE公式的显式表示法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_exp</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="comment">% 从全局工作区加载系统参数</span></span><br><span class="line">	<span class="keyword">global</span> mr ma ms br ba bs cr ca cs ts u0</span><br><span class="line">	<span class="comment">% 将 xip (\dot&#123;\xi&#125;) 分配为列向量(并非必要)</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="comment">% 计算激励函数与时间的关系</span></span><br><span class="line">	<span class="comment">% 由于br = 0，因此导数up可以设置为0。</span></span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 以显式形式计算xip中的元素</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">5</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = xi(<span class="number">6</span>);</span><br><span class="line">	xip(<span class="number">4</span>) = <span class="number">1</span>/mr*(cr*u+br*up-ba*(xi(<span class="number">4</span>)-xi(<span class="number">5</span>))-br*xi(<span class="number">4</span>)-ca*(xi(<span class="number">1</span>)-xi(<span class="number">2</span>))-cr*xi(<span class="number">1</span>));</span><br><span class="line">	xip(<span class="number">5</span>) = <span class="number">1</span>/ma*(-bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))-ba*(xi(<span class="number">5</span>)-xi(<span class="number">4</span>))-ca*(xi(<span class="number">2</span>)-xi(<span class="number">1</span>))-cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line">	xip(<span class="number">6</span>) = <span class="number">1</span>/ms*(bs*(xi(<span class="number">5</span>)-xi(<span class="number">6</span>))+cs*(xi(<span class="number">2</span>)-xi(<span class="number">3</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 矩阵方程式</span></span><br><span class="line"><span class="keyword">global</span> A</span><br><span class="line">M = <span class="built_in">diag</span>([mr ma ms]);</span><br><span class="line">B = [	br+ba,	-ba,	<span class="number">0</span>;</span><br><span class="line">		-ba,	ba+bs,	-bs;</span><br><span class="line">		<span class="number">0</span>,		-bs,	bs];</span><br><span class="line">C = [	cr+ca,	-ca,	<span class="number">0</span>;</span><br><span class="line">		-ca,	ca+cs,	-cs;</span><br><span class="line">		<span class="number">0</span>,		-cs,	cs];</span><br><span class="line">A = [	<span class="built_in">zeros</span>(<span class="number">3</span>), 	<span class="built_in">eye</span>(<span class="number">3</span>);</span><br><span class="line">		-M\C,		-M\B];</span><br><span class="line"><span class="comment">% 2. 矩阵形式的数值解</span></span><br><span class="line">[t_mat,xi_mat] = ode45(@ODE_mat, tspan, xi0);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_mat</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="keyword">global</span> A mr cr br ts u0</span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">6</span>,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> t&gt;ts</span><br><span class="line">		u = u0;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		u = <span class="number">0</span>;</span><br><span class="line">		up = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 考虑到外部激励</span></span><br><span class="line">	U = [u; up];</span><br><span class="line">	F = [<span class="number">0</span>; <span class="number">0</span>; <span class="number">0</span>; [cr, br]*U/mr; <span class="number">0</span>; <span class="number">0</span>];</span><br><span class="line">	<span class="comment">% 计算 xip</span></span><br><span class="line">	<span class="comment">% A*xi 考虑系统内部反馈，向量F考虑作用在系统上的外力</span></span><br><span class="line">	xip = A*xi+F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209165952.png" title="振幅-时间图" style="zoom:70%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 在三个子图中绘制 <i>x</i>(t), <i>ẋ</i>(t) 和相图 <i>ẋ</i>(<i>x</i>)
+</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span>(<span class="string">&#x27;Position&#x27;</span>,[<span class="number">0</span> <span class="number">0</span> <span class="number">1200</span> <span class="number">600</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">% 创建并选择用于绘制x(t)的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>,[<span class="number">1</span> <span class="number">2</span>])</span><br><span class="line"><span class="built_in">plot</span>(t_exp,xi_exp(:,<span class="number">1</span>:<span class="number">3</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;时间 [s]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;位移 [m]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;四分之一车辆模型的各质量块运动过程&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;eastoutside&#x27;</span>)</span><br><span class="line">grid on</span><br><span class="line"><span class="comment">% 创建并选择用于绘制xp(t)的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>,[<span class="number">6</span> <span class="number">7</span>])</span><br><span class="line"><span class="built_in">plot</span>(t_exp,xi_exp(:,<span class="number">4</span>:<span class="keyword">end</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;时间 [s]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;速度 [m/s]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;四分之一车辆模型的各质量块运动速度&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;eastoutside&#x27;</span>)</span><br><span class="line">grid on</span><br><span class="line"><span class="comment">% 创建和选择用于绘制相图的子图</span></span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">5</span>, [<span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>])</span><br><span class="line"><span class="built_in">plot</span>(xi_exp(:,<span class="number">1</span>:<span class="number">3</span>),xi_exp(:,<span class="number">4</span>:<span class="keyword">end</span>))</span><br><span class="line">xlabel(<span class="string">&#x27;位移 [m]&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;速度 [m/s]&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;各质量块的相图&#x27;</span>)</span><br><span class="line"><span class="built_in">legend</span>(&#123;<span class="string">&#x27;轮子&#x27;</span>,<span class="string">&#x27;车身&#x27;</span>,<span class="string">&#x27;座位&#x27;</span>&#125;,<span class="string">&#x27;Location&#x27;</span>,<span class="string">&#x27;best&#x27;</span>)</span><br><span class="line">grid on</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213175746.png" style="zoom:80%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务3</b></font>: 在没有外部刺激的情况下，确定一个质量块最初偏移 <i>x</i><sub>0</sub>= 0.3 <i>m</i> 的情况下,位移随时间变化的过程。
+</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 重新建立初始条件</span></span><br><span class="line">xi0_1 = [<span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line">xi0_2 = [<span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line">xi0_3 = [<span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]*<span class="number">0.3</span>;</span><br><span class="line"><span class="comment">% 外部激励为0</span></span><br><span class="line">u0 = <span class="number">0</span>;</span><br><span class="line"><span class="comment">% 计算数值解</span></span><br><span class="line">[t1,xi1] = ode45(@ODE_UE4_exp,tspan,xi0_1);</span><br><span class="line">[t2,xi2] = ode45(@ODE_UE4_exp,tspan,xi0_2);</span><br><span class="line">[t3,xi3] = ode45(@ODE_UE4_exp,tspan,xi0_3);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181119.jpg" style="zoom:80%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181130.jpg" style="zoom:80%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210213181138.jpg" style="zoom:80%;" /></p>
 <h2 id="matlab-simulink">3. MATLAB Simulink</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 使用激励函数(2)对微分方程组进行数值求解：
+</p>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209203914.png" title="Simulink模型" style="zoom:80%;" /></p>
 <p><strong>模块及参数设置</strong></p>
 <ul>
@@ -605,11 +741,13 @@ F=\begin{bmatrix}
 ]]></content>
       <categories>
         <category>TU-Branschweig</category>
+        <category>车辆技术中的建模与仿真</category>
       </categories>
       <tags>
         <tag>Matlab</tag>
         <tag>车辆技术</tag>
-        <tag>信号分析</tag>
+        <tag>振动分析</tag>
+        <tag>行驶动力学</tag>
       </tags>
   </entry>
   <entry>
@@ -753,6 +891,7 @@ F=\begin{bmatrix}
 <blockquote>
 <p><a href="http://xahlee.info/comp/unicode_common_symbols.html">Unicode Common symbols</a></p>
 <p><a href="https://www.toptal.com/designers/htmlarrows/">A delightful reference for HTML Symbols</a></p>
+<p><a href="http://shapecatcher.com/">手写识别 Unicode 符号</a></p>
 </blockquote>
 <h2 id="杂项">4. 杂项</h2>
 <h3 id="折叠标签">4.1 折叠标签</h3>
@@ -951,89 +1090,6 @@ c
       </tags>
   </entry>
   <entry>
-    <title>Typora使用笔记-记笔记篇</title>
-    <url>/Typora-Note/</url>
-    <content><![CDATA[<h2 id="前言">0. 前言</h2>
-<p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
-<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
-<h2 id="截图软件---snipaste">1. 截图软件 - Snipaste</h2>
-<p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" style="zoom: 67%;" title="Snipaste"/></p>
-<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
-<blockquote>
-<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
-</blockquote>
-<h2 id="图片自动上传---picgo">2. 图片自动上传 - PicGo</h2>
-<p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png"  style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
-<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
-<blockquote>
-<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
-<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
-<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
-<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
-</blockquote>
-<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
-<h2 id="公式识别---mathpix-snip">3. 公式识别 - Mathpix Snip</h2>
-<p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 <span class="math inline">\(\LaTeX\)</span> 打出的生僻符号。 <span class="math display">\[
-\underbrace{
-\begin{bmatrix}
-\ddot\psi\\
-\dot\beta
-\end{bmatrix}
-}_{\dot{x}}=
-\underbrace{
-\begin{bmatrix}
--\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} &amp; -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
--1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} &amp; -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
-\end{bmatrix}
-}_{A}
-\underbrace{
-\begin{bmatrix}
-\dot\psi\\
-\beta
-\end{bmatrix}
-}_{x}+
-\underbrace{
-\begin{bmatrix}
-\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
-\frac{c_{\alpha,V}}{mv}
-\end{bmatrix}
-}_{B}\cdot
-\underbrace{\delta}_{u}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
-<p>这公式，用 <span class="math inline">\(LaTeX\)</span> 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 <span class="math inline">\(\LaTeX\)</span> 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
-<blockquote>
-<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
-</blockquote>
-<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong> 提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
-<blockquote>
-<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
-</blockquote>
-<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
-<blockquote>
-<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
-</blockquote>
-<p>实际操作流程如下所示。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
-<h2 id="相关网站">4. 相关网站</h2>
-<blockquote>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
-<p><a href="%5BHTML%20常用颜色%5D(https://htmlcolorcodes.com/zh/yanse-ming/)">Unicode 大全</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>LaTeX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-主题篇</title>
     <url>/Typora-Theme/</url>
     <content><![CDATA[<h2 id="前言">0. 前言</h2>
@@ -1139,6 +1195,393 @@ c
       <tags>
         <tag>Typora</tag>
         <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-记笔记篇</title>
+    <url>/Typora-Note/</url>
+    <content><![CDATA[<h2 id="前言">0. 前言</h2>
+<p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
+<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
+<h2 id="截图软件---snipaste">1. 截图软件 - Snipaste</h2>
+<p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" style="zoom: 67%;" title="Snipaste"/></p>
+<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
+<blockquote>
+<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
+</blockquote>
+<h2 id="图片自动上传---picgo">2. 图片自动上传 - PicGo</h2>
+<p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png"  style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
+<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
+<blockquote>
+<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
+<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
+<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
+<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
+</blockquote>
+<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
+<h2 id="公式识别---mathpix-snip">3. 公式识别 - Mathpix Snip</h2>
+<p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 <span class="math inline">\(\LaTeX\)</span> 打出的生僻符号。 <span class="math display">\[
+\underbrace{
+\begin{bmatrix}
+\ddot\psi\\
+\dot\beta
+\end{bmatrix}
+}_{\dot{x}}=
+\underbrace{
+\begin{bmatrix}
+-\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} &amp; -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
+-1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} &amp; -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
+\end{bmatrix}
+}_{A}
+\underbrace{
+\begin{bmatrix}
+\dot\psi\\
+\beta
+\end{bmatrix}
+}_{x}+
+\underbrace{
+\begin{bmatrix}
+\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
+\frac{c_{\alpha,V}}{mv}
+\end{bmatrix}
+}_{B}\cdot
+\underbrace{\delta}_{u}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
+<p>这公式，用 <span class="math inline">\(LaTeX\)</span> 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 <span class="math inline">\(\LaTeX\)</span> 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
+<blockquote>
+<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
+</blockquote>
+<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong> 提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
+<blockquote>
+<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
+</blockquote>
+<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
+<blockquote>
+<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
+</blockquote>
+<p>实际操作流程如下所示。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
+<h2 id="相关网站">4. 相关网站</h2>
+<blockquote>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
+<p><a href="%5BHTML%20常用颜色%5D(https://htmlcolorcodes.com/zh/yanse-ming/)">Unicode 大全</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>LaTeX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>简单车辆模型-纵向动力学</title>
+    <url>/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/</url>
+    <content><![CDATA[<h2 id="纵向动力学">0. 纵向动力学</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174037.png" style="zoom:80%;" /></p>
+<p>一个简单的平面纵向动力学模型如下所示</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214174145.png"  style="zoom: 50%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 我们正在寻找在水平道路上以速度 <i>v<sub>0</sub></i> 行驶的车辆的制动距离。 滚动阻力可以忽略。 产生的制动扭矩 <i>M<sub>B</sub></i> 分别为：1500 <i>Nm</i>, 1700 <i>Nm</i>, 2000 <i>Nm</i>
+</p>
+<p><strong>给定参数</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>数值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><i><b>v<sub>0</sub></b></i></td>
+<td>100 [<i>km/h</i>]</td>
+<td>车辆初始速度</td>
+</tr>
+<tr class="even">
+<td><i><b>g</b></i></td>
+<td>9.81 [<i>m/s<sup>2</sup></i>]</td>
+<td>重力加速度</td>
+</tr>
+<tr class="odd">
+<td><i><b>m</b></i></td>
+<td>1500 [<i>kg</i>]</td>
+<td>车辆质量</td>
+</tr>
+<tr class="even">
+<td><i><b>J</b></i></td>
+<td>1.6 [<i>kg/m<sup>2</sup></i>]</td>
+<td>转动惯量</td>
+</tr>
+<tr class="odd">
+<td><i><b>F<sub>z</sub></b></i></td>
+<td>0.5·<i>m</i>·<i>g</i></td>
+<td>车轮负载</td>
+</tr>
+<tr class="even">
+<td><i><b>r<sub>Rad</sub></b></i></td>
+<td>0.3 [<i>m</i>]</td>
+<td>车轮半径</td>
+</tr>
+<tr class="odd">
+<td><i><b>ρ<sub>L</sub></b></i></td>
+<td>1.2 [<i>kg/m<sup>3</sup></i>]</td>
+<td>空气密度</td>
+</tr>
+<tr class="even">
+<td><i><b>c<sub>w</sub></b></i></td>
+<td>0.3</td>
+<td>空气阻力系数</td>
+</tr>
+<tr class="odd">
+<td><i><b>A</b></i></td>
+<td>2 [<i>m</i>]</td>
+<td>车辆迎风面积</td>
+</tr>
+<tr class="even">
+<td><i><b>a</b></i></td>
+<td>0.86</td>
+<td>摩擦系数参数</td>
+</tr>
+<tr class="odd">
+<td><i><b>b</b></i></td>
+<td>33.82</td>
+<td>摩擦系数参数</td>
+</tr>
+<tr class="even">
+<td><i><b>c</b></i></td>
+<td>0.36</td>
+<td>摩擦系数参数</td>
+</tr>
+</tbody>
+</table>
+<p>车辆的运动方程 <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-F_{L}-F_{x, v}-F_{x, h}\tag{1} \\ 
+J \cdot \ddot{\varphi}_{v}&amp;=&amp;M+F_{x, v} \cdot r_{R a d}\tag{2} \\ 
+J \cdot \ddot{\varphi}_{h}&amp;=&amp;M+F_{x, h} \cdot r_{R a d}\tag{3}
+\end{eqnarray*}
+\]</span></p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><b><i>F<sub>L</sub></i></b></td>
+<td>空气阻力</td>
+</tr>
+<tr class="even">
+<td><b><i>F<sub>G</sub></i></b></td>
+<td>重力</td>
+</tr>
+<tr class="odd">
+<td><b><i>M</i></b></td>
+<td>驱动/制动力矩</td>
+</tr>
+<tr class="even">
+<td><b><i>F<sub>z</sub></i></b></td>
+<td>轮毂法向力</td>
+</tr>
+<tr class="odd">
+<td><b><i>F<sub>x</sub></i></b></td>
+<td>摩擦力 (转动摩擦力，车轮滑移)</td>
+</tr>
+</tbody>
+</table>
+<p>忽略由于制动而改变车轴负载: <span class="math display">\[
+F_{z, v}=F_{z, h}=F_{z} ;\quad F_{x, v}=F_{x, h}=F_{x} ;\quad  \varphi_{v}=\varphi_{h}=\varphi
+\]</span> 因此，(1) 可用 (4) 表示，(2)，(3) 可用 (5) 表示， <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-F_{L}-2F_{x}\tag{4} \\ 
+J \cdot \ddot{\varphi}&amp;=&amp;M+F_{x} \cdot r_{R a d}\tag{5}
+\end{eqnarray*}
+\]</span> 式 (4) 中空气阻力 <i><b>F<sub>L</sub></b></i>，摩擦力 <i><b>F<sub>x</sub></b></i> 如式 (6) - (7): <span class="math display">\[
+\begin{eqnarray*}
+F_{L}&amp;=&amp;\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}\tag{6} \\ 
+\left|F_{x}\right|&amp;=&amp;\left|\mu * F_{z}\right|\tag{7}
+\end{eqnarray*}
+\]</span> 式 (7) 中的摩擦系数 <b><i>μ</i></b> 并不是固定系数，而是会随着轮毂的滑移率 <b><i>s</i></b> 变化。</p>
+<p><font size=4><b>滑移率</b></font></p>
+<p>下图为轮毂在不同情况下滑移率 <b><i>s</i></b> 与车轮速度 <b><i>ωR</i></b> 和车身速度 <b><i>v</i></b> 的关系</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201159.png" title="轮毂在不同情况下的滑移率" style="zoom: 67%;" /></p>
+<p>借助这个模型，主要研究刹车时的情况，因此滑移率式为: <span class="math display">\[
+s=\frac{\dot{x}-\dot{\varphi} r_{R a d}}{\dot{x}}\tag{8}
+\]</span> 同时，摩擦系数 <b><i>μ</i></b> 也随滑移率 <b><i>s</i></b> 变化。下图描述了不同路况的摩擦系数型曲线。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214201521.gif" title="不同路面条件下摩擦系数随滑移率变化曲线" style="zoom:80%;" /></p>
+<p>上图的曲线可用式 (9) 描述, 其中 <b><i>a, b, c</i></b> 为路面相关系数: <span class="math display">\[
+\mu(s)=a \cdot\left(1-e^{-b s}\right)-c s\tag{9}
+\]</span> 因此，式子 (7) 用符号函数 <b><i>sign</i></b> 去掉绝对值符号: <span class="math display">\[
+F_{x}=\mu \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{10}
+\]</span> 同理 (5) 中力矩 <b><i>M</i></b> 用刹车力矩表示也可用到符号函数 <b><i>sign</i></b>: <span class="math display">\[
+M=M_{B} \cdot \operatorname{sign}(\dot{\varphi})\tag{11}
+\]</span> 因此，最终运动方程可用 (12) - (14) 表示: <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}-2 \cdot \mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{12}\\
+J \cdot \ddot{\varphi}&amp;=&amp;-M_{B} \cdot \operatorname{sign}(\dot{\varphi})+\mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right) \cdot r_{R a d}\tag{13}\\
+\mu(s)&amp;=&amp;a \cdot\left(1-e^{-b s}\right)-c s\tag{9}
+\end{eqnarray*}
+\]</span></p>
+<h2 id="基础知识">1. 基础知识</h2>
+<h3 id="符号函数-sign">1.1 符号函数 <b><i>sign</i></b></h3>
+<p>符号函数（Sign function，简称sgn）是一个逻辑函数，用以判断实数的正负号。其定义为<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>： <span class="math display">\[
+\operatorname{sign} x=\left\{\begin{array}{ccc}-1 &amp; : &amp; x&lt;0 \\ 0 &amp; : &amp; x=0 \\ 1 &amp; : &amp; x&gt;0\end{array}\right.
+\]</span> <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214230350.png" style="zoom:70%;" /></p>
+<p>但这个函数为阶跃函数，会导致不连续性。因此，在编写代码时可用 <b><i>arctan</i></b> 函数 "软化" 边缘。通过式 (14) 来拟合。 <span class="math display">\[
+y = \frac{2}{\pi}\cdot\operatorname{atan}(\frac{\pi}{2}\cdot 1000\cdot x)\tag{14}
+\]</span> <img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210214205242.png" style="zoom:67%;" /></p>
+<p>MATLAB 函数如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[y]</span> = <span class="title">nsign</span><span class="params">(x)</span></span></span><br><span class="line">	y = <span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="built_in">pi</span>/<span class="number">2</span>*<span class="number">1000</span>*x);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="偏微分方程降阶">1.2 偏微分方程降阶</h3>
+<p>本问题的偏微分方程: <span class="math display">\[
+\begin{eqnarray*}
+m \cdot \ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2} A c_{w} \dot{x}^{2}-2 \cdot \mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right)\tag{12}\\
+J \cdot \ddot{\varphi}&amp;=&amp;-M_{B} \cdot \operatorname{sign}(\dot{\varphi})+\mu(s) \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} r_{R a d}\right) \cdot r_{R a d}\tag{13}\\
+\end{eqnarray*}
+\]</span> 降阶的思路是将偏微分方程转为状态空间，用状态向量 <span class="math inline">\(\underline{\xi}=\left[\begin{array}{l}\underline{x} \\ \dot{\underline{x}}\end{array}\right]\)</span> 表示。</p>
+<ol type="1">
+<li><p>将 (12), (13) 用显式 <span class="math inline">\(\underline{\ddot{x}}= ...\)</span> 表示: <span class="math display">\[
+\begin{eqnarray*}
+\ddot{x}&amp;=&amp;-\frac{\rho_{L}}{2 m} A c_{w} \dot{x}^{2}-2 \cdot \frac{\mu(S)}{m} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right)\tag{14} \\ 
+\ddot{\varphi}&amp;=&amp;-\frac{M_{B}}{J} \cdot \operatorname{sign}(\dot{\varphi})+\frac{\mu(S)}{J} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \cdot r_{R a d}\tag{15}
+\end{eqnarray*}
+\]</span></p></li>
+<li><p>建立方程组 <span class="math display">\[
+\begin{array}{l}\dot{x}=\dot{x} \\ \dot{\varphi}=\dot{\varphi} \\ \ddot{x}=-\frac{\rho_{L}}{2 m} A c_{w} \dot{x}^{2}-2 \cdot \frac{\mu(S)}{m} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \\ \ddot{\varphi}=-\frac{M_{B}}{J} \cdot \operatorname{sign}(\dot{\varphi})+\frac{\mu(S)}{J} \cdot F_{z} \cdot \operatorname{sign}\left(\dot{x}-\dot{\varphi} \cdot r_{R a d}\right) \cdot r_{R a d}\end{array}
+\]</span></p></li>
+<li><p>设置状态向量 <span class="math display">\[
+\underline{x}=\left[\begin{array}{l}x \\ \varphi\end{array}\right]
+\]</span> 因此: <span class="math display">\[
+\underline{\xi}=\left[\begin{array}{c}\xi_{1} \\ \xi_{2} \\ \xi_{3} \\ \xi_{4}\end{array}\right]=\left[\begin{array}{c}x \\ \varphi \\ \dot{x} \\ \dot{\varphi}\end{array}\right] ;\qquad \underline{\dot{\xi}}=\left[\begin{array}{c}\dot{\xi}_{1} \\ \dot{\xi}_{2} \\ \dot{\xi}_{3} \\ \dot{\xi}_{4}\end{array}\right]=\left[\begin{array}{c}\dot{x} \\ \dot{\varphi} \\ \ddot{x} \\ \ddot{\varphi}\end{array}\right]
+\]</span></p></li>
+<li><p>将左侧 <span class="math inline">\(\underline{\dot{\xi}}\)</span> 和右侧 <span class="math inline">\(\underline{ {\xi}}\)</span> 联系起来 <span class="math display">\[
+\dot{\xi}=\left\{\begin{array}{l}\dot{\xi}_{1}=\dot{x}=\dot{x}=\xi_{3} \\ \dot{\xi}_{2}=\dot{\varphi}=\dot{\varphi}=\xi_{4} \\ \dot{\xi}_{3}=\ddot{x}=\frac{1}{m}\left(-\frac{\rho_{L}}{2} A c_{w} \xi_{3}^{2}-2 \cdot \mu(S) \cdot F_{z} \cdot \operatorname{sign}\left(\xi_{3}-\xi_{4} \cdot r_{R a d}\right)\right) \\ \dot{\xi}_{4}=\ddot{\varphi}=\frac{1}{J}\left(-M_{B} \cdot \operatorname{sign}\left(\xi_{4}\right)+\mu(S) \cdot F_{z} \cdot \operatorname{sign}\left(\xi_{3}-\xi_{4} \cdot r_{R a d}\right) \cdot r_{R a d}\right)\end{array}\right.
+\]</span></p></li>
+</ol>
+<h3 id="matlab-解偏微分方程">1.3 MATLAB 解偏微分方程</h3>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210209172634.png" title="解偏微分方程的MATLAB函数" style="zoom:80%;" /></p>
+<p><strong>solver</strong> 的可用函数如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>Solvername</th>
+<th>选择领域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ode23</td>
+<td>解非刚性微分方程，低精度，使用Runge-Kutta法的二三阶算法。</td>
+</tr>
+<tr class="even">
+<td>ode45</td>
+<td>解非刚性微分方程，中等精度，使用Runge-Kutta法的四五阶算法。</td>
+</tr>
+<tr class="odd">
+<td>ode113</td>
+<td>解非刚性微分方程，变精度变阶次Adams-Bashforth-Moulton PECE算法。</td>
+</tr>
+<tr class="even">
+<td>ode23t</td>
+<td>解中等刚性微分方程，使用自由内插法的梯形法则。</td>
+</tr>
+<tr class="odd">
+<td>ode15s</td>
+<td>解刚性微分方程，使用可变阶次的数值微分（NDFs）算法。</td>
+</tr>
+<tr class="even">
+<td>ode23s</td>
+<td>解刚性微分方程，低阶方法，使用修正的Rosenbrock公式。</td>
+</tr>
+<tr class="odd">
+<td>ode23tb</td>
+<td>解刚性微分方程，低阶方法，使用TR-BDF2方法，即Runger-Kutta公式的第一级采用梯形法则，第二级采用Gear法。</td>
+</tr>
+</tbody>
+</table>
+<p><strong><span class="citation" data-cites="odefunction">@odefunction</span></strong> 中描述状态向量 <span class="math inline">\(\underline{\dot\xi}\)</span> 和 <span class="math inline">\(\underline\xi\)</span> 的关系。在这里必须将大于一阶的偏微分方程转换为一阶的偏微分方程，通过 1.2 中的方法降阶。</p>
+<p><strong>odeopts</strong> 优化 <strong>solver</strong> 的解偏微分方程过程。</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">options = odeset(<span class="string">&#x27;name1&#x27;</span>,value1,<span class="string">&#x27;name2&#x27;</span>,value2,...)</span><br></pre></td></tr></table></figure>
+<p><strong>odeopts</strong> 提供了多个选项，具体参考 <a href="https://de.mathworks.com/help/matlab/ref/odeset.html">odeopts 的 Help Center</a>，下面介绍几个常用的选项:</p>
+<ul>
+<li><p><strong>误差控制</strong> (Fehlerkontrolle)</p>
+<ul>
+<li><font color='DarkViolet'>'RelTol'</font> : 相对误差界限，它控制所有解决方案中的正确位数，但小于 <font color='DarkViolet'>'AbsTol'</font>。在每个步骤中，ODE求解器都会估计解决方案的第i个部分中的局部误差 e。</li>
+<li><font color='DarkViolet'>'AbsTol'</font> : 绝对误差，该值是一个阈值。</li>
+<li><font color='DarkViolet'>'NormControl'</font> : 有 on 和 off 两个状态，当NormControl处于 on 状态时，求解器将使用解决方案的范式而非绝对值来控制误差e的每一步：</li>
+</ul>
+<p><span class="math display">\[
+|e(i)| \leqslant \max(RelTol\cdot abs(y(i)),\,AbsTol(i))
+\]</span></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140539.png" style="zoom:67%;" /></p></li>
+<li><p><strong>步长控制</strong> (Schrittweitenkontrolle)</p>
+<ul>
+<li><p><font color='DarkViolet'>'InitialStep'</font> : 初始步长，有关第一次积分步长的建议 (可能受到tspan 影响)</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215140859.png"  style="zoom:50%;" /></p></li>
+<li><p><font color='DarkViolet'>'MaxStep'</font> : 积分步骤的步骤大小的最大允许值。MaxStep设置求解器采取的任何步骤的大小的上限。例如，如果方程具有周期性，则将MaxStep设置为周期的一小部分可确保求解器不会将步长扩大得太大，以至于无法跨过感兴趣区域。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215191019.png" style="zoom: 80%;" /></p></li>
+</ul></li>
+<li><p><strong>解算器输出功能</strong> (Solver Ausgabefunktionen)</p>
+<ul>
+<li><p><font color='DarkViolet'>'OutputFcn'</font> : 每个成功的时间步之后，ODE求解器都会调用输出函数。 如果调用不带输出的ODE求解器，则输出函数默认为@odeplot，该函数将在计算所有求解分量时将其绘制出来。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215193649.png" title="自定义函数打印结果" style="zoom:80%;" /></p></li>
+<li><p><font color='DarkViolet'>'OutputSel'</font> : 向量指定要传递给输出函数的解决方案的哪些组成部分。</p></li>
+</ul></li>
+</ul>
+<blockquote>
+<p><strong>例子 - 摆</strong></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215194941.png" style="zoom: 80%;" /></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 设置ODE函数参数</span></span><br><span class="line">odeopts = odeset(<span class="string">&#x27;reltol&#x27;</span>,<span class="number">1e-9</span>,<span class="string">&#x27;abstol&#x27;</span>,<span class="number">1e-12</span>);</span><br><span class="line"><span class="comment">% 引入数值解</span></span><br><span class="line">[t2,xi2] = ode45(@ODE_Pendel_nlin,tspan,xi_0,odeopts);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215195151.png" title="没设置误差(蓝线)，设置误差（红线）" style="zoom: 67%;" /></p>
+</blockquote>
+<h2 id="matlab-skript">2. MATLAB Skript</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 我们正在寻找在水平道路上以速度 <i>v<sub>0</sub></i> 行驶的车辆的制动距离。 滚动阻力可以忽略。 产生的制动扭矩 <i>M<sub>B</sub></i> 分别为：1500 <i>Nm</i>, 1700 <i>Nm</i>, 2000 <i>Nm</i>
+</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 定义全局向量</span></span><br><span class="line"><span class="keyword">global</span> v0 g m J Fz rR rhoL cw A RSK s_ABS</span><br><span class="line"><span class="comment">% 定义系统参数</span></span><br><span class="line">v0 = <span class="number">100</span>/<span class="number">3.6</span>; <span class="comment">% in m/s</span></span><br><span class="line">g = <span class="number">9.81</span>; <span class="comment">% m/s^2</span></span><br><span class="line">m = <span class="number">1500</span>; <span class="comment">% kg</span></span><br><span class="line">J = <span class="number">1.6</span>; <span class="comment">% kgm^2</span></span><br><span class="line">Fz = <span class="number">0.5</span>*m*g;</span><br><span class="line">rR = <span class="number">0.3</span>; <span class="comment">% m</span></span><br><span class="line">rhoL = <span class="number">1.2</span>; <span class="comment">% kg/m^3</span></span><br><span class="line">cw = <span class="number">0.3</span>; <span class="comment">%-</span></span><br><span class="line">A = <span class="number">2</span>; <span class="comment">% m^2</span></span><br><span class="line"><span class="comment">% 计算 mu(s) 的参数</span></span><br><span class="line">a = <span class="number">0.86</span>;</span><br><span class="line">b = <span class="number">33.82</span>;</span><br><span class="line">c = <span class="number">0.36</span>;</span><br><span class="line"><span class="comment">% mu = a*(1-exp(-b*s))-c*s;</span></span><br><span class="line">RSK = @(s)a*(<span class="number">1</span>-<span class="built_in">exp</span>(-b*s))-c*s;</span><br><span class="line"><span class="comment">% 制动力矩</span></span><br><span class="line">MB = [<span class="number">1500</span> <span class="number">1700</span> <span class="number">2000</span>]; <span class="comment">% Nm</span></span><br><span class="line"><span class="comment">% ABS的滑移极限值</span></span><br><span class="line">s_ABS = <span class="number">0.14</span>;</span><br><span class="line"><span class="comment">% 创建时间向量</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">10</span>; <span class="comment">% s</span></span><br><span class="line"><span class="comment">% 创建系统初始值 [x, phi, xp, phip]</span></span><br><span class="line">xi0 = [<span class="number">0</span>, <span class="number">0</span>, v0, v0/rR];</span><br></pre></td></tr></table></figure>
+<p><strong>计算无ABS时的情况</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">[t1,xi1] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">1</span>),<span class="built_in">false</span>);</span><br><span class="line">[t2,xi2] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">2</span>),<span class="number">0</span>);</span><br><span class="line">[t3,xi3] = ode15s(@ODE_Bremsen,tspan,xi0,[],MB(<span class="number">3</span>),<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>函数定义:</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% ODE-函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_Bremsen</span><span class="params">(t,xi,MB,ABS)</span></span></span><br><span class="line">	<span class="comment">% 导入全局变量</span></span><br><span class="line">	<span class="keyword">global</span> v0 g m J Fz rR rhoL cw A RSK s_ABS</span><br><span class="line">	<span class="comment">% 分配 xip</span></span><br><span class="line">	xip = <span class="built_in">zeros</span>(<span class="number">4</span>,<span class="number">1</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 车轮转速最小为零，不为负数</span></span><br><span class="line">	xi(<span class="number">4</span>) = <span class="built_in">max</span>(<span class="number">0</span>, xi(<span class="number">4</span>))</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 计算滑移率</span></span><br><span class="line">	<span class="keyword">if</span> xi(<span class="number">3</span>)&lt;<span class="number">0.0000001</span></span><br><span class="line">		s = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		s = (xi(<span class="number">3</span>)-xi(<span class="number">4</span>)*rR)/xi(<span class="number">3</span>);</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 计算摩擦系数 mu</span></span><br><span class="line">	mu = RSK(s);</span><br><span class="line"></span><br><span class="line">	<span class="comment">% ABS作为单点控制实施</span></span><br><span class="line">	<span class="keyword">if</span> ABS</span><br><span class="line">		MB = (nsign(s_ABS-s)+<span class="number">1</span>)/<span class="number">2</span>*MB;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">% 力的计算</span></span><br><span class="line">	Fl = rhoL/<span class="number">2</span>*A*cw*xi(<span class="number">3</span>)^<span class="number">2</span>;</span><br><span class="line">	Fx = mu*Fz*nsign(xi(<span class="number">3</span>)-xi(<span class="number">4</span>)*rR);</span><br><span class="line"></span><br><span class="line">	<span class="comment">% ODE系统的显性方式</span></span><br><span class="line">	xip(<span class="number">1</span>) = xi(<span class="number">3</span>);</span><br><span class="line">	xip(<span class="number">2</span>) = xi(<span class="number">4</span>);</span><br><span class="line">	xip(<span class="number">3</span>) = (<span class="number">1</span>/m)*(-Fl<span class="number">-2</span>*Fx);</span><br><span class="line">	xip(<span class="number">4</span>) = (<span class="number">1</span>/J)*(-MB*nsign(xi(<span class="number">4</span>))+Fx*rR);</span><br><span class="line">	</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>定义用actan近似Sign函数</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 用 arctan 近似 sign</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[out]</span> = <span class="title">nsign</span><span class="params">(inp)</span></span></span><br><span class="line">	out = <span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="built_in">pi</span>/<span class="number">2</span>*<span class="number">1000</span>*inp);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200008.jpg" style="zoom:67%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210215200013.jpg" style="zoom: 67%;" /></p>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 纵向动态模型可以扩展为包括简单的防抱死制动系统 (ABS)。 该控制器应设计为单点控制器，该控制器可以在 s = 0.14 处断开外部制动扭矩。 使用反正切函数可以避免此处的不连续性。
+</p>
+<p><strong>计算有ABS时的情况</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[t1a,xi1a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(1),true);</span><br><span class="line">[t2a,xi2a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(2),1);</span><br><span class="line">[t3a,xi3a] &#x3D; ode15s(@ODE_Bremsen,tspan,xi0,[],MB(3),1);</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123012.jpg" style="zoom:67%;" /></p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210216123020.jpg" style="zoom:67%;" /></p>
+<p>可用看到，在具备ABS系统的刹车系统中在减少制动距离的同时减少了刹车时间。</p>
+<h2 id="参考文献">参考文献</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>WIKIPEDIA, ‘‘符号函数,” 2021<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>TU-Branschweig</category>
+        <category>车辆技术中的建模与仿真</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>车辆技术</tag>
+        <tag>振动分析</tag>
+        <tag>行驶动力学</tag>
       </tags>
   </entry>
 </search>

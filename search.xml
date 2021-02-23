@@ -751,7 +751,7 @@ F=\begin{bmatrix}
       </tags>
   </entry>
   <entry>
-    <title>横向动力学</title>
+    <title>简单车辆模型-横向动力学</title>
     <url>/Modeling-and-simulation-in-vehicle-technology-Querdynamik/</url>
     <content><![CDATA[<h2 id="横向动力学">0. 横向动力学</h2>
 <p>为了简化车辆模型，在横向动力学分析中，通常采用线性单轨车辆模型。线性单轨车辆模型有如下假设:</p>
@@ -1119,6 +1119,12 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 </blockquote>
 <h2 id="运算公式">2. 运算公式</h2>
 <table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 22%" />
+<col style="width: 27%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Symbol</th>
@@ -1130,33 +1136,33 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\frac{a}{b}\)</span></td>
-<td><code></code></td>
+<td><code>\frac&#123;a&#125;&#123;b&#125;</code></td>
 <td><span class="math inline">\(a\cdot b, a\times b\)</span></td>
-<td><code>ab, ab</code></td>
+<td><code>a\cdot b, a\times b</code></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\sqrt[a]{b}\)</span></td>
-<td><code></code></td>
-<td><span class="math inline">\(\cancelto&#123;0&#125;&#123;f(x)&#125;\)</span></td>
-<td><code></code></td>
+<td><code>\sqrt[a]&#123;b&#125;</code></td>
+<td><span class="math inline">\(\cancelto{0}{f(x)}\)</span></td>
+<td><code>\cancelto&#123;0&#125;&#123;f(x)&#125;</code></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\sum_{a}^{b}\)</span></td>
-<td><code>_&#123;a&#125;^&#123;b&#125;</code></td>
+<td><code>\sum_&#123;a&#125;^&#123;b&#125;</code></td>
 <td><span class="math inline">\(a,\dot{a},\ddot{a},\vec{a}\)</span></td>
-<td><code>a,,,</code></td>
+<td><code>a,\dot&#123;a&#125;,\ddot&#123;a&#125;,\vec&#123;a&#125;</code></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\prod_{a}^{b}\)</span></td>
-<td><code>_&#123;a&#125;^&#123;b&#125;</code></td>
+<td><code>\prod_&#123;a&#125;^&#123;b&#125;</code></td>
 <td><span class="math inline">\(\int_{a}^{b}{x}\,dx\)</span></td>
-<td><code>_&#123;a&#125;^&#123;b&#125;&#123;x&#125;,dx</code></td>
+<td><code>\int_&#123;a&#125;^&#123;b&#125;&#123;x&#125;,dx</code></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\lim_{ {a} \to {\infty}}\)</span></td>
-<td><code>_&#123; &#123;a&#125; &#125;</code></td>
+<td><code>\lim_&#123; &#123;a&#125; \to &#123;\infty&#125;&#125;</code></td>
 <td><span class="math inline">\(\int,\iint,\iiint,\oint\)</span></td>
-<td><code>,,,</code></td>
+<td><code>\int,\iint,\iiint,\oint</code></td>
 </tr>
 </tbody>
 </table>

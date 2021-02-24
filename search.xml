@@ -957,6 +957,9 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223194133.png" title="传动轴" style="zoom:80%;" /></p>
 <p>在这里要研究的是连续系统。一个例子是如上图所示的传动轴。在传动轴上，每个位置的扭矩都会对相邻位置的扭矩产生影响，因此在空间轴上是连续的，同时在时间轴上也是连续的。这类问题的解法和之前多体系统的解法是不同的。</p>
 <h2 id="偏微分方程">1. 偏微分方程</h2>
+<blockquote>
+<p>关于偏微分方程的理解可以看: <a href="https://space.bilibili.com/88461692/video?keyword=%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B"><strong>3Blue1Brown</strong> 的系列视频</a></p>
+</blockquote>
 <p>具有恒定扭转刚度的扭杆的波动方程： <span class="math display">\[
 \rho I_{p} \cdot \ddot{\varphi}-G I_{p} \cdot \varphi_{x x}=0\qquad GI_P=const.
 \]</span></p>
@@ -973,11 +976,8 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 <p>一阶: <span class="math display">\[
 \dot\varphi_{i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
 \]</span></p>
-<p><span class="math display">\[
-\varphi_{x, i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
-\]</span></p>
 <p>二阶: <span class="math display">\[
-\ddot\varphi_{ i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
+\ddot\varphi_{ i}=\frac{\varphi_{i+1}-2\varphi_{i}+\varphi_{i-1}}{\Delta x^2}
 \]</span></p></li>
 </ul>
 <p>因此，离散化后的方程为: <span class="math display">\[
@@ -1398,89 +1398,6 @@ c
       </tags>
   </entry>
   <entry>
-    <title>Typora使用笔记-记笔记篇</title>
-    <url>/Typora-Note/</url>
-    <content><![CDATA[<h2 id="前言">0. 前言</h2>
-<p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
-<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
-<h2 id="截图软件---snipaste">1. 截图软件 - Snipaste</h2>
-<p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" style="zoom: 67%;" title="Snipaste"/></p>
-<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
-<blockquote>
-<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
-</blockquote>
-<h2 id="图片自动上传---picgo">2. 图片自动上传 - PicGo</h2>
-<p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png"  style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
-<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
-<blockquote>
-<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
-<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
-<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
-<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
-</blockquote>
-<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
-<h2 id="公式识别---mathpix-snip">3. 公式识别 - Mathpix Snip</h2>
-<p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 <span class="math inline">\(\LaTeX\)</span> 打出的生僻符号。 <span class="math display">\[
-\underbrace{
-\begin{bmatrix}
-\ddot\psi\\
-\dot\beta
-\end{bmatrix}
-}_{\dot{x}}=
-\underbrace{
-\begin{bmatrix}
--\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} &amp; -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
--1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} &amp; -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
-\end{bmatrix}
-}_{A}
-\underbrace{
-\begin{bmatrix}
-\dot\psi\\
-\beta
-\end{bmatrix}
-}_{x}+
-\underbrace{
-\begin{bmatrix}
-\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
-\frac{c_{\alpha,V}}{mv}
-\end{bmatrix}
-}_{B}\cdot
-\underbrace{\delta}_{u}
-\]</span></p>
-<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
-<p>这公式，用 <span class="math inline">\(LaTeX\)</span> 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 <span class="math inline">\(\LaTeX\)</span> 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
-<blockquote>
-<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
-</blockquote>
-<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong> 提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
-<blockquote>
-<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
-</blockquote>
-<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
-<blockquote>
-<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
-</blockquote>
-<p>实际操作流程如下所示。</p>
-<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
-<h2 id="相关网站">4. 相关网站</h2>
-<blockquote>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
-<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
-<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
-<p><a href="%5BHTML%20常用颜色%5D(https://htmlcolorcodes.com/zh/yanse-ming/)">Unicode 大全</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Typora使用笔记</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>LaTeX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Typora使用笔记-主题篇</title>
     <url>/Typora-Theme/</url>
     <content><![CDATA[<h2 id="前言">0. 前言</h2>
@@ -1586,6 +1503,89 @@ c
       <tags>
         <tag>Typora</tag>
         <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用笔记-记笔记篇</title>
+    <url>/Typora-Note/</url>
+    <content><![CDATA[<h2 id="前言">0. 前言</h2>
+<p>疫情期间，全部是网课，因此使用 <strong>Typora</strong> 记笔记。相比纸质笔记，便于整理，笔迹也比较易于辨认。但是笔记速度相对与手写还是慢了不少。下面介绍几个我在使用 <strong>Typora</strong> 时使用到的增加效率的软件, 和用到的各种网站。</p>
+<p>以下介绍的所有软件都是免费的。这篇文章主要只是记录使用到的软件，并不会写出详细的下载配置过程，但会给出配置每个软件的相关文章的链接。</p>
+<h2 id="截图软件---snipaste">1. 截图软件 - Snipaste</h2>
+<p>截图软件有很多，微软自带的 <strong>Snipping Tool</strong> 和 <strong>Snip &amp; Sketch</strong> 就基本满足日常需求。 但有时候上网课，刚截完一张图，还没抄完，就切到下一个画面了，这时候又要截图，产生连续截图的需求。因此强烈推荐 <strong>Snipaste</strong> 软件。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210122234550.png" style="zoom: 67%;" title="Snipaste"/></p>
+<p>这个软件在截图 <strong>Snip</strong> 的基础操作之上还有 <strong>Paste</strong>。如上图，在按 <kbd>F1</kbd> 截图之后可以按 <kbd>F3</kbd> 将截图贴在旁边，并且调整位置、大小和透明度，数量不限。并且，所有的贴图都可以 <kbd>shift</kbd>+ <kbd>F3</kbd> 一键显示和隐藏。同时还有像素级的鼠标移动控制、截图范围控制，满足各种需求。更多功能和下载地址在下面贴出。</p>
+<blockquote>
+<p><a href="https://zh.snipaste.com/">Snipaste下载地址 - 官网</a></p>
+</blockquote>
+<h2 id="图片自动上传---picgo">2. 图片自动上传 - PicGo</h2>
+<p>如果一直只使用一台设备使用 <strong>Typora</strong>, 记笔记只给自己看， 那图片上传与否并不太重要。但假如多设备记笔记，笔记会上传博客，那将图片上传图床就在所难免。<strong>Typora</strong> 支持 <strong>PicGo</strong> 用以图片上传服务。<kbd>文件</kbd>&gt;<kbd>偏好设置</kbd>&gt;<kbd>图像</kbd> 就能找到。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123001230.png"  style="zoom:67%;" title="Typora 的 PicGO 支持"/></p>
+<p>可选的为 <code>PicGo-Core(command line)</code> 和 <code>PicGo(app)</code>，字面就能理解，前者为命令行运行，后者是可下载、可交互的 <strong>app</strong>。命令行运行设置完之后很方便，仅在插入图片的时候运行，但部署过程较 <strong>app</strong> 复杂一些，还需要 <strong>node.js</strong> 环境，因此我选择的是 <strong>app</strong>。</p>
+<blockquote>
+<p><a href="https://github.com/Molunerfinn/PicGo">PicGo 的 Github地址</a></p>
+<p><a href="https://www.cnblogs.com/xiaowj/p/13934555.html">Typora + PicGo-Core + Github 实现图片上传到Github</a></p>
+<p><a href="https://www.jianshu.com/p/a1e2cf01e05f">Typora+PicGo+Github/Gitee搭建免费稳定的图床</a></p>
+<p><a href="https://blog.csdn.net/qq754772661/article/details/111385955?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&amp;spm=1001.2101.3001.4242">typora+picgo会发生的一些错误以及解决办法 - 克豪</a></p>
+</blockquote>
+<p>按照上述流程配置之后就能配合截图软件，实现图片自动上传。</p>
+<h2 id="公式识别---mathpix-snip">3. 公式识别 - Mathpix Snip</h2>
+<p>在记理工科笔记的时候常常会碰到非常复杂的公式，包含大型的矩阵，奇怪的字母，不知道怎么用 <span class="math inline">\(\LaTeX\)</span> 打出的生僻符号。 <span class="math display">\[
+\underbrace{
+\begin{bmatrix}
+\ddot\psi\\
+\dot\beta
+\end{bmatrix}
+}_{\dot{x}}=
+\underbrace{
+\begin{bmatrix}
+-\frac{c_{\alpha,V}\cdot l_V^2+c_{\alpha,H}\cdot l_H^2}{J_z\cdot v} &amp; -\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{J_z}\\
+-1-\frac{c_{\alpha,V}\cdot l_V-c_{\alpha,H}\cdot l_H}{mv^2} &amp; -\frac{c_{\alpha,V}+c_{\alpha,H}}{mv}
+\end{bmatrix}
+}_{A}
+\underbrace{
+\begin{bmatrix}
+\dot\psi\\
+\beta
+\end{bmatrix}
+}_{x}+
+\underbrace{
+\begin{bmatrix}
+\frac{c_{\alpha,V}\cdot l_V}{J_z}\\
+\frac{c_{\alpha,V}}{mv}
+\end{bmatrix}
+}_{B}\cdot
+\underbrace{\delta}_{u}
+\]</span></p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\ddot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\dot</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;<span class="keyword">\dot</span>&#123;x&#125;&#125;=</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;</span><br><span class="line">-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V<span class="built_in">^</span>2+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H<span class="built_in">^</span>2&#125;&#123;J<span class="built_in">_</span>z<span class="keyword">\cdot</span> v&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span></span><br><span class="line">-1-<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V-c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>H&#125;&#123;mv<span class="built_in">^</span>2&#125; <span class="built_in">&amp;</span> -<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;+c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,H&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;A&#125;</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;<span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\dot</span><span class="keyword">\psi</span><span class="keyword">\\</span><span class="keyword">\beta</span><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;x&#125;+</span><br><span class="line"><span class="keyword">\underbrace</span>&#123;</span><br><span class="line"><span class="keyword">\begin</span>&#123;bmatrix&#125;<span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;<span class="keyword">\cdot</span> l<span class="built_in">_</span>V&#125;&#123;J<span class="built_in">_</span>z&#125;<span class="keyword">\\</span><span class="keyword">\frac</span>&#123;c<span class="built_in">_</span>&#123;<span class="keyword">\alpha</span>,V&#125;&#125;&#123;mv&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;bmatrix&#125;</span><br><span class="line">&#125;<span class="built_in">_</span>&#123;B&#125;<span class="keyword">\cdot</span><span class="keyword">\underbrace</span>&#123;<span class="keyword">\delta</span>&#125;<span class="built_in">_</span>&#123;u&#125;</span><br></pre></td></tr></table></figure>
+<p>这公式，用 <span class="math inline">\(LaTeX\)</span> 打完估计脸都得绿了 (当时年轻的我就是手打的 (°ー°〃) )。这个时候就不得不介绍 <strong>Mathpix Snip</strong> 软件。截图自动 <strong>OCR</strong> 识别公式，并生成相应的 <span class="math inline">\(\LaTeX\)</span> 代码，大大节省时间 (当老师的笔记比较清楚的时候)。</p>
+<blockquote>
+<p><a href="https://mathpix.com/">Mathpix Snip 官网</a></p>
+</blockquote>
+<p><strong>Mathpix Snip</strong> 支持全平台使用，但有个问题，免费用量每月仅50条，一下就用完。<strong>Pro</strong> 版本则每月 <strong>$4.99</strong> ，对我们学生党来说稍贵。但其实有免费的方法（当然不是盗版），而是使用 <strong>Mathpix Snip</strong> 提供的 <strong>OCR API</strong>。 这个 <strong>API</strong> 每个月有1000个免费份额，用完之后按个收费（基本上不可能用完），唯一麻烦的是需要绑定信用卡。另外，使用 <strong>Quicker</strong> 软件简化操作过程，方便操作。</p>
+<blockquote>
+<p><a href="https://space.bilibili.com/62637562">准确识别图片上的数学公式，每个月 1000 次免费使用 - 淳帅二代</a></p>
+</blockquote>
+<p>参照这个视频即可完成配置，但并没有使用他分享的动作，他的动作需要环境里有 <strong>Python</strong>，而且我用的时候没有成功工作。因此我使用了如下动作。</p>
+<blockquote>
+<p><a href="https://getquicker.net/sharedaction?code=acf019b8-434e-4979-be62-08d776d80bd7">截图识别公式(mathpix) - linex</a></p>
+</blockquote>
+<p>实际操作流程如下所示。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210123011150.gif" style="zoom:80%;" title="Mathpix Snip + Quicker 快速识别公式"/></p>
+<h2 id="相关网站">4. 相关网站</h2>
+<blockquote>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">Typora入门：全网最全教程 - Hider1214</a>: 简单认识 <strong>Typora</strong> 的 <strong>Markdown</strong> 写法。</p>
+<p><a href="https://www.cnblogs.com/hider/p/11614688.html">HTML Support in Typora - Typora 官网</a>: 简单认识 <strong>Typora</strong> 的 <strong>HTML</strong> 支持。</p>
+<p><a href="https://htmlcolorcodes.com/zh/yanse-ming/">HTML 常用颜色</a>: 140种已命名的颜色，包含 <strong>Hex</strong> 代码或 <strong>RGB</strong> 值</p>
+<p><a href="%5BHTML%20常用颜色%5D(https://htmlcolorcodes.com/zh/yanse-ming/)">Unicode 大全</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Typora使用笔记</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>LaTeX</tag>
       </tags>
   </entry>
   <entry>

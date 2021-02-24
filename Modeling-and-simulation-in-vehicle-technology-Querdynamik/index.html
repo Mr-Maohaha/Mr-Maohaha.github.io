@@ -31,8 +31,9 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210219105232.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210219105232.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210219124625.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223154917.png">
 <meta property="article:published_time" content="2021-02-19T09:34:12.000Z">
-<meta property="article:modified_time" content="2021-02-23T13:01:21.491Z">
+<meta property="article:modified_time" content="2021-02-23T14:49:57.957Z">
 <meta property="article:author" content="Kuihong CHEN">
 <meta property="article:tag" content="Matlab">
 <meta property="article:tag" content="车辆技术">
@@ -227,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-23 14:01:21" itemprop="dateModified" datetime="2021-02-23T14:01:21+01:00">2021-02-23</time>
+                <time title="修改时间：2021-02-23 15:49:57" itemprop="dateModified" datetime="2021-02-23T15:49:57+01:00">2021-02-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,14 +271,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.9k</span>
+              <span>5.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
             <div class="post-description">不伦瑞克工业大学研究生课程, 车辆技术中的建模与仿真 (Modellierung und Simulation in der Fahrzeugtechnik)。结合实例，通过Matlab代码介绍车辆技术中用到的算法和Matlab实现方法。</div>
 
@@ -471,6 +472,9 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 <p><strong>给定参数</strong> <span class="math display">\[
 \begin{array}{c}a_{1}=0,8 m ;\quad  a_{2}=1,3 m ;\quad c_{a v}=55000 \frac{N}{r a d} ;\quad c_{a h}=65000 \frac{N}{r a d} \\ T_{1}=0,5 s ;\quad  T_{2}=2,5 s ;\quad  m=1200 k g ;\quad  \theta=1200 k g m^{2} \\ v_{1}=30 \frac{k m}{h} ;\quad  v_{2}=100 \frac{k m}{h} ;\quad  \delta=4^{\circ}\end{array}
 \]</span></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 系统参数</span></span><br><span class="line">a1 = <span class="number">0.8</span>;</span><br><span class="line">a2 = <span class="number">1.3</span>;</span><br><span class="line">c_av = <span class="number">55000</span>*<span class="built_in">pi</span>/<span class="number">180</span>; <span class="comment">% N/degree</span></span><br><span class="line">c_ah = <span class="number">65000</span>*<span class="built_in">pi</span>/<span class="number">180</span>; <span class="comment">% N/degree</span></span><br><span class="line">T1 = <span class="number">0.5</span>;</span><br><span class="line">T2 = <span class="number">2.5</span>;</span><br><span class="line">m = <span class="number">1200</span>;</span><br><span class="line">theta = <span class="number">1200</span>;</span><br><span class="line">v1 = <span class="number">30</span>*<span class="number">3.6</span>; <span class="comment">% m/s </span></span><br><span class="line">v2 = <span class="number">100</span>*<span class="number">3.6</span>; <span class="comment">% m/s </span></span><br><span class="line">delta = <span class="number">4</span>; <span class="comment">% degree</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">4</span>;</span><br><span class="line"><span class="comment">% xi = [gammap; beta]</span></span><br><span class="line">xi0 = [<span class="number">0</span>;<span class="number">0</span>];</span><br><span class="line"><span class="comment">% 全局参数</span></span><br><span class="line"><span class="keyword">global</span> A B Delta_t</span><br><span class="line">Delta_t = @(t)<span class="number">8</span>*t.*(t&gt;<span class="number">0</span> &amp; t&lt;=<span class="number">0.5</span>) + <span class="number">4.</span>*(t&gt;<span class="number">0.5</span> &amp; t&lt;=<span class="number">3</span>) +...</span><br><span class="line">    (<span class="number">28</span><span class="number">-8</span>*t).*(t&gt;<span class="number">3</span> &amp; t&lt;=<span class="number">3.5</span>) + <span class="number">0.</span>*(t&gt;<span class="number">3.5</span>);</span><br><span class="line"></span><br><span class="line">A = @(v)[   -(c_av*a1^<span class="number">2</span> + c_ah*a2^<span class="number">2</span>)/theta/v,   -(c_av*a1 - c_ah*a2)/theta;</span><br><span class="line">            <span class="number">-1</span>-(c_av*a1 - c_ah*a2)/m/v^<span class="number">2</span>,      -(c_av + c_ah)/m/v];</span><br><span class="line"></span><br><span class="line">B = @(v)[   c_av*a1/theta;</span><br><span class="line">            c_av/m/v];</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 数值解</span></span><br><span class="line">[t1, xi_v1] = ode45(@ODE_Querdyn, tspan, xi0,[],v1);</span><br><span class="line">[t2, xi_v2] = ode45(@ODE_Querdyn, tspan, xi0,[],v2);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_Querdyn</span><span class="params">(t,xi,v)</span></span></span><br><span class="line">    <span class="keyword">global</span> A B Delta_t</span><br><span class="line">    F = B(v).*Delta_t(t);</span><br><span class="line">    xip = A(v)*xi + F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223154917.png" style="zoom:80%;" /></p>
 
     </div>
 
@@ -498,7 +502,10 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
     <a href="/Modeling-and-simulation-in-vehicle-technology-Laengsdynamik/" rel="prev" title="简单车辆模型-纵向动力学">
       <i class="fa fa-chevron-left"></i> 简单车辆模型-纵向动力学
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/Modeling-and-simulation-in-vehicle-technology-kontiniuierlicher-Systeme/" rel="next" title="连续性系统 (kontinuierlicher Systeme)">
+      连续性系统 (kontinuierlicher Systeme) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -575,7 +582,7 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -629,12 +636,12 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">47k</span>
+    <span title="站点总字数">53k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">43 分钟</span>
+    <span title="站点阅读时长">48 分钟</span>
 </div>
 
         

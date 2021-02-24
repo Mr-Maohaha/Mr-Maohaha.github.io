@@ -165,7 +165,7 @@ G^{2}(\omega)=|H(j \omega)|^{2}=\frac{G_{0}^{2}}{1+\left(\frac{\omega}{\omega_{c
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128215510.png" style="zoom: 55%;" /></p>
 <ul>
 <li><p>归一化截止频率 (Normierte Grenzfrequenz) ω<sub>n</sub>: <span class="math display">\[
-\omega_{n}=\frac{f_{g}}{f_{b}}=\frac{f_{g}}{0,5 \cdot F_{s}}\tag{2}
+\omega_{n}=\frac{f_{g}}{f_{b}}=\frac{f_{g}}{0.5 \cdot F_{s}}\tag{2}
 \]</span></p>
 <table>
 <thead>
@@ -283,7 +283,7 @@ G^{2}(\omega)=|H(j \omega)|^{2}=\frac{G_{0}^{2}}{1+\left(\frac{\omega}{\omega_{c
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128224651.png" style="zoom: 55%;" /></p>
 <p><b>双向滤波</b>先将输入序列按顺序滤波(forward filter)，然后将所得结果逆转后反向通过滤波器(reverse filter)，再将所得结果逆转后输出(reverse output)，即得精确零相位失真的输出序列。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <hr />
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 创建滤波器</span></span><br><span class="line">ord =<span class="number">5</span>; <span class="comment">% 滤波器阶数 5</span></span><br><span class="line">Wn = <span class="number">7</span>/Fs;</span><br><span class="line">[b,a] = butter(ord, Wn,<span class="string">&#x27;low&#x27;</span>);</span><br><span class="line"><span class="comment">% 使用滤波器</span></span><br><span class="line"><span class="comment">% 单向滤波</span></span><br><span class="line">Fu = filter(b,a,F);</span><br><span class="line"><span class="comment">% 双向滤波</span></span><br><span class="line">Fb = filtfilt(b,a,F);</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 创建滤波器</span></span><br><span class="line">ord =<span class="number">5</span>; <span class="comment">% 滤波器阶数 5</span></span><br><span class="line">Wn = <span class="number">7</span>/(Fs/<span class="number">2</span>);</span><br><span class="line">[b,a] = butter(ord, Wn,<span class="string">&#x27;low&#x27;</span>);</span><br><span class="line"><span class="comment">% 使用滤波器</span></span><br><span class="line"><span class="comment">% 单向滤波</span></span><br><span class="line">Fu = filter(b,a,F);</span><br><span class="line"><span class="comment">% 双向滤波</span></span><br><span class="line">Fb = filtfilt(b,a,F);</span><br></pre></td></tr></table></figure>
 <p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210128202532.png" style="zoom:60%;" /></p>
 <p style="background-color:Wheat">
 <font size=4><b>任务3</b></font>: 对已滤波和未滤波的信号执行频率分析，并比较计算出的频谱。使用Hann窗口对数据进行窗口化。
@@ -934,6 +934,113 @@ m v \dot{\beta}+\left(m v^{2}+c_{\alpha v} a_{1}-c_{\alpha h} a_{2}\right) \frac
 <p><strong>给定参数</strong> <span class="math display">\[
 \begin{array}{c}a_{1}=0,8 m ;\quad  a_{2}=1,3 m ;\quad c_{a v}=55000 \frac{N}{r a d} ;\quad c_{a h}=65000 \frac{N}{r a d} \\ T_{1}=0,5 s ;\quad  T_{2}=2,5 s ;\quad  m=1200 k g ;\quad  \theta=1200 k g m^{2} \\ v_{1}=30 \frac{k m}{h} ;\quad  v_{2}=100 \frac{k m}{h} ;\quad  \delta=4^{\circ}\end{array}
 \]</span></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 系统参数</span></span><br><span class="line">a1 = <span class="number">0.8</span>;</span><br><span class="line">a2 = <span class="number">1.3</span>;</span><br><span class="line">c_av = <span class="number">55000</span>*<span class="built_in">pi</span>/<span class="number">180</span>; <span class="comment">% N/degree</span></span><br><span class="line">c_ah = <span class="number">65000</span>*<span class="built_in">pi</span>/<span class="number">180</span>; <span class="comment">% N/degree</span></span><br><span class="line">T1 = <span class="number">0.5</span>;</span><br><span class="line">T2 = <span class="number">2.5</span>;</span><br><span class="line">m = <span class="number">1200</span>;</span><br><span class="line">theta = <span class="number">1200</span>;</span><br><span class="line">v1 = <span class="number">30</span>*<span class="number">3.6</span>; <span class="comment">% m/s </span></span><br><span class="line">v2 = <span class="number">100</span>*<span class="number">3.6</span>; <span class="comment">% m/s </span></span><br><span class="line">delta = <span class="number">4</span>; <span class="comment">% degree</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">4</span>;</span><br><span class="line"><span class="comment">% xi = [gammap; beta]</span></span><br><span class="line">xi0 = [<span class="number">0</span>;<span class="number">0</span>];</span><br><span class="line"><span class="comment">% 全局参数</span></span><br><span class="line"><span class="keyword">global</span> A B Delta_t</span><br><span class="line">Delta_t = @(t)<span class="number">8</span>*t.*(t&gt;<span class="number">0</span> &amp; t&lt;=<span class="number">0.5</span>) + <span class="number">4.</span>*(t&gt;<span class="number">0.5</span> &amp; t&lt;=<span class="number">3</span>) +...</span><br><span class="line">    (<span class="number">28</span><span class="number">-8</span>*t).*(t&gt;<span class="number">3</span> &amp; t&lt;=<span class="number">3.5</span>) + <span class="number">0.</span>*(t&gt;<span class="number">3.5</span>);</span><br><span class="line"></span><br><span class="line">A = @(v)[   -(c_av*a1^<span class="number">2</span> + c_ah*a2^<span class="number">2</span>)/theta/v,   -(c_av*a1 - c_ah*a2)/theta;</span><br><span class="line">            <span class="number">-1</span>-(c_av*a1 - c_ah*a2)/m/v^<span class="number">2</span>,      -(c_av + c_ah)/m/v];</span><br><span class="line"></span><br><span class="line">B = @(v)[   c_av*a1/theta;</span><br><span class="line">            c_av/m/v];</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 数值解</span></span><br><span class="line">[t1, xi_v1] = ode45(@ODE_Querdyn, tspan, xi0,[],v1);</span><br><span class="line">[t2, xi_v2] = ode45(@ODE_Querdyn, tspan, xi0,[],v2);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_Querdyn</span><span class="params">(t,xi,v)</span></span></span><br><span class="line">    <span class="keyword">global</span> A B Delta_t</span><br><span class="line">    F = B(v).*Delta_t(t);</span><br><span class="line">    xip = A(v)*xi + F;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223154917.png" style="zoom:80%;" /></p>
+]]></content>
+      <categories>
+        <category>TU-Branschweig</category>
+        <category>车辆技术中的建模与仿真</category>
+      </categories>
+      <tags>
+        <tag>Matlab</tag>
+        <tag>车辆技术</tag>
+        <tag>信号分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>连续性系统 (kontinuierlicher Systeme)</title>
+    <url>/Modeling-and-simulation-in-vehicle-technology-kontiniuierlicher-Systeme/</url>
+    <content><![CDATA[<h2 id="连续系统">0. 连续系统</h2>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223193542.png"  style="zoom:80%;" /></p>
+<p>在之前简单车辆模型章节中，研究的是多体系统。多体系统在时间轴上是连续的，但在空间轴上由不同个体组成，因此是不连续的。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223194133.png" title="传动轴" style="zoom:80%;" /></p>
+<p>在这里要研究的是连续系统。一个例子是如上图所示的传动轴。在传动轴上，每个位置的扭矩都会对相邻位置的扭矩产生影响，因此在空间轴上是连续的，同时在时间轴上也是连续的。这类问题的解法和之前多体系统的解法是不同的。</p>
+<h2 id="偏微分方程">1. 偏微分方程</h2>
+<p>具有恒定扭转刚度的扭杆的波动方程： <span class="math display">\[
+\rho I_{p} \cdot \ddot{\varphi}-G I_{p} \cdot \varphi_{x x}=0\qquad GI_P=const.
+\]</span></p>
+<p><span class="math display">\[
+\ddot{\varphi}=c^{2} \cdot \varphi_{x x} ; \qquad c^{2}=G / \rho
+\]</span></p>
+<p>扭转应力函数 (<strong>解析解</strong>) 如下, 参数 <span class="math inline">\(A,\;B,\;\omega,\;\varphi_0\)</span> 可以根据初始条件和边界条件来计算。 <span class="math display">\[
+\varphi(x, t)=V(x) \cdot T(t)=\left(A \cdot \cos \left(\frac{\omega}{c} x\right)+B \cdot \sin \left(\frac{\omega}{c} x\right)\right) \cdot \cos \left(\omega t-\varphi_{0}\right)
+\]</span> <strong>有限差分法:</strong></p>
+<ul>
+<li><p>用 <i>n</i> 个单元离散化连续系统:</p></li>
+<li><p>通过差商对 <i>n</i>+1 网格点处的局部导数进行逼近。通过 <i>n</i>+1 个偏微分方程描述这个系统。</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223202020.png" style="zoom: 80%;" /></p>
+<p>一阶: <span class="math display">\[
+\dot\varphi_{i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
+\]</span></p>
+<p><span class="math display">\[
+\varphi_{x, i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
+\]</span></p>
+<p>二阶: <span class="math display">\[
+\ddot\varphi_{ i}=\frac{\varphi_{i+1}-\varphi_{i-1}}{2 \cdot \Delta x}
+\]</span></p></li>
+</ul>
+<p>因此，离散化后的方程为: <span class="math display">\[
+\ddot{\varphi}_{i}=\left(\frac{c}{\Delta x}\right)^{2} \cdot\left(\varphi_{i-1}-2 \cdot \varphi_{i}+\varphi_{i+1}\right)
+\]</span> 同时要考虑到<strong>边界条件</strong>：</p>
+<ol type="1">
+<li><p><u>夹紧端</u>: 约束处无扰度 <span class="math display">\[
+\varphi(x=0, t)=0\qquad \ddot{\varphi}_{1}=\dot{\varphi}_{1}=\varphi_{1}=0
+\]</span></p></li>
+<li><p><u>自由端</u>: 自由端没有力矩</p>
+<ul>
+<li><p><span class="math inline">\(M(x=l, t)=0=G I_{p} \cdot \varphi_{x}(x=l, t)=G I_{p} \cdot \frac{\varphi_{i+1}-\varphi_{i-1}}{2 \Delta x}\quad\rightarrow\quad \varphi_{i+1}=\varphi_{i-1}\)</span></p></li>
+<li><p>自由端 <span class="math inline">\(i=n+1\)</span>: <span class="math display">\[
+\ddot{\varphi}_{i}=\left(\frac{c}{\Delta x}\right)^{2}\left(2 \cdot \varphi_{i-1}-2 \cdot \varphi_{i}\right)
+\]</span></p></li>
+</ul></li>
+</ol>
+<p>每个节点的运动方程以矩阵形式展示如下: <span class="math display">\[
+\ddot{\varphi}=\left(\frac{c}{\Delta x}\right)^{2}\cdot
+\underbrace{\left[\begin{array}{cccccccc} 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \ddots &amp; \ddots &amp; \ddots &amp; \vdots &amp; \vdots \\ 0 &amp; 0 &amp; 0 &amp; \ddots &amp; 1 &amp; -2 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; -2 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 2 &amp; -2\end{array}\right]}_{\large\underline{\underline{C}}}
+\cdot
+\left(\begin{array}{c}\varphi_{1} \\ \varphi_{2} \\ \varphi_{3} \\ \varphi_{4} \\ \vdots \\ \varphi_{n-1} \\ \varphi_{n} \\ \varphi_{n+1}\end{array}\right)
+\]</span> 消去第一行和第一列: <span class="math display">\[
+\ddot{\varphi}=\left(\frac{c}{\Delta x}\right)^{2}\cdot
+\left[\begin{array}{cccccccc} -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\  1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\  0 &amp; 1 &amp; -2 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\  0 &amp; 0 &amp; \ddots &amp; \ddots &amp; \ddots &amp; \vdots &amp; \vdots \\  0 &amp; 0 &amp; \ddots &amp; 1 &amp; -2 &amp; 1 &amp; 0 \\  0 &amp; 0 &amp; \cdots &amp; 0 &amp; 1 &amp; -2 &amp; 1 \\  0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 2 &amp; -2\end{array}\right]
+\cdot
+\left(\begin{array}{c}\varphi_{2} \\ \varphi_{3} \\ \varphi_{4} \\ \vdots \\ \varphi_{n-1} \\ \varphi_{n} \\ \varphi_{n+1}\end{array}\right)
+\]</span></p>
+<h2 id="任务-skript">2. 任务 &amp; Skript</h2>
+<p style="background-color:Wheat">
+<font size=4><b>任务1</b></font>: 创建一个MATLAB脚本，该脚本基于有限差分法以数字方式计算驱动轴的前10个自然扭转频率，并将结果与解析解进行比较。轴将建模为扭力杆，该扭力杆固定在车轮侧，其中，驱动侧的一端最初被视为自由端。 对于有限差分法，应使用 <i>n</i><sub>1</sub> = 10，<i>n</i><sub>2</sub> = 20 和 <i>n</i><sub>3</sub> = 100 的单元网格。
+</p>
+<p><strong>给定参数</strong>: <span class="math display">\[
+L=1\;\mathrm{m};\qquad n=[10,20,100];\\
+G = 80\;\mathrm{GPa};\qquad \rho=8000\;\frac{\mathrm{kg}}{\mathrm{m^3}}
+\]</span> <strong>解析解方程:</strong> <span class="math display">\[
+\varphi(x, t)=V(x) \cdot T(t)=\left(A \cdot \cos \left(\frac{\omega}{c} x\right)+B \cdot \sin \left(\frac{\omega}{c} x\right)\right) \cos \left(\omega t-\varphi_{0}\right)\\
+\omega_{j, \text { analytisch }}=(2 j-1) \frac{\pi}{2 l} \sqrt{\frac{G}{\rho}}, \quad j=1,2, \ldots
+\]</span></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 系统参数</span></span><br><span class="line">L = <span class="number">1</span>; <span class="comment">%  m</span></span><br><span class="line">G = <span class="number">80e9</span>; <span class="comment">% N/m^2</span></span><br><span class="line">rho = <span class="number">8000</span>; <span class="comment">% kg/m^3</span></span><br><span class="line">c = <span class="built_in">sqrt</span>(G/rho); <span class="comment">% 波传播速度</span></span><br><span class="line">nElements = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">100</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">%% 有限差分法 (数值解)</span></span><br><span class="line"><span class="comment">% 在循环中计算固有频率</span></span><br><span class="line"><span class="keyword">for</span> idx = <span class="number">1</span>:<span class="built_in">length</span>(nElements)</span><br><span class="line">	<span class="comment">% 循环变量的元素数</span></span><br><span class="line">	nEleidx = nElements(idx);</span><br><span class="line">	<span class="comment">% 单位积分长度</span></span><br><span class="line">	dx = L/nEleidx;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 离散系统的刚度矩阵 C</span></span><br><span class="line">	C = <span class="built_in">zeros</span>(nEleidx);</span><br><span class="line">	C = C + (<span class="number">-2</span>)*<span class="built_in">eye</span>(nEleidx);</span><br><span class="line">	C = C + <span class="built_in">diag</span>(<span class="built_in">ones</span>(nEleidx<span class="number">-1</span>,<span class="number">1</span>),<span class="number">-1</span>);</span><br><span class="line">	C = C + <span class="built_in">diag</span>(<span class="built_in">ones</span>(nEleidx<span class="number">-1</span>,<span class="number">1</span>),<span class="number">1</span>);</span><br><span class="line">	<span class="comment">% 自由端的边界条件</span></span><br><span class="line">	C(<span class="keyword">end</span>,<span class="keyword">end</span><span class="number">-1</span>) = <span class="number">2</span>;</span><br><span class="line">	C = (c/dx)^<span class="number">2.</span>*C;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 设置系统矩阵，[rho&#x27;;rho&#x27;&#x27;]=A[rho;rho&#x27;]</span></span><br><span class="line">	A = [<span class="built_in">zeros</span>(nEleidx), <span class="built_in">eye</span>(nEleidx); C, <span class="built_in">zeros</span>(nEleidx)];</span><br><span class="line">	</span><br><span class="line">	<span class="comment">% 固有频率计算</span></span><br><span class="line">	la = eig(A);</span><br><span class="line">	f = <span class="built_in">imag</span>(la)/<span class="number">2</span>/<span class="built_in">pi</span>;</span><br><span class="line">	f(f&lt;<span class="number">0</span>) = [];</span><br><span class="line">	f = <span class="built_in">sort</span>(f);</span><br><span class="line">	<span class="comment">% 将前10个固有频率存储在矩阵中</span></span><br><span class="line">	feig(:,idx) = f(<span class="number">1</span>:<span class="number">10</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%% 解析解</span></span><br><span class="line">weig_a = (<span class="number">2</span>*(<span class="number">1</span>:<span class="number">10</span>)<span class="number">-1</span>)*(<span class="built_in">pi</span>/(<span class="number">2</span>*L))*c;</span><br><span class="line">feig_a = weig_a/<span class="number">2</span>/<span class="built_in">pi</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>结果如下</strong>:</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223213341.png" style="zoom:80%;" /></p>
+<p>可以看到，单元越多，数值解越接近解析解。</p>
+<p style="background-color:Wheat">
+<font size=4><b>任务2</b></font>: 该扭杆在 <i>t</i><sub>0</sub>=0 时处于静止状态，在时间 <i>t</i><sub>1</sub>=0.5<i>T<sub>f1</sub></i> 的持续时间内用大小为<i>M<sub>A</sub></i> 的力矩作用于自由端，在时间间隔 <i>t<sub>span</sub></i>=[0, 0.01] s 内计算结果并展示。
+</p>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223221026.png" style="zoom:80%;" /></p>
+<p><strong>给定参数</strong> <span class="math display">\[
+\begin{array}{ll}L=1 m ; &amp; n=100 \\ G=80 \mathrm{GPa} ; &amp; \rho=8000 \frac{\mathrm{kg}}{\mathrm{m}^{3}} \\ M_{A}=20 \mathrm{Nm} ; &amp; I_{P}=10^{-5} \mathrm{~m}^{4} \\ \Theta_{n}=8 \cdot 10^{-4} \mathrm{~kg} \cdot \mathrm{m} ; &amp; T_{f 1}: \text { 第一个自然频率的周期 }\end{array}
+\]</span> <strong>第二个边界条件 (在自由端) 改变</strong>，有力矩 <i>M</i> 作用的情况下:</p>
+<ul>
+<li><p><span class="math inline">\(M(x=l, t)=M_{A}=G I_{p} \cdot \varphi_{x}(x=l, t)=G I_{p} \cdot \frac{\varphi_{i+1}-\varphi_{i-1}}{2 \Delta x}\)</span></p></li>
+<li><p>自由端 <span class="math inline">\(i=n+1\)</span>: <span class="math display">\[
+\ddot{\varphi}_{i}=\left(\frac{c}{\Delta x}\right)^{2}\left(2 \cdot \varphi_{i-1}-2 \cdot \varphi_{i}+2 \Delta x \cdot \frac{M}{G I_{p}}\right)
+\]</span></p></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">[t,xi] = ode45(@ODE_VL8,tspan,xi0,odeopts);</span><br><span class="line"><span class="keyword">global</span> MA AII G Ip c dxII Tf1</span><br><span class="line">L = <span class="number">1</span>; <span class="comment">%m</span></span><br><span class="line">G = <span class="number">80e9</span>; <span class="comment">%N/m</span></span><br><span class="line">rho = <span class="number">8000</span>; <span class="comment">%kg/m^2</span></span><br><span class="line">Ip = <span class="number">1e-5</span>; <span class="comment">%</span></span><br><span class="line">MA = <span class="number">20</span>; <span class="comment">%Nm</span></span><br><span class="line">c = <span class="built_in">sqrt</span>(G/rho);</span><br><span class="line">nII = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 计算第一个固有频率的周期</span></span><br><span class="line">feig_a = (<span class="number">2</span>*(<span class="number">1</span>:<span class="number">10</span>)<span class="number">-1</span>)*(<span class="built_in">pi</span>/<span class="number">2</span>/L)*c/<span class="number">2</span>/<span class="built_in">pi</span>;</span><br><span class="line">Tf1 = <span class="number">1</span>/feig_a(<span class="number">1</span>);</span><br><span class="line"><span class="comment">% 离散系统的刚度矩阵 C</span></span><br><span class="line">CII = <span class="built_in">zeros</span>(nII);</span><br><span class="line">CII = CII + (<span class="number">-2</span>)*<span class="built_in">eye</span>(nII);</span><br><span class="line">CII = CII + <span class="built_in">diag</span>(<span class="built_in">ones</span>(nII<span class="number">-1</span>,<span class="number">1</span>),<span class="number">-1</span>);</span><br><span class="line">CII = CII + <span class="built_in">diag</span>(<span class="built_in">ones</span>(nII<span class="number">-1</span>,<span class="number">1</span>),<span class="number">1</span>);</span><br><span class="line">CII(<span class="keyword">end</span>,<span class="keyword">end</span><span class="number">-1</span>) = <span class="number">2</span>;</span><br><span class="line">CII = (c/dxII)^<span class="number">2</span>*CII;</span><br><span class="line"><span class="comment">% 设置系统矩阵</span></span><br><span class="line">AII = [<span class="built_in">zeros</span>(nII),<span class="built_in">eye</span>(nII); CII,<span class="built_in">zeros</span>(nII)];</span><br><span class="line"><span class="comment">% 时间向量</span></span><br><span class="line">tspan = <span class="number">0</span>:<span class="number">1e-6</span>:<span class="number">0.01</span>;</span><br><span class="line"><span class="comment">% 初始条件</span></span><br><span class="line">xi0 = <span class="built_in">zeros</span>(<span class="number">2</span>*nII,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">odeopts = odeset();</span><br><span class="line"><span class="comment">% 数值积分</span></span><br><span class="line">[t,xi] = ode45(@ODE_T,tspan,xi0,odeopts);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[xip]</span> = <span class="title">ODE_T</span><span class="params">(t,xi)</span></span></span><br><span class="line">	<span class="keyword">global</span> MA AII G Ip c dxII Tf1</span><br><span class="line">	<span class="comment">% 计算激励扭矩</span></span><br><span class="line">	<span class="keyword">if</span> t &lt; <span class="number">0.5</span>*Tf1</span><br><span class="line">		M = MA;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		M = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="comment">% 设置偏微分方程</span></span><br><span class="line">	xip = AII*xi;	</span><br><span class="line">	<span class="comment">% 考虑自由端的激励力矩</span></span><br><span class="line">	xip(<span class="keyword">end</span>) = xip(<span class="keyword">end</span>)+(c/dxII)^<span class="number">2</span>*(<span class="number">2</span>*dxII*M/G/Ip);</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>结果展示:</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(t,xi(:,<span class="number">100</span>));</span><br><span class="line">title(<span class="string">&quot;扭杆自由端的角度变化&quot;</span>)</span><br><span class="line">xlabel(<span class="string">&quot;时间 s&quot;</span>)</span><br><span class="line">ylabel(<span class="string">&quot;偏转 rad&quot;</span>)</span><br><span class="line">grid on; box on;</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223225057.jpg" style="zoom:80%;" /></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span></span><br><span class="line">Stab_pl = <span class="built_in">plot</span>(L.*<span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">1</span>,nII+<span class="number">1</span>),[<span class="number">0</span>,xi(<span class="number">1</span>,<span class="number">1</span>:nII)]);</span><br><span class="line">ylim(<span class="number">1.05</span>*[<span class="built_in">min</span>(xi(:,nII)) <span class="built_in">max</span>(xi(:,nII))])</span><br><span class="line">title(<span class="string">&quot;激励后扭杆自由端的角度变化&quot;</span>)</span><br><span class="line">xlabel(<span class="string">&quot;杆上的位置 m&quot;</span>)</span><br><span class="line">ylabel(<span class="string">&quot;偏转 rad&quot;</span>)</span><br><span class="line">grid on; box on;</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://raw.githubusercontent.com/Mr-Maohaha/cloudimg/master/data/20210223225008.gif" style="zoom:80%;" /></p>
 ]]></content>
       <categories>
         <category>TU-Branschweig</category>
